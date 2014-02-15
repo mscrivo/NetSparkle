@@ -34,10 +34,10 @@ namespace NetSparkle
 			ShowInTaskbar = false;
 			// Create and run timer for animation
 			_goUpTimer = new Timer();
-			_goUpTimer.Interval = 50;
+			_goUpTimer.Interval = 25;
 			_goUpTimer.Tick += GoUpTimerTick;
 			_goDownTimer = new Timer();
-			_goDownTimer.Interval = 50;
+			_goDownTimer.Interval = 25;
 			_goDownTimer.Tick += GoDownTimerTick;
 			_pauseTimer = new Timer();
 			_pauseTimer.Interval = 15000;
@@ -84,15 +84,16 @@ namespace NetSparkle
 			//Lower window by 5 pixels
 			startPosY += 5;
 			//If window is fully visible stop the timer
-			if (startPosY > Screen.PrimaryScreen.WorkingArea.Height)
-			{
-				_goDownTimer.Stop();
-				//If the client app starts with a "show dialog" open (e.g., selecting a file to open), this Close() actually closes *that* dialog, which is, um, bad.
-				//So I'm just going to not do the close, figuring that it only runs once per run of the application anyhow
-				//Close();
-			}
-			else
-				SetDesktopLocation(startPosX, startPosY);
+		    if (startPosY > Screen.PrimaryScreen.WorkingArea.Height)
+		    {
+		        _goDownTimer.Stop();
+		        Hide();
+		    }
+		    else
+		    {
+		        SetDesktopLocation(startPosX, startPosY);
+                this.SendToBack();
+		    }
 		}
 
         private void ToastNotifier_Click(object sender, EventArgs e)
