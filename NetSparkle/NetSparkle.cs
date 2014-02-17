@@ -59,6 +59,12 @@ namespace NetSparkle
         /// </summary>
         public event UpdateDetected UpdateDetected;
 
+        /// <summary>
+        /// This event will be raised when the update window is shown to the user but they've
+        /// opted to skip the update or dismiss it.
+        /// </summary>
+        public event EventHandler UpdateWindowDismissed;
+
         private BackgroundWorker _worker = new BackgroundWorker();
         private String _appCastUrl;
         private readonly String _appReferenceAssembly;
@@ -836,13 +842,26 @@ namespace NetSparkle
             if (UserWindow.Result == DialogResult.No)
             {
                 // skip this version
+                
                 NetSparkleConfiguration config = GetApplicationConfig();
                 config.SetVersionToSkip(UserWindow.CurrentItem.Version);
+
+                if (UpdateWindowDismissed != null)
+                {
+                    UpdateWindowDismissed(this, e);
+                }
             }
             else if (UserWindow.Result == DialogResult.Yes)
             {
                 // download the binaries
                 InitDownloadAndInstallProcess(UserWindow.CurrentItem);
+            }
+            else
+            {
+                if (UpdateWindowDismissed != null)
+                {
+                    UpdateWindowDismissed(this, e);
+                }
             }
         }
 
