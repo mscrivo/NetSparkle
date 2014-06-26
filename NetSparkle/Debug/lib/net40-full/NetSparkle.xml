@@ -1,0 +1,1674 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NetSparkle</name>
+    </assembly>
+    <members>
+        <member name="T:NetSparkle.DefaultNetSparkleUIFactory">
+            <summary>
+            UI factory for default interface
+            </summary>
+        </member>
+        <member name="T:NetSparkle.Interfaces.INetSparkleUIFactory">
+            <summary>
+            Universal interface for creating UI utilized by Sparkle
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleUIFactory.CreateSparkleForm(NetSparkle.NetSparkleAppCastItem,System.Drawing.Icon)">
+            <summary>
+            Create sparkle form implementation
+            </summary>
+            <param name="currentItem">App cast item to show</param>
+            <param name="applicationIcon">Icon</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleUIFactory.CreateProgressWindow(NetSparkle.NetSparkleAppCastItem,System.Drawing.Icon)">
+            <summary>
+            Create download progress window
+            </summary>
+            <param name="item">Appcast item to download</param>
+            <param name="applicationIcon">Application icon to use</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleUIFactory.Init">
+            <summary>
+            Initialize UI. Called when Sparkle is constructed.
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleUIFactory.ShowUnknownInstallerFormatMessage(System.String)">
+            <summary>
+            Show user a message saying downloaded update format is unknown
+            </summary>
+            <param name="downloadFileName"></param>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleUIFactory.ShowVersionIsUpToDate">
+            <summary>
+            Show user that current installed version is up-to-date
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleUIFactory.ShowVersionIsSkippedByUserRequest">
+            <summary>
+            Show message that latest update was skipped by user
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleUIFactory.ShowCannotDownloadAppcast(System.String)">
+            <summary>
+            Show message that appcast is not available
+            </summary>
+            <param name="appcastUrl"></param>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleUIFactory.ShowToast(NetSparkle.NetSparkleAppCastItem,System.Drawing.Icon,System.EventHandler)">
+            <summary>
+            Show 'toast' window to notify new version is available
+            </summary>
+            <param name="item">Appcast item</param>
+            <param name="applicationIcon">Icon to use in window</param>
+            <param name="clickHandler">handler for click</param>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleUIFactory.ShowDownloadErrorMessage(System.String,System.String)">
+            <summary>
+            Show message on download error
+            </summary>
+            <param name="message">Error message from exception</param>
+            <param name="appCastUrl"></param>
+        </member>
+        <member name="M:NetSparkle.DefaultNetSparkleUIFactory.CreateSparkleForm(NetSparkle.NetSparkleAppCastItem,System.Drawing.Icon)">
+            <summary>
+            Create sparkle form implementation
+            </summary>
+            <param name="currentItem">App cast item to show</param>
+            <param name="applicationIcon">Icon</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetSparkle.DefaultNetSparkleUIFactory.CreateProgressWindow(NetSparkle.NetSparkleAppCastItem,System.Drawing.Icon)">
+            <summary>
+            Create download progress window
+            </summary>
+            <param name="item">Appcast item to download</param>
+            <param name="applicationIcon">Application icon to use</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetSparkle.DefaultNetSparkleUIFactory.Init">
+            <summary>
+            Initialize UI. Called when Sparkle is constructed.
+            </summary>
+        </member>
+        <member name="M:NetSparkle.DefaultNetSparkleUIFactory.ShowUnknownInstallerFormatMessage(System.String)">
+            <summary>
+            Show user a message saying downloaded update format is unknown
+            </summary>
+            <param name="downloadFileName"></param>
+        </member>
+        <member name="M:NetSparkle.DefaultNetSparkleUIFactory.ShowVersionIsUpToDate">
+            <summary>
+            Show user that current installed version is up-to-date
+            </summary>
+        </member>
+        <member name="M:NetSparkle.DefaultNetSparkleUIFactory.ShowVersionIsSkippedByUserRequest">
+            <summary>
+            Show message that latest update was skipped by user
+            </summary>
+        </member>
+        <member name="M:NetSparkle.DefaultNetSparkleUIFactory.ShowCannotDownloadAppcast(System.String)">
+            <summary>
+            Show message that appcast is not available
+            </summary>
+            <param name="appcastUrl"></param>
+        </member>
+        <member name="M:NetSparkle.DefaultNetSparkleUIFactory.ShowToast(NetSparkle.NetSparkleAppCastItem,System.Drawing.Icon,System.EventHandler)">
+            <summary>
+            Show 'toast' window to notify new version is available
+            </summary>
+            <param name="item">Appcast item</param>
+            <param name="applicationIcon">Icon to use in window</param>
+            <param name="clickHandler">handler for click</param>
+        </member>
+        <member name="M:NetSparkle.DefaultNetSparkleUIFactory.ShowDownloadErrorMessage(System.String,System.String)">
+            <summary>
+            Show message on download error
+            </summary>
+            <param name="message">Error message from exception</param>
+            <param name="appCastUrl"></param>
+        </member>
+        <member name="T:NetSparkle.NextUpdateAction">
+            <summary>
+            Everytime when netsparkle detects an update the 
+            consumer can decide what should happen as next with the help 
+            of the UpdateDatected event
+            </summary>
+        </member>
+        <member name="F:NetSparkle.NextUpdateAction.ShowStandardUserInterface">
+            <summary>
+            Show the user interface
+            </summary>
+        </member>
+        <member name="F:NetSparkle.NextUpdateAction.PerformUpdateUnattended">
+            <summary>
+            Perform an unattended install
+            </summary>
+        </member>
+        <member name="F:NetSparkle.NextUpdateAction.ProhibitUpdate">
+            <summary>
+            Prohibit the update
+            </summary>
+        </member>
+        <member name="T:NetSparkle.Interfaces.INetSparkleDownloadProgress">
+            <summary>
+            Interface for UI element that shows the progress bar
+            and a method to install and relaunch the appliction
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleDownloadProgress.ShowDialog">
+            <summary>
+            Show the UI and waits
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleDownloadProgress.OnClientDownloadProgressChanged(System.Object,System.Net.DownloadProgressChangedEventArgs)">
+            <summary>
+            Called when the download progress changes
+            </summary>
+            <param name="sender">not used.</param>
+            <param name="e">used to resolve the progress of the download. Also contains the total size of the download</param>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleDownloadProgress.ForceClose">
+            <summary>
+            Force window close
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleDownloadProgress.ChangeDownloadState(System.Boolean)">
+            <summary>
+            Update UI to show file is downloaded and signature check result
+            </summary>
+            <param name="signatureValid"></param>
+        </member>
+        <member name="E:NetSparkle.Interfaces.INetSparkleDownloadProgress.InstallAndRelaunch">
+            <summary>
+            event to fire when the form asks the application to be relaunched
+            </summary>
+        </member>
+        <member name="T:NetSparkle.Interfaces.INetSparkleForm">
+            <summary>
+            Interface for UI element that shows the release notes, 
+            and the skip, install, and later buttons
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleForm.Show">
+            <summary>
+            Show the UI
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Interfaces.INetSparkleForm.HideReleaseNotes">
+            <summary>
+            Hides the release notes 
+            </summary>
+        </member>
+        <member name="E:NetSparkle.Interfaces.INetSparkleForm.UserResponded">
+            <summary>
+            Event fired when the user has responded to the 
+            skip, later, install question.
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Interfaces.INetSparkleForm.Result">
+            <summary>
+            Gets the result for skip, later, or install
+            </summary>
+            <value>Valid results are install = yes, skip = no, later = retry</value>
+        </member>
+        <member name="P:NetSparkle.Interfaces.INetSparkleForm.CurrentItem">
+            <summary>
+            Gets or sets the current item being installed
+            </summary>
+        </member>
+        <member name="T:MarkdownSharp.MarkdownOptions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:MarkdownSharp.MarkdownOptions.AutoHyperlink">
+            <summary>
+            when true, (most) bare plain URLs are auto-hyperlinked  
+            WARNING: this is a significant deviation from the markdown spec
+            </summary>
+        </member>
+        <member name="P:MarkdownSharp.MarkdownOptions.AutoNewlines">
+            <summary>
+            when true, RETURN becomes a literal newline  
+            WARNING: this is a significant deviation from the markdown spec
+            </summary>
+        </member>
+        <member name="P:MarkdownSharp.MarkdownOptions.EmptyElementSuffix">
+            <summary>
+            use ">" for HTML output, or " />" for XHTML output
+            </summary>
+        </member>
+        <member name="P:MarkdownSharp.MarkdownOptions.EncodeProblemUrlCharacters">
+            <summary>
+            when true, problematic URL characters like [, ], (, and so forth will be encoded
+            WARNING: this is a significant deviation from the markdown spec
+            </summary>
+        </member>
+        <member name="P:MarkdownSharp.MarkdownOptions.LinkEmails">
+            <summary>
+            when false, email addresses will never be auto-linked  
+            WARNING: this is a significant deviation from the markdown spec
+            </summary>
+        </member>
+        <member name="P:MarkdownSharp.MarkdownOptions.StrictBoldItalic">
+            <summary>
+            when true, bold and italic require non-word characters on either side  
+            WARNING: this is a significant deviation from the markdown spec
+            </summary>
+        </member>
+        <member name="T:MarkdownSharp.Markdown">
+            <summary>
+            Markdown is a text-to-HTML conversion tool for web writers.
+            Markdown allows you to write using an easy-to-read, easy-to-write plain text format,
+            then convert it to structurally valid XHTML (or HTML).
+            </summary>
+        </member>
+        <member name="F:MarkdownSharp.Markdown._nestDepth">
+            <summary>
+            maximum nested depth of [] and () supported by the transform; implementation detail
+            </summary>
+        </member>
+        <member name="F:MarkdownSharp.Markdown._tabWidth">
+            <summary>
+            Tabs are automatically converted to spaces as part of the transform  
+            this constant determines how "wide" those tabs become in spaces  
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.#ctor">
+            <summary>
+            Create a new Markdown instance using default options
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.#ctor(System.Boolean)">
+             <summary>
+             Create a new Markdown instance and optionally load options from a configuration
+             file. There they should be stored in the appSettings section, available options are:
+            
+                 Markdown.StrictBoldItalic (true/false)
+                 Markdown.EmptyElementSuffix (">" or " />" without the quotes)
+                 Markdown.LinkEmails (true/false)
+                 Markdown.AutoNewLines (true/false)
+                 Markdown.AutoHyperlink (true/false)
+                 Markdown.EncodeProblemUrlCharacters (true/false)
+                 
+             </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.#ctor(MarkdownSharp.MarkdownOptions)">
+            <summary>
+            Create a new Markdown instance and set the options from the MarkdownOptions object.
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.#cctor">
+            <summary>
+            In the static constuctor we'll initialize what stays the same across all transforms.
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.Transform(System.String)">
+            <summary>
+            Transforms the provided Markdown-formatted text to HTML;  
+            see http://en.wikipedia.org/wiki/Markdown
+            </summary>
+            <remarks>
+            The order in which other subs are called here is
+            essential. Link and image substitutions need to happen before
+            EscapeSpecialChars(), so that any *'s or _'s in the a
+            and img tags get encoded.
+            </remarks>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.RunBlockGamut(System.String,System.Boolean)">
+            <summary>
+            Perform transformations that form block-level tags like paragraphs, headers, and list items.
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.RunSpanGamut(System.String)">
+            <summary>
+            Perform transformations that occur *within* block-level tags like paragraphs, headers, and list items.
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.FormParagraphs(System.String,System.Boolean)">
+            <summary>
+            splits on two or more newlines, to form "paragraphs";    
+            each paragraph is then unhashed (if it is a hash and unhashing isn't turned off) or wrapped in HTML p tag
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.GetNestedBracketsPattern">
+            <summary>
+            Reusable pattern to match balanced [brackets]. See Friedl's
+            "Mastering Regular Expressions", 2nd Ed., pp. 328-331.
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.GetNestedParensPattern">
+            <summary>
+            Reusable pattern to match balanced (parens). See Friedl's
+            "Mastering Regular Expressions", 2nd Ed., pp. 328-331.
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.StripLinkDefinitions(System.String)">
+            <summary>
+            Strips link definitions from text, stores the URLs and titles in hash references.
+            </summary>
+            <remarks>
+            ^[id]: url "optional title"
+            </remarks>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.GetBlockPattern">
+            <summary>
+            derived pretty much verbatim from PHP Markdown
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.HashHTMLBlocks(System.String)">
+            <summary>
+            replaces any block-level HTML blocks with hash entries
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.TokenizeHTML(System.String)">
+            <summary>
+            returns an array of HTML tokens comprising the input string. Each token is
+            either a tag (possibly with nested, tags contained therein, such
+            as &lt;a href="&lt;MTFoo&gt;"&gt;, or a run of text between tags. Each element of the
+            array is a two-element array; the first is either 'tag' or 'text'; the second is
+            the actual value.
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.DoAnchors(System.String)">
+            <summary>
+            Turn Markdown link shortcuts into HTML anchor tags
+            </summary>
+            <remarks>
+            [link text](url "title")
+            [link text][id]
+            [id]
+            </remarks>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.DoImages(System.String)">
+            <summary>
+            Turn Markdown image shortcuts into HTML img tags.
+            </summary>
+            <remarks>
+            ![alt text][id]
+            ![alt text](url "optional title")
+            </remarks>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.DoHeaders(System.String)">
+             <summary>
+             Turn Markdown headers into HTML header tags
+             </summary>
+             <remarks>
+             Header 1  
+             ========  
+            
+             Header 2  
+             --------  
+            
+             # Header 1  
+             ## Header 2  
+             ## Header 2 with closing hashes ##  
+             ...  
+             ###### Header 6  
+             </remarks>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.DoHorizontalRules(System.String)">
+            <summary>
+            Turn Markdown horizontal rules into HTML hr tags
+            </summary>
+            <remarks>
+            ***  
+            * * *  
+            ---
+            - - -
+            </remarks>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.DoLists(System.String)">
+            <summary>
+            Turn Markdown lists into HTML ul and ol and li tags
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.ProcessListItems(System.String,System.String)">
+            <summary>
+            Process the contents of a single ordered or unordered list, splitting it
+            into individual list items.
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.DoCodeBlocks(System.String)">
+            <summary>
+            /// Turn Markdown 4-space indented code into HTML pre code blocks
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.DoCodeSpans(System.String)">
+            <summary>
+            Turn Markdown `code spans` into HTML code tags
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.DoItalicsAndBold(System.String)">
+            <summary>
+            Turn Markdown *italics* and **bold** into HTML strong and em tags
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.DoHardBreaks(System.String)">
+            <summary>
+            Turn markdown line breaks (two space at end of line) into HTML break tags
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.DoBlockQuotes(System.String)">
+            <summary>
+            Turn Markdown > quoted blocks into HTML blockquote blocks
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.DoAutoLinks(System.String)">
+            <summary>
+            Turn angle-delimited URLs into HTML anchor tags
+            </summary>
+            <remarks>
+            &lt;http://www.example.com&gt;
+            </remarks>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.Outdent(System.String)">
+            <summary>
+            Remove one level of line-leading spaces
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.EncodeEmailAddress(System.String)">
+            <summary>
+            encodes email address randomly  
+            roughly 10% raw, 45% hex, 45% dec
+            note that @ is always encoded and : never is
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.EncodeCode(System.String)">
+            <summary>
+            Encode/escape certain Markdown characters inside code blocks and spans where they are literals
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.EncodeAmpsAndAngles(System.String)">
+            <summary>
+            Encode any ampersands (that aren't part of an HTML entity) and left or right angle brackets
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.EscapeBackslashes(System.String)">
+            <summary>
+            Encodes any escaped characters such as \`, \*, \[ etc
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.Unescape(System.String)">
+            <summary>
+            swap back in all the special characters we've hidden
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.EscapeBoldItalic(System.String)">
+            <summary>
+            escapes Bold [ * ] and Italic [ _ ] characters
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.EncodeProblemUrlChars(System.String)">
+            <summary>
+            hex-encodes some unusual "problem" chars in URLs to avoid URL detection problems
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.EscapeSpecialCharsWithinTagAttributes(System.String)">
+            <summary>
+            Within tags -- meaning between &lt; and &gt; -- encode [\ ` * _] so they
+            don't conflict with their use in Markdown for code, italics and strong.
+            We're replacing each such character with its corresponding hash
+            value; this is likely overkill, but it should prevent us from colliding
+            with the escape values by accident.
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.Normalize(System.String)">
+            <summary>
+            convert all tabs to _tabWidth spaces;
+            standardizes line endings from DOS (CR LF) or Mac (CR) to UNIX (LF);
+            makes sure text ends with a couple of newlines;
+            removes any blank lines (only spaces) in the text
+            </summary>
+        </member>
+        <member name="M:MarkdownSharp.Markdown.RepeatString(System.String,System.Int32)">
+            <summary>
+            this is to emulate what's evailable in PHP
+            </summary>
+        </member>
+        <member name="P:MarkdownSharp.Markdown.EmptyElementSuffix">
+            <summary>
+            use ">" for HTML output, or " />" for XHTML output
+            </summary>
+        </member>
+        <member name="P:MarkdownSharp.Markdown.LinkEmails">
+            <summary>
+            when false, email addresses will never be auto-linked  
+            WARNING: this is a significant deviation from the markdown spec
+            </summary>
+        </member>
+        <member name="P:MarkdownSharp.Markdown.StrictBoldItalic">
+            <summary>
+            when true, bold and italic require non-word characters on either side  
+            WARNING: this is a significant deviation from the markdown spec
+            </summary>
+        </member>
+        <member name="P:MarkdownSharp.Markdown.AutoNewLines">
+            <summary>
+            when true, RETURN becomes a literal newline  
+            WARNING: this is a significant deviation from the markdown spec
+            </summary>
+        </member>
+        <member name="P:MarkdownSharp.Markdown.AutoHyperlink">
+            <summary>
+            when true, (most) bare plain URLs are auto-hyperlinked  
+            WARNING: this is a significant deviation from the markdown spec
+            </summary>
+        </member>
+        <member name="P:MarkdownSharp.Markdown.EncodeProblemUrlCharacters">
+            <summary>
+            when true, problematic URL characters like [, ], (, and so forth will be encoded
+            WARNING: this is a significant deviation from the markdown spec
+            </summary>
+        </member>
+        <member name="P:MarkdownSharp.Markdown.Version">
+            <summary>
+            current version of MarkdownSharp;  
+            see http://code.google.com/p/markdownsharp/ for the latest code or to contribute
+            </summary>
+        </member>
+        <member name="T:NetSparkle.NetSparkleAssemblyReflectionAccessor">
+            <summary>
+            Assembly reflection accessor
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleAssemblyReflectionAccessor.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="assemblyName">the assembly name</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleAssemblyReflectionAccessor.CreateAttribute(System.Reflection.CustomAttributeData)">
+            <summary>
+            This methods creates an attribute instance from the attribute data 
+            information
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyReflectionAccessor.AssemblyTitle">
+            <summary>
+            Gets the assembly title
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyReflectionAccessor.AssemblyVersion">
+            <summary>
+            Gets the version
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyReflectionAccessor.AssemblyDescription">
+            <summary>
+            Gets the description
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyReflectionAccessor.AssemblyProduct">
+            <summary>
+            Gets the product
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyReflectionAccessor.AssemblyCopyright">
+            <summary>
+            Gets the copyright
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyReflectionAccessor.AssemblyCompany">
+            <summary>
+            Gets the company
+            </summary>
+        </member>
+        <member name="T:NetSparkle.LoopStartedOperation">
+            <summary>
+            The operation has started
+            </summary>
+            <param name="sender">the sender</param>
+        </member>
+        <member name="T:NetSparkle.LoopFinishedOperation">
+            <summary>
+            The operation has ended
+            </summary>
+            <param name="sender">the sender</param>
+            <param name="updateRequired"><c>true</c> if an update is required</param>
+        </member>
+        <member name="T:NetSparkle.UpdateDetected">
+            <summary>
+            This delegate will be used when an update was detected to allow library 
+            consumer to add own user interface capabilities.    
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:NetSparkle.Sparkle">
+            <summary>
+            Class to communicate with a sparkle-based appcast
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Sparkle.#ctor(System.String,System.Drawing.Icon)">
+            <summary>
+            ctor which needs the appcast url
+            </summary>
+            <param name="appcastUrl">the URL for the appcast file</param>
+            <param name="applicationIcon">If you're invoking this from a form, this would be this.Icon</param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.#ctor(System.String,System.Drawing.Icon,System.String)">
+            <summary>
+            ctor which needs the appcast url and a referenceassembly
+            </summary>        
+            <param name="appcastUrl">the URL for the appcast file</param>
+            <param name="applicationIcon">If you're invoking this from a form, this would be this.Icon</param>
+            <param name="referenceAssembly">the name of the assembly to use for comparison</param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.#ctor(System.String,System.Drawing.Icon,System.String,NetSparkle.Interfaces.INetSparkleUIFactory)">
+            <summary>
+            ctor which needs the appcast url and a referenceassembly
+            </summary>        
+            <param name="appcastUrl">the URL for the appcast file</param>
+            <param name="applicationIcon">If you're invoking this from a form, this would be this.Icon</param>
+            <param name="referenceAssembly">the name of the assembly to use for comparison</param>
+            <param name="factory">UI factory to use</param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.CheckOnFirstApplicationIdle">
+            <summary>
+            The app will check once, after the app settles down.
+            </summary>
+        </member>
+        <member name="F:NetSparkle.Sparkle.DoLaunchAfterUpdate">
+            <summary>
+            If your installer launches the app when it finishes, you don't want this thing to launch it as well. Defaults to TRUE.
+            </summary>
+        </member>
+        <member name="F:NetSparkle.Sparkle.CustomInstallerArguments">
+            <summary>
+            For example, use "/qb" to skip most of the UI, such as asking them to agree to the license again. The full list is at http://support.microsoft.com/kb/227091.
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Sparkle.StartLoop(System.Boolean)">
+            <summary>
+            The method starts a NetSparkle background loop
+            If NetSparkle is configured to check for updates on startup, proceeds to perform 
+            the check. You should only call this function when your app is initialized and 
+            shows its main window.        
+            </summary>        
+            <param name="doInitialCheck"></param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.StartLoop(System.Boolean,System.TimeSpan)">
+            <summary>
+            The method starts a NetSparkle background loop
+            If NetSparkle is configured to check for updates on startup, proceeds to perform 
+            the check. You should only call this function when your app is initialized and 
+            shows its main window.
+            </summary>
+            <param name="doInitialCheck"><c>true</c> if this instance should do an initial check.</param>
+            <param name="checkFrequency">the frequency between checks.</param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.StartLoop(System.Boolean,System.Boolean)">
+            <summary>
+            The method starts a NetSparkle background loop
+            If NetSparkle is configured to check for updates on startup, proceeds to perform 
+            the check. You should only call this function when your app is initialized and 
+            shows its main window.
+            </summary>
+            <param name="doInitialCheck"><c>true</c> if this instance should do an initial check.</param>
+            <param name="forceInitialCheck"><c>true</c> if this instance should force an initial check.</param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.StartLoop(System.Boolean,System.Boolean,System.TimeSpan)">
+            <summary>
+            The method starts a NetSparkle background loop
+            If NetSparkle is configured to check for updates on startup, proceeds to perform 
+            the check. You should only call this function when your app is initialized and 
+            shows its main window.
+            </summary>
+            <param name="doInitialCheck"><c>true</c> if this instance should do an initial check.</param>
+            <param name="forceInitialCheck"><c>true</c> if this instance should force an initial check.</param>
+            <param name="checkFrequency">the frequency between checks.</param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.StopLoop">
+            <summary>
+            This method will stop the sparkle background loop and is called
+            through the disposable interface automatically
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Sparkle.Dispose">
+            <summary>
+            Is called in the using context and will stop all background activities
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Sparkle.UnregisterEvents">
+            <summary>
+            Unregisters events so that we don't have multiple items updating
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Sparkle.UpdateSystemProfileInformation(NetSparkle.NetSparkleConfiguration)">
+            <summary>
+            This method updates the profile information which can be sended to the server if enabled    
+            </summary>
+            <param name="config">the configuration</param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.ProfileDataThreadStart(System.Object)">
+            <summary>
+            Profile data thread
+            </summary>
+            <param name="obj">the configuration object</param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.GetUpdateStatus(NetSparkle.NetSparkleConfiguration,NetSparkle.NetSparkleAppCastItem@)">
+            <summary>
+            This method checks if an update is required. During this process the appcast
+            will be downloaded and checked against the reference assembly. Ensure that
+            the calling process has access to the internet and read access to the 
+            reference assembly. This method is also called from the background loops.
+            </summary>
+            <param name="config">the configuration</param>
+            <param name="latestVersion">returns the latest version</param>
+            <returns><c>true</c> if an update is required</returns>
+        </member>
+        <member name="M:NetSparkle.Sparkle.GetApplicationConfig">
+            <summary>
+            This method reads the local sparkle configuration for the given
+            reference assembly
+            </summary>
+            <returns>the configuration</returns>
+        </member>
+        <member name="M:NetSparkle.Sparkle.ShowUpdateNeededUI(NetSparkle.NetSparkleAppCastItem,System.Boolean)">
+            <summary>
+            This method shows the update ui and allows to perform the 
+            update process
+            </summary>
+            <param name="currentItem">the item to show the UI for</param>
+            <param name="useNotificationToast"> </param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.ReportDiagnosticMessage(System.String)">
+            <summary>
+            This method reports a message in the diagnostic window
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.InitDownloadAndInstallProcess(NetSparkle.NetSparkleAppCastItem)">
+            <summary>
+            Starts the download process
+            </summary>
+            <param name="item">the appcast item to download</param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.GetInstallerCommand(System.String)">
+            <summary>
+            Return installer runner command. May throw InvalidDataException
+            </summary>
+            <param name="downloadFilePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetSparkle.Sparkle.RunDownloadedInstaller">
+            <summary>
+            Runs the downloaded installer
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Sparkle.AskApplicationToSafelyCloseUp">
+            <summary>
+            Apps may need, for example, to let user save their work
+            </summary>
+            <returns>true if it's ok</returns>
+        </member>
+        <member name="M:NetSparkle.Sparkle.RemoteCertificateValidation(System.Object,System.Security.Cryptography.X509Certificates.X509Certificate,System.Security.Cryptography.X509Certificates.X509Chain,System.Net.Security.SslPolicyErrors)">
+            <summary>
+            Determine if the remote X509 certificate is validate
+            </summary>
+            <param name="sender">the web request</param>
+            <param name="certificate">the certificate</param>
+            <param name="chain">the chain</param>
+            <param name="sslPolicyErrors">how to handle policy errors</param>
+            <returns><c>true</c> if the cert is valid</returns>
+        </member>
+        <member name="M:NetSparkle.Sparkle.CheckForUpdatesAtUserRequest">
+            <summary>
+            Check for updates, using interaction appropriate for if the user just said "check for updates"
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Sparkle.CheckForUpdatesQuietly">
+            <summary>
+            Check for updates, using interaction appropriate for where the user doesn't know you're doing it, so be polite
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Sparkle.CheckForUpdates(System.Boolean)">
+            <summary>
+            Does a one-off check for updates
+            </summary>
+            <param name="useNotificationToast">set false if you want the big dialog to open up, without the user having the chance to ignore the popup toast notification</param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.Update(NetSparkle.NetSparkleAppCastItem)">
+            <summary>
+            Updates from appcast
+            </summary>
+            <param name="currentItem">the current (top-most) item in the app-cast</param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.CancelInstall">
+            <summary>
+            Cancels the install
+            </summary>
+        </member>
+        <member name="M:NetSparkle.Sparkle.OnUserWindowUserResponded(System.Object,System.EventArgs)">
+            <summary>
+            Called when the user responds to the "skip, later, install" question.
+            </summary>
+            <param name="sender">not used.</param>
+            <param name="e">not used.</param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.OnProgressWindowInstallAndRelaunch(System.Object,System.EventArgs)">
+            <summary>
+            Called when the progress bar fires the update event
+            </summary>
+            <param name="sender">not used.</param>
+            <param name="e">not used.</param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.OnWorkerDoWork(System.Object,System.ComponentModel.DoWorkEventArgs)">
+            <summary>
+            This method will be executed as worker thread
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.OnWorkerProgressChanged(System.Object,System.ComponentModel.ProgressChangedEventArgs)">
+            <summary>
+            This method will be notified
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:NetSparkle.Sparkle.OnWebDownloadClientDownloadFileCompleted(System.Object,System.ComponentModel.AsyncCompletedEventArgs)">
+            <summary>
+            Called when the installer is downloaded
+            </summary>
+            <param name="sender">not used.</param>
+            <param name="e">used to determine if the download was successful.</param>
+        </member>
+        <member name="E:NetSparkle.Sparkle.AboutToExitForInstallerRun">
+            <summary>
+            Subscribe to this to get a chance to shut down gracefully before quiting
+            </summary>
+        </member>
+        <member name="E:NetSparkle.Sparkle.CheckLoopStarted">
+            <summary>
+            This event will be raised when a check loop will be started
+            </summary>
+        </member>
+        <member name="E:NetSparkle.Sparkle.CheckLoopFinished">
+            <summary>
+            This event will be raised when a check loop is finished
+            </summary>
+        </member>
+        <member name="E:NetSparkle.Sparkle.UpdateDetected">
+            <summary>
+            This event can be used to override the standard user interface
+            process when an update is detected
+            </summary>
+        </member>
+        <member name="E:NetSparkle.Sparkle.UpdateWindowDismissed">
+            <summary>
+            This event will be raised when the update window is shown to the user but they've
+            opted to skip the update or dismiss it.
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Sparkle.EnableSystemProfiling">
+            <summary>
+            Enables system profiling against a profile server
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Sparkle.HideReleaseNotes">
+            <summary>
+            Hides the release notes view when an update was found. This 
+            mode is switched on automatically when no sparkle:releaseNotesLink
+            tag was found in the app cast         
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Sparkle.SystemProfileUrl">
+            <summary>
+            Contains the profile url for System profiling
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Sparkle.EnableSilentMode">
+            <summary>
+            This property enables the silent mode, this means 
+            the application will be updated without user interaction
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Sparkle.IsUpdateLoopRunning">
+            <summary>
+            This property returns true when the upadete loop is running
+            and files when the loop is not running
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Sparkle.TrustEverySSLConnection">
+            <summary>
+            This property defines if we trust every ssl connection also when 
+            this connection has not a valid cert
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Sparkle.UIFactory">
+            <summary>
+            Factory for creating UI form like progress window etc.
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Sparkle.UserWindow">
+            <summary>
+            The user interface window that shows the release notes and
+            asks the user to skip, later or update
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Sparkle.ProgressWindow">
+            <summary>
+            The user interface window that shows a download progress bar,
+            and then asks to install and relaunch the application
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Sparkle.Configuration">
+            <summary>
+            The configuration.
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Sparkle.AppcastUrl">
+            <summary>
+            Gets or sets the app cast URL
+            </summary>
+        </member>
+        <member name="T:NetSparkle.Sparkle.UpdateStatus">
+            <summary>
+            The states of availability
+            </summary>
+            <paramater>UpdateAvailable</paramater>
+        </member>
+        <member name="T:NetSparkle.NetSparkleAppCastItem">
+            <summary>
+            Item from a Sparkle AppCast file
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleAppCastItem.CompareTo(NetSparkle.NetSparkleAppCastItem)">
+            <summary>
+            Compares this instance to another
+            </summary>
+            <param name="other">the other instance</param>
+            <returns>-1, 0, 1 if this instance is less than, equal to, or greater than the <paramref name="other"/></returns>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAppCastItem.AppName">
+            <summary>
+            The application name
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAppCastItem.AppVersionInstalled">
+            <summary>
+            The installed version
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAppCastItem.Version">
+            <summary>
+            The available version
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAppCastItem.ReleaseNotesLink">
+            <summary>
+            The release notes linke
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAppCastItem.DownloadLink">
+            <summary>
+            The download link
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAppCastItem.DSASignature">
+            <summary>
+            The DSA signature
+            </summary>
+        </member>
+        <member name="T:NetSparkle.NetSparkleAppCast">
+            <summary>
+            An app-cast 
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleAppCast.#ctor(System.String,NetSparkle.NetSparkleConfiguration)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="castUrl">the URL of the appcast file</param>
+            <param name="config">the current configuration</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleAppCast.GetLatestVersion">
+            <summary>
+            Gets the latest version
+            </summary>
+            <returns>the AppCast item corresponding to the latest version</returns>
+        </member>
+        <member name="T:NetSparkle.NetSparkleAssemblyAccessor">
+            <summary>
+            An assembly accessor
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleAssemblyAccessor.#ctor(System.String,System.Boolean)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="assemblyName">the assembly name</param>
+            <param name="isReflectionAccesorUsed"><c>true</c> if reflection is used to access the attributes.</param>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyAccessor.AssemblyCompany">
+            <summary>
+            Gets the company
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyAccessor.AssemblyCopyright">
+            <summary>
+            Gets the copyright
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyAccessor.AssemblyDescription">
+            <summary>
+            Gets the description
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyAccessor.AssemblyProduct">
+            <summary>
+            Gets the product
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyAccessor.AssemblyTitle">
+            <summary>
+            Gets the title
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyAccessor.AssemblyVersion">
+            <summary>
+            Gets the version
+            </summary>
+        </member>
+        <member name="T:NetSparkle.NetSparkleAssemblyDiagnosticsAccessor">
+            <summary>
+            A diagnostic accessor
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleAssemblyDiagnosticsAccessor.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="assemblyName">the assembly name</param>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyDiagnosticsAccessor.AssemblyTitle">
+            <summary>
+            Gets the Title
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyDiagnosticsAccessor.AssemblyVersion">
+            <summary>
+            Gets the version
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyDiagnosticsAccessor.AssemblyDescription">
+            <summary>
+            Gets the description
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyDiagnosticsAccessor.AssemblyProduct">
+            <summary>
+            gets the product
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyDiagnosticsAccessor.AssemblyCopyright">
+            <summary>
+            Gets the copyright
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleAssemblyDiagnosticsAccessor.AssemblyCompany">
+            <summary>
+            Gets the company
+            </summary>
+        </member>
+        <member name="T:NetSparkle.NetSparkleConfiguration">
+            <summary>
+            Abstract class to handle 
+            update intervals.
+            
+            CheckForUpdate  - Boolean    - Whether NetSparkle should check for updates
+            LastCheckTime   - time_t     - Time of last check
+            SkipThisVersion - String     - If the user skipped an update, then the version to ignore is stored here (e.g. "1.4.3")
+            DidRunOnce      - Boolean    - Check only one time when the app launched
+            </summary>    
+        </member>
+        <member name="M:NetSparkle.NetSparkleConfiguration.#ctor(System.String)">
+            <summary>
+            The constructor reads out all configured values
+            </summary>        
+            <param name="referenceAssembly">the reference assembly name</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleConfiguration.#ctor(System.String,System.Boolean)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="referenceAssembly">the name of hte reference assembly</param>
+            <param name="isReflectionBasedAssemblyAccessorUsed"><c>true</c> if reflection is used to access the assembly.</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleConfiguration.TouchProfileTime">
+            <summary>
+            Touches to profile time
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleConfiguration.TouchCheckTime">
+            <summary>
+            Touches the check time to now, should be used after a check directly
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleConfiguration.SetVersionToSkip(System.String)">
+            <summary>
+            This method allows to skip a specific version
+            </summary>
+            <param name="version">the version to skeip</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleConfiguration.Reload">
+            <summary>
+            Reloads the configuration object
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleConfiguration.InitWithDefaultValues">
+            <summary>
+            This method set's default values for the config
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleConfiguration.ApplicationName">
+            <summary>
+            The application name
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleConfiguration.InstalledVersion">
+            <summary>
+            The currently-installed version
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleConfiguration.CheckForUpdate">
+            <summary>
+            Flag to indicate if we should check for updates
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleConfiguration.LastCheckTime">
+            <summary>
+            Last check time
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleConfiguration.SkipThisVersion">
+            <summary>
+            The last-skipped version number
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleConfiguration.DidRunOnce">
+            <summary>
+            The application ran once
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleConfiguration.ShowDiagnosticWindow">
+            <summary>
+            Flag to indicate showing the diagnostic window
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleConfiguration.LastProfileUpdate">
+            <summary>
+            Last profile update
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleConfiguration.UseReflectionBasedAssemblyAccessor">
+            <summary>
+            If this property is true a reflection based accessor will be used
+            to determine the assmebly name and verison, otherwise a System.Diagnostics
+            based access will be used
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleConfiguration.ReferenceAssembly">
+            <summary>
+            The reference assembly name
+            </summary>
+        </member>
+        <member name="T:NetSparkle.NetSparkleDownloadProgress">
+            <summary>
+            A progress bar
+            </summary>
+            <summary>
+            A progress bar
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleDownloadProgress.#ctor(NetSparkle.NetSparkleAppCastItem,System.Drawing.Icon)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="item"></param>
+            <param name="applicationIcon">Your application Icon</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleDownloadProgress.NetSparkle#Interfaces#INetSparkleDownloadProgress#ShowDialog">
+            <summary>
+            Show the UI and waits
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleDownloadProgress.ChangeDownloadState(System.Boolean)">
+            <summary>
+            Update UI to show file is downloaded and signature check result
+            </summary>
+            <param name="signatureValid"></param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleDownloadProgress.ForceClose">
+            <summary>
+            Force window close
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleDownloadProgress.UpdateDownloadValid(System.Boolean)">
+            <summary>
+            Updates the UI to indicate if the download is valid
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleDownloadProgress.OnClientDownloadProgressChanged(System.Object,System.Net.DownloadProgressChangedEventArgs)">
+            <summary>
+            Event called when the client download progress changes
+            </summary>
+            <param name="sender">not used.</param>
+            <param name="e">not used.</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleDownloadProgress.OnInstallAndReLaunchClick(System.Object,System.EventArgs)">
+            <summary>
+            Event called when the "Install and relaunch" button is clicked
+            </summary>
+            <param name="sender">not used.</param>
+            <param name="e">not used.</param>
+        </member>
+        <member name="F:NetSparkle.NetSparkleDownloadProgress.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleDownloadProgress.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleDownloadProgress.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="E:NetSparkle.NetSparkleDownloadProgress.InstallAndRelaunch">
+            <summary>
+            event to fire when the form asks the application to be relaunched
+            </summary>
+        </member>
+        <member name="T:NetSparkle.NetSparkleDSAVerificator">
+            <summary>
+            Class to verify a DSA signature
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleDSAVerificator.ExistsPublicKey(System.String)">
+            <summary>
+            Determines if a public key exists in this 
+            </summary>
+            <param name="publicKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NetSparkle.NetSparkleDSAVerificator.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="publicKey">the public key</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleDSAVerificator.VerifyDSASignature(System.String,System.String)">
+            <summary>
+            Verifies the DSA signature
+            </summary>
+            <param name="signature">expected signature</param>
+            <param name="binaryPath">the path to the binary</param>
+            <returns><c>true</c> if the signature matches the expected signature.</returns>
+        </member>
+        <member name="M:NetSparkle.NetSparkleDSAVerificator.TryGetFileResource(System.String,System.IO.Stream)">
+            <summary>
+            Gets a file resource
+            </summary>
+            <param name="publicKey">the public key</param>
+            <param name="data">the data stream</param>
+            <returns>the data stream</returns>
+        </member>
+        <member name="M:NetSparkle.NetSparkleDSAVerificator.TryGetResourceStream(System.String)">
+            <summary>
+            Get a resource stream
+            </summary>
+            <param name="publicKey">the public key</param>
+            <returns>a stream</returns>
+        </member>
+        <member name="T:NetSparkle.NetSparkleException">
+            <summary>
+            A NetSparkle exception
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleException.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="message">exception message</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="info">serialization info</param>
+            <param name="context">the context</param>
+        </member>
+        <member name="T:NetSparkle.NetSparkleForm">
+            <summary>
+            The main form
+            </summary>
+            <summary>
+            The main form
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleForm.#ctor(NetSparkle.NetSparkleAppCastItem,System.Drawing.Icon)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="item"></param>
+            <param name="applicationIcon"></param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleForm.OnClosing(System.ComponentModel.CancelEventArgs)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleForm.NetSparkle#Interfaces#INetSparkleForm#HideReleaseNotes">
+            <summary>
+            Hides the release notes
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleForm.NetSparkle#Interfaces#INetSparkleForm#Show">
+            <summary>
+            Shows the dialog
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleForm.RemoveReleaseNotesControls">
+            <summary>
+            Removes the release notes control
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleForm.OnSkipButtonClick(System.Object,System.EventArgs)">
+            <summary>
+            Event called when the skip button is clicked
+            </summary>
+            <param name="sender">not used.</param>
+            <param name="e">not used.</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleForm.OnRemindClick(System.Object,System.EventArgs)">
+            <summary>
+            Event called when the "remind me later" button is clicked
+            </summary>
+            <param name="sender">not used.</param>
+            <param name="e">not used.</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleForm.OnUpdateButtonClick(System.Object,System.EventArgs)">
+            <summary>
+            Called when the "Update button" is clicked
+            </summary>
+            <param name="sender">not used.</param>
+            <param name="e">not used.</param>
+        </member>
+        <member name="F:NetSparkle.NetSparkleForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="E:NetSparkle.NetSparkleForm.UserResponded">
+            <summary>
+            Event fired when the user has responded to the 
+            skip, later, install question.
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleForm.NetSparkle#Interfaces#INetSparkleForm#CurrentItem">
+            <summary>
+            The current item being installed
+            </summary>
+        </member>
+        <member name="P:NetSparkle.NetSparkleForm.NetSparkle#Interfaces#INetSparkleForm#Result">
+            <summary>
+            The result of ShowDialog()
+            </summary>
+        </member>
+        <member name="T:NetSparkle.NetSparkleRegistryConfiguration">
+            <summary>
+            This class handles all registry values which are used from sparkle to handle 
+            update intervalls. All values are stored in HKCU\Software\Vendor\AppName which 
+            will be read ot from the assembly information. All values are of the REG_SZ 
+            type, no matter what their "logical" type is. The following options are
+            available:
+            
+            CheckForUpdate  - Boolean    - Whether NetSparkle should check for updates
+            LastCheckTime   - time_t     - Time of last check
+            SkipThisVersion - String     - If the user skipped an update, then the version to ignore is stored here (e.g. "1.4.3")
+            DidRunOnce      - Boolean    - Check only one time when the app launched
+            </summary>    
+        </member>
+        <member name="M:NetSparkle.NetSparkleRegistryConfiguration.#ctor(System.String)">
+            <summary>
+            The constructor reads out all configured values
+            </summary>        
+            <param name="referenceAssembly">the reference assembly name</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleRegistryConfiguration.#ctor(System.String,System.Boolean)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="referenceAssembly">the name of hte reference assembly</param>
+            <param name="isReflectionBasedAssemblyAccessorUsed"><c>true</c> if reflection is used to access the assembly.</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleRegistryConfiguration.TouchProfileTime">
+            <summary>
+            Touches to profile time
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleRegistryConfiguration.TouchCheckTime">
+            <summary>
+            Touches the check time to now, should be used after a check directly
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleRegistryConfiguration.SetVersionToSkip(System.String)">
+            <summary>
+            This method allows to skip a specific version
+            </summary>
+            <param name="version">the version to skeip</param>
+        </member>
+        <member name="M:NetSparkle.NetSparkleRegistryConfiguration.Reload">
+            <summary>
+            Reloads the configuration object
+            </summary>
+        </member>
+        <member name="M:NetSparkle.NetSparkleRegistryConfiguration.BuildRegistryPath">
+            <summary>
+            This function build a valid registry path in dependecy to the 
+            assembly information
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NetSparkle.NetSparkleRegistryConfiguration.LoadValuesFromPath(System.String)">
+            <summary>
+            This method loads the values from registry
+            </summary>
+            <param name="regPath">the registry path</param>
+            <returns><c>true</c> if the items were loaded</returns>
+        </member>
+        <member name="M:NetSparkle.NetSparkleRegistryConfiguration.SaveValuesToPath(System.String)">
+            <summary>
+            This method store the information into registry
+            </summary>
+            <param name="regPath">the registry path</param>
+            <returns><c>true</c> if the values were saved to the registry</returns>
+        </member>
+        <member name="T:NetSparkle.TempFile">
+            <summary>
+            This is useful a temporary file is needed. When it is disposed, it will delete the file.
+            </summary>
+            <example>using(f = new TempFile())</example>
+        </member>
+        <member name="M:NetSparkle.TempFile.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NetSparkle.TempFile.TrackExisting(System.String)">
+            <summary>
+            Create a TempFile based on a pre-existing file, which will be deleted when this is disposed.
+            </summary>
+        </member>
+        <member name="M:NetSparkle.TempFile.WithExtension(System.String)">
+            <summary>
+            Use this one when it's important to have a certain file extension 
+            </summary>
+            <param name="extension">with or with out '.', will work the same</param>
+        </member>
+        <member name="T:NetSparkle.ToastNotifier">
+            <summary>
+            Like a notification ballon, but more reliable "toast" because it slowly goes up, then down.
+            Subscribe to the Click even to know if the user clicked on it.
+            </summary>
+        </member>
+        <member name="M:NetSparkle.ToastNotifier.#ctor">
+            <summary>
+            constructor
+            </summary>
+        </member>
+        <member name="M:NetSparkle.ToastNotifier.OnLoad(System.EventArgs)">
+            <summary>
+            
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:NetSparkle.ToastNotifier.Show(System.String,System.String,System.Int32)">
+            <summary>
+            Show the toast
+            </summary>
+            <param name="message"></param>
+            <param name="callToAction">Text of the hyperlink </param>
+            <param name="seconds">How long to show before it goes back down</param>
+        </member>
+        <member name="F:NetSparkle.ToastNotifier.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:NetSparkle.ToastNotifier.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:NetSparkle.ToastNotifier.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:NetSparkle.ToastNotifier.Image">
+            <summary>
+            Image of your app
+            </summary>
+        </member>
+        <member name="E:NetSparkle.ToastNotifier.ToastClicked">
+            <summary>
+            The user clicked on the toast popup
+            </summary>
+        </member>
+        <member name="T:NetSparkle.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Properties.Resources.DefaultNetSparkleUIFactory_ErrorTitle">
+            <summary>
+              Looks up a localized string similar to Software update error.
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Properties.Resources.DefaultNetSparkleUIFactory_MessageTitle">
+            <summary>
+              Looks up a localized string similar to Software update message.
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Properties.Resources.DefaultNetSparkleUIFactory_ShowCannotDownloadAppcastMessage">
+            <summary>
+              Looks up a localized string similar to Sorry, either you aren&apos;t connected to the internet, or our server is having a problem..
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Properties.Resources.DefaultNetSparkleUIFactory_ShowDownloadErrorMessage">
+             <summary>
+               Looks up a localized string similar to Sorry, there was a problem attempting to download the update
+            
+            {0}.
+             </summary>
+        </member>
+        <member name="P:NetSparkle.Properties.Resources.DefaultNetSparkleUIFactory_ShowUnknownInstallerFormatMessageText">
+            <summary>
+              Looks up a localized string similar to Updater not supported, please execute {0} manually.
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Properties.Resources.DefaultNetSparkleUIFactory_ShowVersionIsSkippedByUserRequestMessage">
+            <summary>
+              Looks up a localized string similar to Your have elected to skip this version..
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Properties.Resources.DefaultNetSparkleUIFactory_ShowVersionIsUpToDateMessage">
+            <summary>
+              Looks up a localized string similar to Your current version is up to date..
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Properties.Resources.DefaultNetSparkleUIFactory_ToastCallToAction">
+            <summary>
+              Looks up a localized string similar to more information.
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Properties.Resources.DefaultNetSparkleUIFactory_ToastMessage">
+            <summary>
+              Looks up a localized string similar to New Version Available.
+            </summary>
+        </member>
+        <member name="P:NetSparkle.Properties.Resources.software_update_available1">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="T:NetSparkle.UpdateDetectedEventArgs">
+            <summary>
+            Contains all information for the update detected event
+            </summary>
+        </member>
+        <member name="P:NetSparkle.UpdateDetectedEventArgs.NextAction">
+            <summary>
+            The next action
+            </summary>
+        </member>
+        <member name="P:NetSparkle.UpdateDetectedEventArgs.ApplicationConfig">
+            <summary>
+            The application configuration
+            </summary>
+        </member>
+        <member name="P:NetSparkle.UpdateDetectedEventArgs.LatestVersion">
+            <summary>
+            The latest available version
+            </summary>
+        </member>
+    </members>
+</doc>
