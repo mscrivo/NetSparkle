@@ -1,104 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Reflection;
-using System.IO;
+﻿using System.Diagnostics;
 using NetSparkle.Interfaces;
 
 namespace NetSparkle
 {
     /// <summary>
-    /// A diagnostic accessor
+    ///     A diagnostic accessor
     /// </summary>
     public class NetSparkleAssemblyDiagnosticsAccessor : INetSparkleAssemblyAccessor
     {
-        private string fileVersion;
-        private string productVersion;
-        private string productName;
-        private string companyName;
-        private string legalCopyright;
-        private string fileDescription;
-
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="assemblyName">the assembly name</param>
         public NetSparkleAssemblyDiagnosticsAccessor(string assemblyName)
         {
             if (assemblyName != null)
             {
-                fileVersion = FileVersionInfo.GetVersionInfo(assemblyName).FileVersion;
-                productVersion = FileVersionInfo.GetVersionInfo(assemblyName).ProductVersion;
-                productName = FileVersionInfo.GetVersionInfo(assemblyName).ProductName;
-                companyName = FileVersionInfo.GetVersionInfo(assemblyName).CompanyName;
-                legalCopyright = FileVersionInfo.GetVersionInfo(assemblyName).LegalCopyright;
-                fileDescription = FileVersionInfo.GetVersionInfo(assemblyName).FileDescription; 
+                AssemblyVersion = FileVersionInfo.GetVersionInfo(assemblyName).FileVersion;
+                AssemblyProduct = FileVersionInfo.GetVersionInfo(assemblyName).ProductVersion;
+                AssemblyTitle = FileVersionInfo.GetVersionInfo(assemblyName).ProductName;
+                AssemblyCompany = FileVersionInfo.GetVersionInfo(assemblyName).CompanyName;
+                AssemblyCopyright = FileVersionInfo.GetVersionInfo(assemblyName).LegalCopyright;
+                AssemblyDescription = FileVersionInfo.GetVersionInfo(assemblyName).FileDescription;
             }
         }
 
         #region Assembly Attribute Accessors
 
         /// <summary>
-        /// Gets the Title
+        ///     Gets the Title
         /// </summary>
-        public string AssemblyTitle
-        {
-            get
-            {
-                return productName;                
-            }
-        }
+        public string AssemblyTitle { get; }
 
         /// <summary>
-        /// Gets the version
+        ///     Gets the version
         /// </summary>
-        public string AssemblyVersion
-        {
-            get
-            {
-                return fileVersion;
-            }
-        }        
+        public string AssemblyVersion { get; }
 
         /// <summary>
-        /// Gets the description
+        ///     Gets the description
         /// </summary>
-        public string AssemblyDescription
-        {
-            get { return fileDescription; }
-        }
+        public string AssemblyDescription { get; }
 
         /// <summary>
-        /// gets the product
+        ///     gets the product
         /// </summary>
-        public string AssemblyProduct
-        {
-            get
-            {
-                return productVersion;                                
-            }
-        }
+        public string AssemblyProduct { get; }
 
         /// <summary>
-        /// Gets the copyright
+        ///     Gets the copyright
         /// </summary>
-        public string AssemblyCopyright
-        {
-            get { return legalCopyright; }
-        }
+        public string AssemblyCopyright { get; }
 
         /// <summary>
-        /// Gets the company
+        ///     Gets the company
         /// </summary>
-        public string AssemblyCompany
-        {
-            get
-            {
-                return companyName;                  
-            }
-        }
+        public string AssemblyCompany { get; }
+
         #endregion
     }
 }

@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Reflection;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using NetSparkle.Interfaces;
 
 namespace NetSparkle
 {
     /// <summary>
-    /// Assembly reflection accessor
+    ///     Assembly reflection accessor
     /// </summary>
     public class NetSparkleAssemblyReflectionAccessor : INetSparkleAssemblyAccessor
     {
-        private Assembly _assembly;
-        private List<Attribute> _assemblyAttributes = new List<Attribute>();
+        private readonly Assembly _assembly;
+        private readonly List<Attribute> _assemblyAttributes = new List<Attribute>();
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="assemblyName">the assembly name</param>
         public NetSparkleAssemblyReflectionAccessor(string assemblyName)
@@ -26,37 +25,37 @@ namespace NetSparkle
                 _assembly = Assembly.GetEntryAssembly();
             else
             {
-                string absolutePath = Path.GetFullPath(assemblyName);
+                var absolutePath = Path.GetFullPath(assemblyName);
                 if (!File.Exists(absolutePath))
                     throw new FileNotFoundException();
 
                 _assembly = Assembly.ReflectionOnlyLoadFrom(absolutePath);
 
                 if (_assembly == null)
-                    throw new ArgumentNullException("Unable to load assembly " + absolutePath);                
+                    throw new ArgumentNullException("Unable to load assembly " + absolutePath);
             }
 
             // read the attributes            
-            foreach (CustomAttributeData data in _assembly.GetCustomAttributesData())
+            foreach (var data in _assembly.GetCustomAttributesData())
                 _assemblyAttributes.Add(CreateAttribute(data));
 
             if (_assemblyAttributes == null || _assemblyAttributes.Count == 0)
-                throw new ArgumentOutOfRangeException("Unable to load assembly attributes from " + _assembly.FullName);                                    
+                throw new ArgumentOutOfRangeException("Unable to load assembly attributes from " + _assembly.FullName);
         }
 
         /// <summary>
-        /// This methods creates an attribute instance from the attribute data 
-        /// information
+        ///     This methods creates an attribute instance from the attribute data
+        ///     information
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
         private Attribute CreateAttribute(CustomAttributeData data)
         {
             var arguments = from arg in data.ConstructorArguments
-                            select arg.Value;
+                select arg.Value;
 
             var attribute = data.Constructor.Invoke(arguments.ToArray())
-              as Attribute;
+                as Attribute;
 
             foreach (var namedArgument in data.NamedArguments)
             {
@@ -79,88 +78,86 @@ namespace NetSparkle
         }
 
         private Attribute FindAttribute(Type AttributeType)
-        {            
-            foreach (Attribute attr in _assemblyAttributes)
+        {
+            foreach (var attr in _assemblyAttributes)
             {
                 if (attr.GetType().Equals(AttributeType))
-                    return attr;                                
+                    return attr;
             }
 
-            throw new Exception("Attribute of type " + AttributeType.ToString() + " does not exists in the assembly " + _assembly.FullName);
+            throw new Exception("Attribute of type " + AttributeType + " does not exists in the assembly " + _assembly.FullName);
         }
 
         #region Assembly Attribute Accessors
 
         /// <summary>
-        /// Gets the assembly title
+        ///     Gets the assembly title
         /// </summary>
         public string AssemblyTitle
         {
             get
             {
-                AssemblyTitleAttribute a = FindAttribute(typeof(AssemblyTitleAttribute)) as AssemblyTitleAttribute;
-                return a.Title;                
+                var a = FindAttribute(typeof (AssemblyTitleAttribute)) as AssemblyTitleAttribute;
+                return a.Title;
             }
         }
 
         /// <summary>
-        /// Gets the version
+        ///     Gets the version
         /// </summary>
         public string AssemblyVersion
         {
-            get
-            {
-                return _assembly.GetName().Version.ToString();
-            }
-        }        
+            get { return _assembly.GetName().Version.ToString(); }
+        }
 
         /// <summary>
-        /// Gets the description
+        ///     Gets the description
         /// </summary>
         public string AssemblyDescription
         {
             get
             {
-                AssemblyDescriptionAttribute a = FindAttribute(typeof(AssemblyDescriptionAttribute)) as AssemblyDescriptionAttribute;
-                return a.Description;                                
+                var a = FindAttribute(typeof (AssemblyDescriptionAttribute)) as AssemblyDescriptionAttribute;
+                return a.Description;
             }
         }
 
         /// <summary>
-        /// Gets the product
+        ///     Gets the product
         /// </summary>
         public string AssemblyProduct
         {
             get
             {
-                AssemblyProductAttribute a = FindAttribute(typeof(AssemblyProductAttribute)) as AssemblyProductAttribute;
-                return a.Product;                                
+                var a = FindAttribute(typeof (AssemblyProductAttribute)) as AssemblyProductAttribute;
+                return a.Product;
             }
         }
 
         /// <summary>
-        /// Gets the copyright
+        ///     Gets the copyright
         /// </summary>
         public string AssemblyCopyright
         {
             get
             {
-                AssemblyCopyrightAttribute a = FindAttribute(typeof(AssemblyCopyrightAttribute)) as AssemblyCopyrightAttribute;
-                return a.Copyright;                                                
+                var a = FindAttribute(typeof (AssemblyCopyrightAttribute)) as AssemblyCopyrightAttribute;
+                return a.Copyright;
             }
         }
 
         /// <summary>
-        /// Gets the company
+        ///     Gets the company
         /// </summary>
         public string AssemblyCompany
         {
             get
             {
-                AssemblyCompanyAttribute a = FindAttribute(typeof(AssemblyCompanyAttribute)) as AssemblyCompanyAttribute;
-                return a.Company;                  
+                var a = FindAttribute(typeof (AssemblyCompanyAttribute)) as AssemblyCompanyAttribute;
+                return a.Company;
             }
         }
+
         #endregion
     }
 }

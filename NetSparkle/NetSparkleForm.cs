@@ -1,37 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
+using MarkdownSharp;
 using NetSparkle.Interfaces;
 
 namespace NetSparkle
 {
     /// <summary>
-    /// The main form
+    ///     The main form
     /// </summary>
-    public partial class NetSparkleForm : Form, INetSparkleForm
+    public sealed partial class NetSparkleForm : Form, INetSparkleForm
     {
-        NetSparkleAppCastItem _currentItem;
+        private NetSparkleAppCastItem _currentItem;
         private TempFile _htmlTempFile;
 
         /// <summary>
-        /// Event fired when the user has responded to the 
-        /// skip, later, install question.
-        /// </summary>
-        public event EventHandler UserResponded;
-
-        /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="item"></param>
         /// <param name="applicationIcon"></param>
         public NetSparkleForm(NetSparkleAppCastItem item, Icon applicationIcon)
-        {            
+        {
             InitializeComponent();
-            
+
             // init ui 
             try
             {
@@ -42,9 +38,9 @@ namespace NetSparkle
             {
                 Debug.WriteLine("Error in browser init: " + ex.Message);
             }
-            
+
             _currentItem = item;
-           
+
 
             lblHeader.Text = lblHeader.Text.Replace("APP", item.AppName);
             lblInfoText.Text = lblInfoText.Text.Replace("APP", item.AppName + " " + item.Version);
@@ -52,8 +48,7 @@ namespace NetSparkle
 
             if (!string.IsNullOrEmpty(item.ReleaseNotesLink))
             {
-
-                if (new List<string>(new[]{".md",".mkdn",".mkd",".markdown"}).Contains(Path.GetExtension(item.ReleaseNotesLink).ToLower()))
+                if (new List<string>(new[] {".md", ".mkdn", ".mkd", ".markdown"}).Contains(Path.GetExtension(item.ReleaseNotesLink).ToLower()))
                 {
                     try
                     {
@@ -67,14 +62,13 @@ namespace NetSparkle
                         NetSparkleBrowser.Navigate(item.ReleaseNotesLink); //just show it raw
 #endif
                     }
-                    
                 }
                 else
                 {
                     NetSparkleBrowser.Navigate(item.ReleaseNotesLink);
                 }
             }
-            else            
+            else
                 RemoveReleaseNotesControls();
 
             imgAppIcon.Image = applicationIcon.ToBitmap();
@@ -84,12 +78,55 @@ namespace NetSparkle
         }
 
         /// <summary>
+        ///     Event fired when the user has responded to the
+        ///     skip, later, install question.
         /// </summary>
-        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        public event EventHandler UserResponded;
+
+        /// <summary>
+        ///     The current item being installed
+        /// </summary>
+        NetSparkleAppCastItem INetSparkleForm.CurrentItem
+        {
+            get { return _currentItem; }
+            set { _currentItem = value; }
+        }
+
+        /// <summary>
+        ///     The result of ShowDialog()
+        /// </summary>
+        DialogResult INetSparkleForm.Result
+        {
+            get { return DialogResult; }
+        }
+
+        /// <summary>
+        ///     Hides the release notes
+        /// </summary>
+        void INetSparkleForm.HideReleaseNotes()
+        {
+            RemoveReleaseNotesControls();
+        }
+
+        /// <summary>
+        ///     Shows the dialog
+        /// </summary>
+        void INetSparkleForm.Show()
+        {
+            ShowDialog();
+            if (UserResponded != null)
+            {
+                UserResponded(this, new EventArgs());
+            }
+        }
+
+        /// <summary>
+        /// </summary>
+        protected override void OnClosing(CancelEventArgs e)
         {
             try
             {
-                _htmlTempFile.Dispose();//will try to delete it
+                _htmlTempFile.Delete();
             }
             catch
             {
@@ -112,53 +149,14 @@ namespace NetSparkle
                     contents = webClient.DownloadString(item.ReleaseNotesLink);
                 }
             }
-            var md = new MarkdownSharp.Markdown();
+            var md = new Markdown();
             _htmlTempFile = TempFile.WithExtension("htm");
             File.WriteAllText(_htmlTempFile.Path, md.Transform(contents));
             NetSparkleBrowser.Navigate(_htmlTempFile.Path);
         }
 
-     
-
         /// <summary>
-        /// The current item being installed
-        /// </summary>
-        NetSparkleAppCastItem INetSparkleForm.CurrentItem
-        {
-            get { return _currentItem; }
-            set { _currentItem = value; }
-        }
-
-        /// <summary>
-        /// The result of ShowDialog()
-        /// </summary>
-        DialogResult INetSparkleForm.Result
-        {
-            get { return DialogResult; }
-        }
-
-        /// <summary>
-        /// Hides the release notes
-        /// </summary>
-        void INetSparkleForm.HideReleaseNotes()
-        {
-            RemoveReleaseNotesControls();
-        }
-
-        /// <summary>
-        /// Shows the dialog
-        /// </summary>
-        void INetSparkleForm.Show()
-        {
-            ShowDialog();
-            if (UserResponded != null)
-            {
-                UserResponded(this, new EventArgs());
-            }
-        }
-
-        /// <summary>
-        /// Removes the release notes control
+        ///     Removes the release notes control
         /// </summary>
         public void RemoveReleaseNotesControls()
         {
@@ -166,7 +164,7 @@ namespace NetSparkle
                 return;
 
             // calc new size
-            Size newSize = new Size(Size.Width, Size.Height - label3.Height - panel1.Height);
+            var newSize = new Size(Size.Width, Size.Height - label3.Height - panel1.Height);
 
             // remove the no more needed controls            
             label3.Parent.Controls.Remove(label3);
@@ -181,7 +179,7 @@ namespace NetSparkle
         }
 
         /// <summary>
-        /// Event called when the skip button is clicked
+        ///     Event called when the skip button is clicked
         /// </summary>
         /// <param name="sender">not used.</param>
         /// <param name="e">not used.</param>
@@ -195,7 +193,7 @@ namespace NetSparkle
         }
 
         /// <summary>
-        /// Event called when the "remind me later" button is clicked
+        ///     Event called when the "remind me later" button is clicked
         /// </summary>
         /// <param name="sender">not used.</param>
         /// <param name="e">not used.</param>
@@ -209,7 +207,7 @@ namespace NetSparkle
         }
 
         /// <summary>
-        /// Called when the "Update button" is clicked
+        ///     Called when the "Update button" is clicked
         /// </summary>
         /// <param name="sender">not used.</param>
         /// <param name="e">not used.</param>

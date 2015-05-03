@@ -1,97 +1,99 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Reflection;
+using System.Linq;
 using System.Security.Cryptography;
 
 namespace NetSparkle
 {
     /// <summary>
-    /// Class to verify a DSA signature
+    ///     Class to verify a DSA signature
     /// </summary>
-    public class NetSparkleDSAVerificator
+    public sealed class NetSparkleDSAVerificator : IDisposable
     {
-        private DSACryptoServiceProvider _provider;
+        private readonly DSACryptoServiceProvider _provider;
 
         /// <summary>
-        /// Determines if a public key exists in this 
+        ///     Constructor
+        /// </summary>
+        /// <param name="publicKey">the public key</param>
+        public NetSparkleDSAVerificator(string publicKey)
+        {
+            // 1. try to load this from resource
+            var data = TryGetResourceStream(publicKey);
+            if (data == null)
+                data = TryGetFileResource(publicKey, data);
+
+            // 2. check the resource
+            if (data == null)
+                throw new Exception("Couldn't find public key for verification");
+
+            // 3. read out the key value
+            using (var reader = new StreamReader(data))
+            {
+                var key = reader.ReadToEnd();
+                _provider = new DSACryptoServiceProvider();
+                _provider.FromXmlString(key);
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        ///     Determines if a public key exists in this
         /// </summary>
         /// <param name="publicKey"></param>
         /// <returns></returns>
-        public static Boolean ExistsPublicKey(String publicKey)
+        public static bool ExistsPublicKey(string publicKey)
         {
-                // 1. try to load this from resource
-            Stream data = TryGetResourceStream(publicKey);
-            if (data == null )
+            // 1. try to load this from resource
+            var data = TryGetResourceStream(publicKey);
+            if (data == null)
                 data = TryGetFileResource(publicKey, data);
 
             // 2. check the resource
             if (data == null)
                 return false;
-            else
-                return true;
+            return true;
         }
 
         /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="publicKey">the public key</param>
-        public NetSparkleDSAVerificator(String publicKey)
-        {
-            // 1. try to load this from resource
-            Stream data = TryGetResourceStream(publicKey);
-            if (data == null )
-                data = TryGetFileResource(publicKey, data);
-
-            // 2. check the resource
-            if ( data == null )
-                throw new Exception("Couldn't find public key for verification");
-
-            // 3. read out the key value
-            using (StreamReader reader = new StreamReader(data))
-            {
-                    String key = reader.ReadToEnd();
-                    _provider = new DSACryptoServiceProvider();
-                    _provider.FromXmlString(key);
-            }            
-        }
-
-        /// <summary>
-        /// Verifies the DSA signature
+        ///     Verifies the DSA signature
         /// </summary>
         /// <param name="signature">expected signature</param>
         /// <param name="binaryPath">the path to the binary</param>
         /// <returns><c>true</c> if the signature matches the expected signature.</returns>
-        public Boolean VerifyDSASignature(String signature, String binaryPath)
+        public bool VerifyDSASignature(string signature, string binaryPath)
         {
             if (_provider == null)
                 return false;
 
             // convert signature
-            Byte[] bHash = Convert.FromBase64String(signature);
+            var bHash = Convert.FromBase64String(signature);
 
             // read the data
             byte[] bData = null;
             using (Stream inputStream = File.OpenRead(binaryPath))
             {
-                bData = new Byte[inputStream.Length];
+                bData = new byte[inputStream.Length];
                 inputStream.Read(bData, 0, bData.Length);
             }
-            
+
             // verify
-            return _provider.VerifyData(bData, bHash);            
+            return _provider.VerifyData(bData, bHash);
         }
 
         /// <summary>
-        /// Gets a file resource
+        ///     Gets a file resource
         /// </summary>
         /// <param name="publicKey">the public key</param>
         /// <param name="data">the data stream</param>
         /// <returns>the data stream</returns>
-        private static Stream TryGetFileResource(String publicKey, Stream data)
+        private static Stream TryGetFileResource(string publicKey, Stream data)
         {
             if (File.Exists(publicKey))
             {
@@ -101,14 +103,14 @@ namespace NetSparkle
         }
 
         /// <summary>
-        /// Get a resource stream
+        ///     Get a resource stream
         /// </summary>
         /// <param name="publicKey">the public key</param>
         /// <returns>a stream</returns>
-        private static Stream TryGetResourceStream(String publicKey)
+        private static Stream TryGetResourceStream(string publicKey)
         {
             Stream data = null;
-            foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
             {
                 string[] resources;
                 try
@@ -123,12 +125,23 @@ namespace NetSparkle
                 var resourceName = resources.FirstOrDefault(s => s.IndexOf(publicKey, StringComparison.OrdinalIgnoreCase) > -1);
                 if (!string.IsNullOrEmpty(resourceName))
                 {
-                  data = asm.GetManifestResourceStream(resourceName);
-                  if (data != null)
-                    break;
+                    data = asm.GetManifestResourceStream(resourceName);
+                    if (data != null)
+                        break;
                 }
             }
             return data;
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // free managed resources
+                _provider.Dispose();
+            }
+
+            // free native resources if there are any.
         }
     }
 }

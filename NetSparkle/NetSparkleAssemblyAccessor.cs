@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Reflection;
-using System.IO;
-using NetSparkle.Interfaces;
+﻿using NetSparkle.Interfaces;
 
 namespace NetSparkle
 {
     /// <summary>
-    /// An assembly accessor
+    ///     An assembly accessor
     /// </summary>
     public class NetSparkleAssemblyAccessor : INetSparkleAssemblyAccessor
     {
-        INetSparkleAssemblyAccessor _internalAccessor = null;
+        private readonly INetSparkleAssemblyAccessor _internalAccessor;
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="assemblyName">the assembly name</param>
         /// <param name="isReflectionAccesorUsed"><c>true</c> if reflection is used to access the attributes.</param>
         public NetSparkleAssemblyAccessor(string assemblyName, bool isReflectionAccesorUsed)
         {
-            if ( isReflectionAccesorUsed )
+            if (isReflectionAccesorUsed)
                 _internalAccessor = new NetSparkleAssemblyReflectionAccessor(assemblyName);
             else
                 _internalAccessor = new NetSparkleAssemblyDiagnosticsAccessor(assemblyName);
@@ -31,7 +25,7 @@ namespace NetSparkle
         #region INetSparkleAssemblyAccessor Members
 
         /// <summary>
-        /// Gets the company
+        ///     Gets the company
         /// </summary>
         public string AssemblyCompany
         {
@@ -39,7 +33,7 @@ namespace NetSparkle
         }
 
         /// <summary>
-        /// Gets the copyright
+        ///     Gets the copyright
         /// </summary>
         public string AssemblyCopyright
         {
@@ -47,7 +41,7 @@ namespace NetSparkle
         }
 
         /// <summary>
-        /// Gets the description
+        ///     Gets the description
         /// </summary>
         public string AssemblyDescription
         {
@@ -55,7 +49,7 @@ namespace NetSparkle
         }
 
         /// <summary>
-        /// Gets the product
+        ///     Gets the product
         /// </summary>
         public string AssemblyProduct
         {
@@ -63,7 +57,7 @@ namespace NetSparkle
         }
 
         /// <summary>
-        /// Gets the title
+        ///     Gets the title
         /// </summary>
         public string AssemblyTitle
         {
@@ -71,7 +65,7 @@ namespace NetSparkle
         }
 
         /// <summary>
-        /// Gets the version
+        ///     Gets the version
         /// </summary>
         public string AssemblyVersion
         {

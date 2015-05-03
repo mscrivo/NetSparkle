@@ -1,7 +1,6 @@
-﻿using System;
-namespace NetSparkle.Interfaces
+﻿namespace NetSparkle.Interfaces
 {
-    interface INetSparkleAssemblyAccessor
+    internal interface INetSparkleAssemblyAccessor
     {
         string AssemblyCompany { get; }
         string AssemblyCopyright { get; }

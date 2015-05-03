@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Net;
+using System.Windows.Forms;
 using NetSparkle.Interfaces;
 
 namespace NetSparkle
 {
     /// <summary>
-    /// A progress bar
+    ///     A progress bar
     /// </summary>
     public partial class NetSparkleDownloadProgress : Form, INetSparkleDownloadProgress
     {
         /// <summary>
-        /// event to fire when the form asks the application to be relaunched
-        /// </summary>
-        public event EventHandler InstallAndRelaunch;
-
-        /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="item"></param>
         /// <param name="applicationIcon">Your application Icon</param>
@@ -41,7 +36,12 @@ namespace NetSparkle
         }
 
         /// <summary>
-        /// Show the UI and waits
+        ///     event to fire when the form asks the application to be relaunched
+        /// </summary>
+        public event EventHandler InstallAndRelaunch;
+
+        /// <summary>
+        ///     Show the UI and waits
         /// </summary>
         void INetSparkleDownloadProgress.ShowDialog()
         {
@@ -49,7 +49,7 @@ namespace NetSparkle
         }
 
         /// <summary>
-        /// Update UI to show file is downloaded and signature check result
+        ///     Update UI to show file is downloaded and signature check result
         /// </summary>
         /// <param name="signatureValid"></param>
         public void ChangeDownloadState(bool signatureValid)
@@ -61,7 +61,7 @@ namespace NetSparkle
         }
 
         /// <summary>
-        /// Force window close
+        ///     Force window close
         /// </summary>
         public void ForceClose()
         {
@@ -70,7 +70,17 @@ namespace NetSparkle
         }
 
         /// <summary>
-        /// Updates the UI to indicate if the download is valid
+        ///     Event called when the client download progress changes
+        /// </summary>
+        /// <param name="sender">not used.</param>
+        /// <param name="e">not used.</param>
+        public void OnClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            progressDownload.Value = e.ProgressPercentage;
+        }
+
+        /// <summary>
+        ///     Updates the UI to indicate if the download is valid
         /// </summary>
         private void UpdateDownloadValid(bool signatureValid)
         {
@@ -81,19 +91,9 @@ namespace NetSparkle
                 BackColor = Color.Tomato;
             }
         }
-               
-        /// <summary>
-        /// Event called when the client download progress changes
-        /// </summary>
-        /// <param name="sender">not used.</param>
-        /// <param name="e">not used.</param>
-        public void OnClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            progressDownload.Value = e.ProgressPercentage;            
-        }
 
         /// <summary>
-        /// Event called when the "Install and relaunch" button is clicked
+        ///     Event called when the "Install and relaunch" button is clicked
         /// </summary>
         /// <param name="sender">not used.</param>
         /// <param name="e">not used.</param>
