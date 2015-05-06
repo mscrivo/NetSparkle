@@ -36,7 +36,7 @@ namespace NetSparkle
         /// <returns>the AppCast item corresponding to the latest version</returns>
         public NetSparkleAppCastItem GetLatestVersion()
         {
-            NetSparkleAppCastItem latestVersion = null;
+            NetSparkleAppCastItem latestVersion;
 
             if (_castUrl.StartsWith("file://")) //handy for testing
             {

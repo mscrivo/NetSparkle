@@ -70,7 +70,7 @@ namespace NetSparkle
             var bHash = Convert.FromBase64String(signature);
 
             // read the data
-            byte[] bData = null;
+            byte[] bData;
             using (Stream inputStream = File.OpenRead(binaryPath))
             {
                 bData = new byte[inputStream.Length];
