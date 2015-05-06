@@ -663,7 +663,7 @@ namespace NetSparkle
                     UIFactory.ShowVersionIsSkippedByUserRequest(); // TODO: pass skipped version no
                     break;
                 case UpdateStatus.CouldNotDetermine:
-                    UIFactory.ShowCannotDownloadAppcast(AppcastUrl);
+                    UIFactory.ShowCannotDownloadAppcast();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -838,7 +838,7 @@ namespace NetSparkle
                 // calc CheckTasp
                 var checkTSPInternal = checkTSP;
 
-                if (isInitialCheck && checkTSPInternal)
+                if (isInitialCheck)
                     checkTSPInternal = !_forceInitialCheck;
 
                 // check if it's ok the recheck to software state
@@ -847,7 +847,7 @@ namespace NetSparkle
                     var csp = DateTime.Now - config.LastCheckTime;
                     if (csp < _checkFrequency)
                     {
-                        ReportDiagnosticMessage(string.Format("Update check performed within the last {0} minutes!", _checkFrequency.TotalMinutes));
+                        ReportDiagnosticMessage($"Update check performed within the last {_checkFrequency.TotalMinutes} minutes!");
                         goto WaitSection;
                     }
                 }
@@ -868,7 +868,7 @@ namespace NetSparkle
                 UpdateSystemProfileInformation(config);
 
                 // check if update is required
-                NetSparkleAppCastItem latestVersion = null;
+                NetSparkleAppCastItem latestVersion;
                 bUpdateRequired = UpdateStatus.UpdateAvailable == GetUpdateStatus(config, out latestVersion);
                 if (!bUpdateRequired)
                     goto WaitSection;
@@ -913,7 +913,7 @@ namespace NetSparkle
                     CheckLoopFinished(this, e, bUpdateRequired);
 
                 // report wait statement
-                ReportDiagnosticMessage(string.Format("Sleeping for an other {0} minutes, exit event or force update check event", _checkFrequency.TotalMinutes));
+                ReportDiagnosticMessage($"Sleeping for an other {_checkFrequency.TotalMinutes} minutes, exit event or force update check event");
 
                 // wait for
                 if (!goIntoLoop)
@@ -927,7 +927,7 @@ namespace NetSparkle
                 var i = WaitHandle.WaitAny(handles, _checkFrequency);
                 if (WaitHandle.WaitTimeout == i)
                 {
-                    ReportDiagnosticMessage(string.Format("{0} minutes are over", _checkFrequency.TotalMinutes));
+                    ReportDiagnosticMessage($"{_checkFrequency.TotalMinutes} minutes are over");
                     continue;
                 }
 
@@ -944,7 +944,7 @@ namespace NetSparkle
                     ReportDiagnosticMessage("Got force update check signal");
                     checkTSP = false;
                 }
-            } while (goIntoLoop);
+            } while (true);
 
             // reset the islooping handle
             _loopingHandle.Reset();
@@ -977,7 +977,7 @@ namespace NetSparkle
         {
             if (e.Error != null)
             {
-                UIFactory.ShowDownloadErrorMessage(e.Error.Message, AppcastUrl);
+                UIFactory.ShowDownloadErrorMessage(e.Error.Message);
                 ProgressWindow.ForceClose();
                 return;
             }

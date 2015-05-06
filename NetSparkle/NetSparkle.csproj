@@ -138,6 +138,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="NetSparkleDownloadProgress.es-MX.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="NetSparkleDownloadProgress.fr.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
@@ -153,6 +154,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="NetSparkleDownloadProgress.pt-BR.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="NetSparkleDownloadProgress.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>

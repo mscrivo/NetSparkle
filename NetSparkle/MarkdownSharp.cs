@@ -600,11 +600,11 @@ namespace MarkdownSharp
 
         private string LinkEvaluator(Match match)
         {
-            var linkID = match.Groups[1].Value.ToLowerInvariant();
-            _urls[linkID] = EncodeAmpsAndAngles(match.Groups[2].Value);
+            var linkId = match.Groups[1].Value.ToLowerInvariant();
+            _urls[linkId] = EncodeAmpsAndAngles(match.Groups[2].Value);
 
-            if (match.Groups[3] != null && match.Groups[3].Length > 0)
-                _titles[linkID] = match.Groups[3].Value.Replace("\"", "&quot;");
+            if (match.Groups[3].Length > 0)
+                _titles[linkId] = match.Groups[3].Value.Replace("\"", "&quot;");
 
             return "";
         }
@@ -783,14 +783,13 @@ namespace MarkdownSharp
         private List<Token> TokenizeHTML(string text)
         {
             var pos = 0;
-            var tagStart = 0;
             var tokens = new List<Token>();
 
             // this regex is derived from the _tokenize() subroutine in Brad Choate's MTRegex plugin.
             // http://www.bradchoate.com/past/mtregex.php
             foreach (Match m in _htmlTokens.Matches(text))
             {
-                tagStart = m.Index;
+                var tagStart = m.Index;
 
                 if (pos < tagStart)
                     tokens.Add(new Token(TokenType.Text, text.Substring(pos, tagStart - pos)));
@@ -904,14 +903,13 @@ namespace MarkdownSharp
             var linkText = SaveFromAutoLinking(match.Groups[2].Value);
             var url = match.Groups[3].Value;
             var title = match.Groups[6].Value;
-            string result;
 
             url = EncodeProblemUrlChars(url);
             url = EscapeBoldItalic(url);
             if (url.StartsWith("<") && url.EndsWith(">"))
                 url = url.Substring(1, url.Length - 2); // remove <>'s surrounding URL, if present            
 
-            result = string.Format("<a href=\"{0}\"", url);
+            var result = string.Format("<a href=\"{0}\"", url);
 
             if (!string.IsNullOrEmpty(title))
             {
@@ -1072,9 +1070,8 @@ namespace MarkdownSharp
         {
             var list = match.Groups[1].Value;
             var listType = Regex.IsMatch(match.Groups[3].Value, _markerUL) ? "ul" : "ol";
-            string result;
 
-            result = ProcessListItems(list, listType == "ul" ? _markerUL : _markerOL);
+            var result = ProcessListItems(list, listType == "ul" ? _markerUL : _markerOL);
 
             result = string.Format("<{0}>\n{1}</{0}>\n", listType, result);
             return result;
@@ -1122,7 +1119,7 @@ namespace MarkdownSharp
             var lastItemHadADoubleNewline = false;
 
             // has to be a closure, so subsequent invocations can share the bool
-            MatchEvaluator ListItemEvaluator = (Match match) =>
+            MatchEvaluator ListItemEvaluator = match =>
             {
                 var item = match.Groups[3].Value;
 
@@ -1495,10 +1492,9 @@ namespace MarkdownSharp
         {
             var sb = new StringBuilder(addr.Length*5);
             var rand = new Random();
-            int r;
             foreach (var c in addr)
             {
-                r = rand.Next(1, 100);
+                var r = rand.Next(1, 100);
                 if ((r > 90 || c == ':') && c != '@')
                     sb.Append(c); // m
                 else if (r < 45)
@@ -1608,15 +1604,13 @@ namespace MarkdownSharp
             if (!EncodeProblemUrlCharacters) return url;
 
             var sb = new StringBuilder(url.Length);
-            bool encode;
-            char c;
 
             for (var i = 0; i < url.Length; i++)
             {
-                c = url[i];
-                encode = Array.IndexOf(_problemUrlChars, c) != -1;
+                var c = url[i];
+                var encode = Array.IndexOf(_problemUrlChars, c) != -1;
                 if (encode && c == ':' && i < url.Length - 1)
-                    encode = !(url[i + 1] == '/') && !(url[i + 1] >= '0' && url[i + 1] <= '9');
+                    encode = url[i + 1] != '/' && !(url[i + 1] >= '0' && url[i + 1] <= '9');
 
                 if (encode)
                     sb.Append("%" + string.Format("{0:x}", (byte) c));

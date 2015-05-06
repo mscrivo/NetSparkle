@@ -77,15 +77,15 @@ namespace NetSparkle
             return attribute;
         }
 
-        private Attribute FindAttribute(Type AttributeType)
+        private Attribute FindAttribute(Type attributeType)
         {
             foreach (var attr in _assemblyAttributes)
             {
-                if (attr.GetType().Equals(AttributeType))
+                if (attr.GetType() == attributeType)
                     return attr;
             }
 
-            throw new Exception("Attribute of type " + AttributeType + " does not exists in the assembly " + _assembly.FullName);
+            throw new Exception("Attribute of type " + attributeType + " does not exists in the assembly " + _assembly.FullName);
         }
 
         #region Assembly Attribute Accessors

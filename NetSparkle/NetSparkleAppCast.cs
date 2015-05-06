@@ -43,7 +43,7 @@ namespace NetSparkle
                 var path = _castUrl.Replace("file://", "");
                 using (var reader = XmlReader.Create(path))
                 {
-                    latestVersion = ReadAppCast(reader, latestVersion, _config.InstalledVersion);
+                    latestVersion = ReadAppCast(reader, null, _config.InstalledVersion);
                 }
             }
             else
@@ -57,7 +57,7 @@ namespace NetSparkle
 
                 using (var reader = new XmlTextReader(response.GetResponseStream()))
                 {
-                    latestVersion = ReadAppCast(reader, latestVersion, _config.InstalledVersion);
+                    latestVersion = ReadAppCast(reader, null, _config.InstalledVersion);
                 }
             }
 

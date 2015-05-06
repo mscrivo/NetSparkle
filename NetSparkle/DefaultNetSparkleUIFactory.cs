@@ -73,8 +73,7 @@ namespace NetSparkle
         /// <summary>
         ///     Show message that appcast is not available
         /// </summary>
-        /// <param name="appcastUrl"></param>
-        public void ShowCannotDownloadAppcast(string appcastUrl)
+        public void ShowCannotDownloadAppcast()
         {
             MessageBox.Show(Resources.DefaultNetSparkleUIFactory_ShowCannotDownloadAppcastMessage, Resources.DefaultNetSparkleUIFactory_ErrorTitle);
         }
@@ -103,8 +102,7 @@ namespace NetSparkle
         ///     Show message on download error
         /// </summary>
         /// <param name="message">Error message from exception</param>
-        /// <param name="appCastUrl"></param>
-        public void ShowDownloadErrorMessage(string message, string appCastUrl)
+        public void ShowDownloadErrorMessage(string message)
         {
             MessageBox.Show(string.Format(Resources.DefaultNetSparkleUIFactory_ShowDownloadErrorMessage, message), Resources.DefaultNetSparkleUIFactory_ErrorTitle);
         }

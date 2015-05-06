@@ -21,20 +21,11 @@ namespace NetSparkle
         private const string DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
         /// <summary>
-        ///     The constructor reads out all configured values
-        /// </summary>
-        /// <param name="referenceAssembly">the reference assembly name</param>
-        public NetSparkleRegistryConfiguration(string referenceAssembly)
-            : this(referenceAssembly, true)
-        {
-        }
-
-        /// <summary>
         ///     Constructor
         /// </summary>
         /// <param name="referenceAssembly">the name of hte reference assembly</param>
         /// <param name="isReflectionBasedAssemblyAccessorUsed"><c>true</c> if reflection is used to access the assembly.</param>
-        public NetSparkleRegistryConfiguration(string referenceAssembly, bool isReflectionBasedAssemblyAccessorUsed) : base(referenceAssembly, isReflectionBasedAssemblyAccessorUsed)
+        public NetSparkleRegistryConfiguration(string referenceAssembly, bool isReflectionBasedAssemblyAccessorUsed = true) : base(referenceAssembly, isReflectionBasedAssemblyAccessorUsed)
         {
             try
             {
@@ -120,11 +111,11 @@ namespace NetSparkle
         /// </summary>
         /// <param name="regPath">the registry path</param>
         /// <returns><c>true</c> if the items were loaded</returns>
-        private bool LoadValuesFromPath(string regPath)
+        private void LoadValuesFromPath(string regPath)
         {
             var key = Registry.CurrentUser.OpenSubKey(regPath);
             if (key == null)
-                return false;
+                return;
 
             // read out                
             var strCheckForUpdate = key.GetValue("CheckForUpdate", "True") as string;
@@ -156,7 +147,6 @@ namespace NetSparkle
             {
                 LastProfileUpdate = new DateTime(0);
             }
-            return true;
         }
 
         /// <summary>
@@ -164,11 +154,11 @@ namespace NetSparkle
         /// </summary>
         /// <param name="regPath">the registry path</param>
         /// <returns><c>true</c> if the values were saved to the registry</returns>
-        private bool SaveValuesToPath(string regPath)
+        private void SaveValuesToPath(string regPath)
         {
             var key = Registry.CurrentUser.CreateSubKey(regPath);
             if (key == null)
-                return false;
+                return;
 
             // convert to regsz
             var strCheckForUpdate = CheckForUpdate.ToString();
@@ -183,8 +173,6 @@ namespace NetSparkle
             key.SetValue("SkipThisVersion", strSkipThisVersion, RegistryValueKind.String);
             key.SetValue("DidRunOnce", strDidRunOnc, RegistryValueKind.String);
             key.SetValue("LastProfileUpdate", strProfileTime, RegistryValueKind.String);
-
-            return true;
         }
     }
 }

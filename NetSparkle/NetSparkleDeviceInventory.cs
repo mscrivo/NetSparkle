@@ -83,15 +83,12 @@ namespace NetSparkle
         private void CollectWindowsVersion()
         {
             var osInfo = Environment.OSVersion;
-            OsVersion = string.Format("{0}.{1}.{2}.{3}", osInfo.Version.Major, osInfo.Version.Minor, osInfo.Version.Build, osInfo.Version.Revision);
+            OsVersion = $"{osInfo.Version.Major}.{osInfo.Version.Minor}.{osInfo.Version.Build}.{osInfo.Version.Revision}";
         }
 
         private void CollectProcessorBitnes()
         {
-            if (Marshal.SizeOf(typeof (IntPtr)) == 8)
-                x64System = true;
-            else
-                x64System = false;
+            x64System = Marshal.SizeOf(typeof (IntPtr)) == 8;
         }
 
         private void CollectCPUCount()
@@ -116,12 +113,11 @@ namespace NetSparkle
             var oSearcher = new ManagementObjectSearcher(oMs, oQuery);
             var oCollection = oSearcher.Get();
 
-            long mCap = 0;
-
             // In case more than one Memory sticks are installed
-            foreach (ManagementObject mobj in oCollection)
+            foreach (var o in oCollection)
             {
-                mCap = Convert.ToInt64(mobj["Capacity"]);
+                var mobj = (ManagementObject) o;
+                var mCap = Convert.ToInt64(mobj["Capacity"]);
                 MemorySize += mCap;
             }
 

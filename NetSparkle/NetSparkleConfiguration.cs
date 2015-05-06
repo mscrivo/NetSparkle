@@ -14,20 +14,11 @@ namespace NetSparkle
     public abstract class NetSparkleConfiguration
     {
         /// <summary>
-        ///     The constructor reads out all configured values
-        /// </summary>
-        /// <param name="referenceAssembly">the reference assembly name</param>
-        protected NetSparkleConfiguration(string referenceAssembly)
-            : this(referenceAssembly, true)
-        {
-        }
-
-        /// <summary>
         ///     Constructor
         /// </summary>
         /// <param name="referenceAssembly">the name of hte reference assembly</param>
         /// <param name="isReflectionBasedAssemblyAccessorUsed"><c>true</c> if reflection is used to access the assembly.</param>
-        protected NetSparkleConfiguration(string referenceAssembly, bool isReflectionBasedAssemblyAccessorUsed)
+        protected NetSparkleConfiguration(string referenceAssembly, bool isReflectionBasedAssemblyAccessorUsed = true)
         {
             // set the value
             UseReflectionBasedAssemblyAccessor = isReflectionBasedAssemblyAccessorUsed;

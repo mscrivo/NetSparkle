@@ -20,9 +20,7 @@ namespace NetSparkle
         public NetSparkleDSAVerificator(string publicKey)
         {
             // 1. try to load this from resource
-            var data = TryGetResourceStream(publicKey);
-            if (data == null)
-                data = TryGetFileResource(publicKey, data);
+            var data = TryGetResourceStream(publicKey) ?? TryGetFileResource(publicKey);
 
             // 2. check the resource
             if (data == null)
@@ -51,14 +49,10 @@ namespace NetSparkle
         public static bool ExistsPublicKey(string publicKey)
         {
             // 1. try to load this from resource
-            var data = TryGetResourceStream(publicKey);
-            if (data == null)
-                data = TryGetFileResource(publicKey, data);
+            var data = TryGetResourceStream(publicKey) ?? TryGetFileResource(publicKey);
 
             // 2. check the resource
-            if (data == null)
-                return false;
-            return true;
+            return data != null;
         }
 
         /// <summary>
@@ -91,15 +85,14 @@ namespace NetSparkle
         ///     Gets a file resource
         /// </summary>
         /// <param name="publicKey">the public key</param>
-        /// <param name="data">the data stream</param>
         /// <returns>the data stream</returns>
-        private static Stream TryGetFileResource(string publicKey, Stream data)
+        private static Stream TryGetFileResource(string publicKey)
         {
             if (File.Exists(publicKey))
             {
-                data = File.OpenRead(publicKey);
+                return File.OpenRead(publicKey);
             }
-            return data;
+            return null;
         }
 
         /// <summary>

@@ -48,8 +48,7 @@ namespace NetSparkle.Interfaces
         /// <summary>
         ///     Show message that appcast is not available
         /// </summary>
-        /// <param name="appcastUrl"></param>
-        void ShowCannotDownloadAppcast(string appcastUrl);
+        void ShowCannotDownloadAppcast();
 
         /// <summary>
         ///     Show 'toast' window to notify new version is available
@@ -63,7 +62,6 @@ namespace NetSparkle.Interfaces
         ///     Show message on download error
         /// </summary>
         /// <param name="message">Error message from exception</param>
-        /// <param name="appCastUrl"></param>
-        void ShowDownloadErrorMessage(string message, string appCastUrl);
+        void ShowDownloadErrorMessage(string message);
     }
 }
