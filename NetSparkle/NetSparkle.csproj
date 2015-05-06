@@ -219,7 +219,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ArtWork\software-update-available.png" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
