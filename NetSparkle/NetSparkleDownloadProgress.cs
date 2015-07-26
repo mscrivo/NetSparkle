@@ -11,6 +11,8 @@ namespace NetSparkle
     /// </summary>
     public partial class NetSparkleDownloadProgress : Form, INetSparkleDownloadProgress
     {
+        private SizeF _currentScaleFactor = new SizeF(1f, 1f);
+
         /// <summary>
         ///     Constructor
         /// </summary>
@@ -31,8 +33,18 @@ namespace NetSparkle
             progressDownload.Step = 1;
 
             // show the right 
-            Size = new Size(Size.Width, 107);
+            Size = new Size(Size.Width, (int) (107 * _currentScaleFactor.Height));
             lblSecurityHint.Visible = false;
+        }
+
+        protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
+        {
+            base.ScaleControl(factor, specified);
+
+            // Record the running scale factor used
+            _currentScaleFactor = new SizeF(
+                    _currentScaleFactor.Width * factor.Width,
+                    _currentScaleFactor.Height * factor.Height);
         }
 
         /// <summary>
@@ -86,7 +98,7 @@ namespace NetSparkle
         {
             if (!signatureValid)
             {
-                Size = new Size(Size.Width, 137);
+                Size = new Size(Size.Width, (int) (137 * _currentScaleFactor.Height));
                 lblSecurityHint.Visible = true;
                 BackColor = Color.Tomato;
             }
