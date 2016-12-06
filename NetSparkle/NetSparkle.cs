@@ -184,18 +184,6 @@ namespace NetSparkle
         ///     the check. You should only call this function when your app is initialized and
         ///     shows its main window.
         /// </summary>
-        /// <param name="doInitialCheck"></param>
-        public void StartLoop(bool doInitialCheck)
-        {
-            StartLoop(doInitialCheck, false);
-        }
-
-        /// <summary>
-        ///     The method starts a NetSparkle background loop
-        ///     If NetSparkle is configured to check for updates on startup, proceeds to perform
-        ///     the check. You should only call this function when your app is initialized and
-        ///     shows its main window.
-        /// </summary>
         /// <param name="doInitialCheck"><c>true</c> if this instance should do an initial check.</param>
         /// <param name="checkFrequency">the frequency between checks.</param>
         public void StartLoop(bool doInitialCheck, TimeSpan checkFrequency)
@@ -211,7 +199,7 @@ namespace NetSparkle
         /// </summary>
         /// <param name="doInitialCheck"><c>true</c> if this instance should do an initial check.</param>
         /// <param name="forceInitialCheck"><c>true</c> if this instance should force an initial check.</param>
-        public void StartLoop(bool doInitialCheck, bool forceInitialCheck)
+        public void StartLoop(bool doInitialCheck, bool forceInitialCheck = false)
         {
             StartLoop(doInitialCheck, forceInitialCheck, TimeSpan.FromHours(24));
         }
@@ -767,10 +755,7 @@ namespace NetSparkle
                 var config = GetApplicationConfig();
                 config.SetVersionToSkip(UserWindow.CurrentItem.Version);
 
-                if (UpdateWindowDismissed != null)
-                {
-                    UpdateWindowDismissed(this, e);
-                }
+                UpdateWindowDismissed?.Invoke(this, e);
             }
             else if (UserWindow.Result == DialogResult.Yes)
             {
@@ -779,10 +764,7 @@ namespace NetSparkle
             }
             else
             {
-                if (UpdateWindowDismissed != null)
-                {
-                    UpdateWindowDismissed(this, e);
-                }
+                UpdateWindowDismissed?.Invoke(this, e);
             }
         }
 
@@ -817,8 +799,7 @@ namespace NetSparkle
                 var bUpdateRequired = false;
 
                 // notify
-                if (CheckLoopStarted != null)
-                    CheckLoopStarted(this, e);
+                CheckLoopStarted?.Invoke(this, e);
 
                 // report status
                 if (doInitialCheck == false)
@@ -878,8 +859,7 @@ namespace NetSparkle
 
                 // send notification if needed
                 var ev = new UpdateDetectedEventArgs {NextAction = NextUpdateAction.ShowStandardUserInterface, ApplicationConfig = config, LatestVersion = latestVersion};
-                if (UpdateDetected != null)
-                    UpdateDetected(this, ev);
+                UpdateDetected?.Invoke(this, ev);
 
                 // check results
                 switch (ev.NextAction)
@@ -909,8 +889,7 @@ namespace NetSparkle
                 isInitialCheck = false;
 
                 // notify
-                if (CheckLoopFinished != null)
-                    CheckLoopFinished(this, e, bUpdateRequired);
+                CheckLoopFinished?.Invoke(this, e, bUpdateRequired);
 
                 // report wait statement
                 ReportDiagnosticMessage($"Sleeping for an other {_checkFrequency.TotalMinutes} minutes, exit event or force update check event");
