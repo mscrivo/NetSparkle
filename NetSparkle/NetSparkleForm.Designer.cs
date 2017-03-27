@@ -1,4 +1,7 @@
-﻿namespace NetSparkle
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace NetSparkle
 {
     /// <summary>
     /// The main form
@@ -8,7 +11,7 @@
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -127,14 +130,14 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox imgAppIcon;
-        private System.Windows.Forms.Label lblHeader;
-        private System.Windows.Forms.Label lblInfoText;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button skipButton;
-        private System.Windows.Forms.Button buttonRemind;
-        private System.Windows.Forms.Button updateButton;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.WebBrowser NetSparkleBrowser;
+        private PictureBox imgAppIcon;
+        private Label lblHeader;
+        private Label lblInfoText;
+        private Label label3;
+        private Button skipButton;
+        private Button buttonRemind;
+        private Button updateButton;
+        private Panel panel1;
+        private WebBrowser NetSparkleBrowser;
     }
 }

@@ -1011,10 +1011,7 @@ namespace NetSparkle
                 OnProgressWindowInstallAndRelaunch(this, new EventArgs());
             }
 
-            if (ProgressWindow != null)
-            {
-                ProgressWindow.ChangeDownloadState(isDSAOk);
-            }
+            ProgressWindow?.ChangeDownloadState(isDSAOk);
         }
 
         #region Properties
@@ -1058,10 +1055,7 @@ namespace NetSparkle
         ///     This property returns true when the upadete loop is running
         ///     and files when the loop is not running
         /// </summary>
-        public bool IsUpdateLoopRunning
-        {
-            get { return _loopingHandle.WaitOne(0); }
-        }
+        public bool IsUpdateLoopRunning => _loopingHandle.WaitOne(0);
 
         /// <summary>
         ///     This property defines if we trust every ssl connection also when

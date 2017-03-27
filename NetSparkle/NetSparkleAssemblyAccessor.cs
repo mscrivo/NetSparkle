@@ -27,50 +27,32 @@ namespace NetSparkle
         /// <summary>
         ///     Gets the company
         /// </summary>
-        public string AssemblyCompany
-        {
-            get { return _internalAccessor.AssemblyCompany; }
-        }
+        public string AssemblyCompany => _internalAccessor.AssemblyCompany;
 
         /// <summary>
         ///     Gets the copyright
         /// </summary>
-        public string AssemblyCopyright
-        {
-            get { return _internalAccessor.AssemblyCopyright; }
-        }
+        public string AssemblyCopyright => _internalAccessor.AssemblyCopyright;
 
         /// <summary>
         ///     Gets the description
         /// </summary>
-        public string AssemblyDescription
-        {
-            get { return _internalAccessor.AssemblyDescription; }
-        }
+        public string AssemblyDescription => _internalAccessor.AssemblyDescription;
 
         /// <summary>
         ///     Gets the product
         /// </summary>
-        public string AssemblyProduct
-        {
-            get { return _internalAccessor.AssemblyProduct; }
-        }
+        public string AssemblyProduct => _internalAccessor.AssemblyProduct;
 
         /// <summary>
         ///     Gets the title
         /// </summary>
-        public string AssemblyTitle
-        {
-            get { return _internalAccessor.AssemblyTitle; }
-        }
+        public string AssemblyTitle => _internalAccessor.AssemblyTitle;
 
         /// <summary>
         ///     Gets the version
         /// </summary>
-        public string AssemblyVersion
-        {
-            get { return _internalAccessor.AssemblyVersion; }
-        }
+        public string AssemblyVersion => _internalAccessor.AssemblyVersion;
 
         #endregion
     }

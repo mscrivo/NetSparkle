@@ -12,8 +12,8 @@ namespace NetSparkle
         private readonly Timer _goDownTimer;
         private readonly Timer _goUpTimer;
         private readonly Timer _pauseTimer;
-        private int startPosX;
-        private int startPosY;
+        private int _startPosX;
+        private int _startPosY;
 
         /// <summary>
         ///     constructor
@@ -51,9 +51,9 @@ namespace NetSparkle
         protected override void OnLoad(EventArgs e)
         {
             // Move window out of screen
-            startPosX = Screen.PrimaryScreen.WorkingArea.Width - Width;
-            startPosY = Screen.PrimaryScreen.WorkingArea.Height;
-            SetDesktopLocation(startPosX, startPosY);
+            _startPosX = Screen.PrimaryScreen.WorkingArea.Width - Width;
+            _startPosY = Screen.PrimaryScreen.WorkingArea.Height;
+            SetDesktopLocation(_startPosX, _startPosY);
             base.OnLoad(e);
             // Begin animation
             _goUpTimer.Start();
@@ -62,30 +62,30 @@ namespace NetSparkle
         private void GoUpTimerTick(object sender, EventArgs e)
         {
             //Lift window by 5 pixels
-            startPosY -= 5;
+            _startPosY -= 5;
             //If window is fully visible stop the timer
-            if (startPosY < Screen.PrimaryScreen.WorkingArea.Height - Height)
+            if (_startPosY < Screen.PrimaryScreen.WorkingArea.Height - Height)
             {
                 _goUpTimer.Stop();
                 _pauseTimer.Start();
             }
             else
-                SetDesktopLocation(startPosX, startPosY);
+                SetDesktopLocation(_startPosX, _startPosY);
         }
 
         private void GoDownTimerTick(object sender, EventArgs e)
         {
             //Lower window by 5 pixels
-            startPosY += 5;
+            _startPosY += 5;
             //If window is fully visible stop the timer
-            if (startPosY > Screen.PrimaryScreen.WorkingArea.Height)
+            if (_startPosY > Screen.PrimaryScreen.WorkingArea.Height)
             {
                 _goDownTimer.Stop();
                 Hide();
             }
             else
             {
-                SetDesktopLocation(startPosX, startPosY);
+                SetDesktopLocation(_startPosX, _startPosY);
                 SendToBack();
             }
         }
@@ -95,7 +95,7 @@ namespace NetSparkle
             DialogResult = DialogResult.Yes;
             Close();
             var handler = ToastClicked;
-            if (handler != null) handler(this, e);
+            handler?.Invoke(this, e);
         }
 
         /// <summary>

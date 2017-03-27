@@ -1,11 +1,14 @@
-﻿namespace NetSparkle
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace NetSparkle
 {
 	partial class ToastNotifier
 	{
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+		private IContainer components = null;
 
 		/// <summary>
 		/// Clean up any resources being used.
@@ -101,13 +104,13 @@
 
 		#endregion
 
-        private System.Windows.Forms.Label _message;
-        private System.Windows.Forms.ImageList imageList1;
+        private Label _message;
+        private ImageList imageList1;
         
         /// <summary>
         /// Image of your app
         /// </summary>
-        public System.Windows.Forms.PictureBox Image;
-        private System.Windows.Forms.LinkLabel _callToAction;
+        public PictureBox Image;
+        private LinkLabel _callToAction;
 	}
 }

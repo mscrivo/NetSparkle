@@ -1,4 +1,7 @@
-﻿namespace NetSparkle
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace NetSparkle
 {
     /// <summary>
     /// A progress bar
@@ -8,7 +11,7 @@
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -90,11 +93,11 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblHeader;
-        private System.Windows.Forms.ProgressBar progressDownload;
-        private System.Windows.Forms.Button btnInstallAndReLaunch;
-        private System.Windows.Forms.Label lblSecurityHint;
-        private System.Windows.Forms.PictureBox imgAppIcon;
+        private Label lblHeader;
+        private ProgressBar progressDownload;
+        private Button btnInstallAndReLaunch;
+        private Label lblSecurityHint;
+        private PictureBox imgAppIcon;
 
 
     }

@@ -57,22 +57,23 @@ namespace NetSparkle
             var attribute = data.Constructor.Invoke(arguments.ToArray())
                 as Attribute;
 
-            foreach (var namedArgument in data.NamedArguments)
-            {
-                var propertyInfo = namedArgument.MemberInfo as PropertyInfo;
-                if (propertyInfo != null)
+            if (data.NamedArguments != null)
+                foreach (var namedArgument in data.NamedArguments)
                 {
-                    propertyInfo.SetValue(attribute, namedArgument.TypedValue.Value, null);
-                }
-                else
-                {
-                    var fieldInfo = namedArgument.MemberInfo as FieldInfo;
-                    if (fieldInfo != null)
+                    var propertyInfo = namedArgument.MemberInfo as PropertyInfo;
+                    if (propertyInfo != null)
                     {
-                        fieldInfo.SetValue(attribute, namedArgument.TypedValue.Value);
+                        propertyInfo.SetValue(attribute, namedArgument.TypedValue.Value, null);
+                    }
+                    else
+                    {
+                        var fieldInfo = namedArgument.MemberInfo as FieldInfo;
+                        if (fieldInfo != null)
+                        {
+                            fieldInfo.SetValue(attribute, namedArgument.TypedValue.Value);
+                        }
                     }
                 }
-            }
 
             return attribute;
         }
@@ -98,17 +99,14 @@ namespace NetSparkle
             get
             {
                 var a = FindAttribute(typeof (AssemblyTitleAttribute)) as AssemblyTitleAttribute;
-                return a.Title;
+                return a?.Title;
             }
         }
 
         /// <summary>
         ///     Gets the version
         /// </summary>
-        public string AssemblyVersion
-        {
-            get { return _assembly.GetName().Version.ToString(); }
-        }
+        public string AssemblyVersion => _assembly.GetName().Version.ToString();
 
         /// <summary>
         ///     Gets the description
@@ -118,7 +116,7 @@ namespace NetSparkle
             get
             {
                 var a = FindAttribute(typeof (AssemblyDescriptionAttribute)) as AssemblyDescriptionAttribute;
-                return a.Description;
+                return a?.Description;
             }
         }
 
@@ -130,7 +128,7 @@ namespace NetSparkle
             get
             {
                 var a = FindAttribute(typeof (AssemblyProductAttribute)) as AssemblyProductAttribute;
-                return a.Product;
+                return a?.Product;
             }
         }
 
@@ -142,7 +140,7 @@ namespace NetSparkle
             get
             {
                 var a = FindAttribute(typeof (AssemblyCopyrightAttribute)) as AssemblyCopyrightAttribute;
-                return a.Copyright;
+                return a?.Copyright;
             }
         }
 
@@ -154,7 +152,7 @@ namespace NetSparkle
             get
             {
                 var a = FindAttribute(typeof (AssemblyCompanyAttribute)) as AssemblyCompanyAttribute;
-                return a.Company;
+                return a?.Company;
             }
         }
 

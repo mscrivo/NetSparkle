@@ -90,7 +90,7 @@ namespace NetSparkle
                         }
                         case ReleaseNotesLinkNode:
                         {
-                            currentItem.ReleaseNotesLink = reader.ReadString().Trim();
+                            if (currentItem != null) currentItem.ReleaseNotesLink = reader.ReadString().Trim();
                             break;
                         }
                         case EnclosureNode:
@@ -98,9 +98,12 @@ namespace NetSparkle
                             var deltaFrom = reader.GetAttribute(DeltaFromAttribute);
                             if (deltaFrom == null || deltaFrom == installedVersionWithoutFourthSegment.ToString())
                             {
-                                currentItem.Version = reader.GetAttribute(VersionAttribute);
-                                currentItem.DownloadLink = reader.GetAttribute(UrlAttribute);
-                                currentItem.DSASignature = reader.GetAttribute(DasSignature);
+                                if (currentItem != null)
+                                {
+                                    currentItem.Version = reader.GetAttribute(VersionAttribute);
+                                    currentItem.DownloadLink = reader.GetAttribute(UrlAttribute);
+                                    currentItem.DSASignature = reader.GetAttribute(DasSignature);
+                                }
                             }
                             break;
                         }
@@ -114,7 +117,7 @@ namespace NetSparkle
                         {
                             if (latestVersion == null)
                                 latestVersion = currentItem;
-                            else if (currentItem.CompareTo(latestVersion) > 0)
+                            else if (currentItem != null && currentItem.CompareTo(latestVersion) > 0)
                             {
                                 latestVersion = currentItem;
                             }

@@ -88,17 +88,14 @@ namespace NetSparkle
         /// </summary>
         NetSparkleAppCastItem INetSparkleForm.CurrentItem
         {
-            get { return _currentItem; }
-            set { _currentItem = value; }
+            get => _currentItem;
+            set => _currentItem = value;
         }
 
         /// <summary>
         ///     The result of ShowDialog()
         /// </summary>
-        DialogResult INetSparkleForm.Result
-        {
-            get { return DialogResult; }
-        }
+        DialogResult INetSparkleForm.Result => DialogResult;
 
         /// <summary>
         ///     Hides the release notes
@@ -114,10 +111,7 @@ namespace NetSparkle
         void INetSparkleForm.Show()
         {
             ShowDialog();
-            if (UserResponded != null)
-            {
-                UserResponded(this, new EventArgs());
-            }
+            UserResponded?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
