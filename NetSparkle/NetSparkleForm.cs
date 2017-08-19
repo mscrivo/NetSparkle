@@ -145,8 +145,7 @@ namespace NetSparkle
             }
             var md = new Markdown();
             _htmlTempFile = TempFile.WithExtension("htm");
-            File.WriteAllText(_htmlTempFile.Path, md.Transform(contents));
-            NetSparkleBrowser.Navigate(_htmlTempFile.Path);
+            NetSparkleBrowser.DocumentText = md.Transform(contents);
         }
 
         /// <summary>
