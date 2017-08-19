@@ -18,3 +18,4 @@ _ReSharper*/
 *.DotSettings.user
 /*.ncrunchsolution.user
 packages/*
+.vs/*

@@ -16,14 +16,14 @@ namespace NetSparkleTestApp
             InitializeComponent();
 
             _sparkle = new Sparkle("file://" + DirectoryOfTheApplicationExecutable + "../../../../Extras/Sample Appcast.xml", SystemIcons.Application)
-            //_sparkle = new Sparkle("https://update.applimit.com/netsparkle/versioninfo.xml")
+            //_sparkle = new Sparkle("https://deadpikle.github.io/NetSparkle/files/sample-app/appcast.xml")
             {
                 TrustEverySSLConnection = true,
                 //EnableSystemProfiling = true,
                 //SystemProfileUrl = new Uri("http://update.applimit.com/netsparkle/stat/profileInfo.php")
             };
 
-            //_sparkle.UpdateDetected += new UpdateDetected(_sparkle_updateDetected);
+            _sparkle.UpdateDetected += new UpdateDetected(_sparkle_updateDetected);
             //_sparkle.EnableSilentMode = true;
             //_sparkle.HideReleaseNotes = true;
 

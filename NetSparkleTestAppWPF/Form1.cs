@@ -12,8 +12,8 @@ namespace NetSparkle.TestAppWPF
 {
     public partial class Form1 : Form
     {
-        private Sparkle _sparkle = new Sparkle("http://update.applimit.com/netsparkle/versioninfo.xml", SystemIcons.Application); 
-
+        private Sparkle _sparkle = new Sparkle("https://deadpikle.github.io/NetSparkle/files/sample-app/appcast.xml", SystemIcons.Application); 
+        
         public Form1()
         {
             InitializeComponent();
@@ -25,6 +25,7 @@ namespace NetSparkle.TestAppWPF
             }
             catch { }
 
+            _sparkle.TrustEverySSLConnection = true;
             _sparkle.StartLoop(true);
         }
 
