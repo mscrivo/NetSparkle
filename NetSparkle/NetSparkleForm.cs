@@ -17,7 +17,6 @@ namespace NetSparkle
     public sealed partial class NetSparkleForm : Form, INetSparkleForm
     {
         private NetSparkleAppCastItem _currentItem;
-        private TempFile _htmlTempFile;
 
         /// <summary>
         ///     Constructor
@@ -114,21 +113,6 @@ namespace NetSparkle
             UserResponded?.Invoke(this, new EventArgs());
         }
 
-        /// <summary>
-        /// </summary>
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            try
-            {
-                _htmlTempFile.Delete();
-            }
-            catch
-            {
-                //not worth complaining about, just leaks to temp folder
-            }
-            base.OnClosing(e);
-        }
-
         private void ShowMarkdownReleaseNotes(NetSparkleAppCastItem item)
         {
             string contents;
@@ -144,7 +128,6 @@ namespace NetSparkle
                 }
             }
             var md = new Markdown();
-            _htmlTempFile = TempFile.WithExtension("htm");
             NetSparkleBrowser.DocumentText = md.Transform(contents);
         }
 
