@@ -41,10 +41,8 @@ namespace NetSparkle
             this.skipButton = new System.Windows.Forms.Button();
             this.buttonRemind = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.NetSparkleBrowser = new System.Windows.Forms.WebBrowser();
+            this.HtmlRendererContainer = new System.Windows.Forms.Panel();
             this.imgAppIcon = new System.Windows.Forms.PictureBox();
-            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgAppIcon)).BeginInit();
             this.SuspendLayout();
             // 
@@ -84,18 +82,11 @@ namespace NetSparkle
             this.updateButton.UseVisualStyleBackColor = true;
             this.updateButton.Click += new System.EventHandler(this.OnUpdateButtonClick);
             // 
-            // panel1
+            // HtmlRendererContainer
             // 
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.NetSparkleBrowser);
-            this.panel1.Name = "panel1";
-            // 
-            // NetSparkleBrowser
-            // 
-            resources.ApplyResources(this.NetSparkleBrowser, "NetSparkleBrowser");
-            this.NetSparkleBrowser.IsWebBrowserContextMenuEnabled = false;
-            this.NetSparkleBrowser.Name = "NetSparkleBrowser";
+            resources.ApplyResources(this.HtmlRendererContainer, "HtmlRendererContainer");
+            this.HtmlRendererContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.HtmlRendererContainer.Name = "HtmlRendererContainer";
             // 
             // imgAppIcon
             // 
@@ -108,7 +99,7 @@ namespace NetSparkle
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.HtmlRendererContainer);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.updateButton);
             this.Controls.Add(this.buttonRemind);
@@ -121,7 +112,6 @@ namespace NetSparkle
             this.Name = "NetSparkleForm";
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-            this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.imgAppIcon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -137,7 +127,6 @@ namespace NetSparkle
         private Button skipButton;
         private Button buttonRemind;
         private Button updateButton;
-        private Panel panel1;
-        private WebBrowser NetSparkleBrowser;
+        private Panel HtmlRendererContainer;
     }
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
@@ -18,6 +15,9 @@ namespace NetSparkle
     {
         private NetSparkleAppCastItem _currentItem;
 
+        readonly TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel _htmlPanel =
+            new TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel { Dock = DockStyle.Fill };
+
         /// <summary>
         ///     Constructor
         /// </summary>
@@ -29,20 +29,11 @@ namespace NetSparkle
 
             // Enable TLS 1.2 connections
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            
+
             // init ui 
-            try
-            {
-                NetSparkleBrowser.AllowWebBrowserDrop = false;
-                NetSparkleBrowser.AllowNavigation = false;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Error in browser init: " + ex.Message);
-            }
+            HtmlRendererContainer.Controls.Add(_htmlPanel);
 
             _currentItem = item;
-
 
             lblHeader.Text = lblHeader.Text.Replace("APP", item.AppName);
             lblInfoText.Text = lblInfoText.Text.Replace("APP", item.AppName + " " + item.Version);
@@ -50,28 +41,12 @@ namespace NetSparkle
 
             if (!string.IsNullOrEmpty(item.ReleaseNotesLink))
             {
-                if (new List<string>(new[] {".md", ".mkdn", ".mkd", ".markdown"}).Contains(Path.GetExtension(item.ReleaseNotesLink).ToLower()))
-                {
-                    try
-                    {
-                        ShowMarkdownReleaseNotes(item);
-                    }
-                    catch (Exception)
-                    {
-#if DEBUG
-                        throw;
-#else
-                        NetSparkleBrowser.Navigate(item.ReleaseNotesLink); //just show it raw
-#endif
-                    }
-                }
-                else
-                {
-                    NetSparkleBrowser.Navigate(item.ReleaseNotesLink);
-                }
+                ShowMarkdownReleaseNotes(item);
             }
             else
+            {
                 RemoveReleaseNotesControls();
+            }
 
             imgAppIcon.Image = applicationIcon.ToBitmap();
             Icon = applicationIcon;
@@ -131,7 +106,8 @@ namespace NetSparkle
                 }
             }
             var md = new Markdown();
-            NetSparkleBrowser.DocumentText = md.Transform(contents);
+
+            _htmlPanel.Text = md.Transform(contents);
         }
 
         /// <summary>
@@ -143,12 +119,11 @@ namespace NetSparkle
                 return;
 
             // calc new size
-            var newSize = new Size(Size.Width, Size.Height - label3.Height - panel1.Height);
+            var newSize = new Size(Size.Width, Size.Height - label3.Height - HtmlRendererContainer.Height);
 
             // remove the no more needed controls            
             label3.Parent.Controls.Remove(label3);
-            NetSparkleBrowser.Parent.Controls.Remove(NetSparkleBrowser);
-            panel1.Parent.Controls.Remove(panel1);
+            HtmlRendererContainer.Parent.Controls.Remove(HtmlRendererContainer);
 
             // resize the window
             /*this.MinimumSize = newSize;
