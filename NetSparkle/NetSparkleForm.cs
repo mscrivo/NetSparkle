@@ -27,6 +27,9 @@ namespace NetSparkle
         {
             InitializeComponent();
 
+            // Enable TLS 1.2 connections
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            
             // init ui 
             try
             {
