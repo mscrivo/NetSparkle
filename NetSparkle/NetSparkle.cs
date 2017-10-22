@@ -322,8 +322,7 @@ namespace NetSparkle
                     var requestUrl = inv.BuildRequestUrl(SystemProfileUrl + "?");
 
                     // perform the webrequest
-                    var request = WebRequest.Create(requestUrl) as HttpWebRequest;
-                    if (request != null)
+                    if (WebRequest.Create(requestUrl) is HttpWebRequest request)
                     {
                         request.UseDefaultCredentials = true;
                         using (request.GetResponse())
@@ -681,8 +680,7 @@ namespace NetSparkle
             UpdateSystemProfileInformation(config);
 
             // check if update is required
-            NetSparkleAppCastItem latestVersion;
-            var updateStatus = GetUpdateStatus(config, out latestVersion);
+            var updateStatus = GetUpdateStatus(config, out NetSparkleAppCastItem latestVersion);
             if (updateStatus == UpdateStatus.UpdateAvailable)
             {
                 // show the update window
@@ -849,8 +847,7 @@ namespace NetSparkle
                 UpdateSystemProfileInformation(config);
 
                 // check if update is required
-                NetSparkleAppCastItem latestVersion;
-                bUpdateRequired = UpdateStatus.UpdateAvailable == GetUpdateStatus(config, out latestVersion);
+                bUpdateRequired = UpdateStatus.UpdateAvailable == GetUpdateStatus(config, out NetSparkleAppCastItem latestVersion);
                 if (!bUpdateRequired)
                     goto WaitSection;
 
