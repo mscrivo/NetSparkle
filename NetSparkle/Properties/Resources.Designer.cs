@@ -146,9 +146,9 @@ namespace NetSparkle.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap software_update_available1 {
+        internal static System.Drawing.Bitmap softwareupdateavailable {
             get {
-                object obj = ResourceManager.GetObject("software-update-available1", resourceCulture);
+                object obj = ResourceManager.GetObject("softwareupdateavailable", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

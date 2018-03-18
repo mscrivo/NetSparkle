@@ -67,7 +67,7 @@ namespace NetSparkle
             // 
             // imgAppIcon
             // 
-            this.imgAppIcon.Image = global::NetSparkle.Properties.Resources.software_update_available1;
+            this.imgAppIcon.Image = global::NetSparkle.Properties.Resources.softwareupdateavailable;
             resources.ApplyResources(this.imgAppIcon, "imgAppIcon");
             this.imgAppIcon.Name = "imgAppIcon";
             this.imgAppIcon.TabStop = false;
