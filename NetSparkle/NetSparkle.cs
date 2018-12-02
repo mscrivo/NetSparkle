@@ -617,8 +617,7 @@ namespace NetSparkle
             if (TrustEverySSLConnection)
             {
                 // verify if we talk about our app cast dll 
-                var req = sender as HttpWebRequest;
-                if (req == null)
+                if (!(sender is HttpWebRequest req))
                     return cert2 != null && cert2.Verify();
 
                 // if so just return our trust 
