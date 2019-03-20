@@ -1,228 +1,147 @@
-﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{74635A21-2BAD-4522-AB95-E3E5703CD301}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetSparkle</RootNamespace>
-    <AssemblyName>NetSparkle</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyTitle>NetSparkle</AssemblyTitle>
+    <Product>NetSparkle</Product>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Description>NetSparkle is an auto update framework for .NET developers</Description>
+    <Copyright>Portions Copyright © Dirk Eisenberg 2010</Copyright>
+    <AssemblyVersion>1.0.22</AssemblyVersion>
+    <FileVersion>1.0.22</FileVersion>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PostBuildEvent />
+    <PostBuildEvent />
+    <PostBuildEvent />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile />
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile />
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <PostBuildEvent />
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="HtmlRenderer.WinForms">
-      <Version>1.5.0.6</Version>
-    </PackageReference>
+    <PackageReference Include="System.Management" Version="4.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="HtmlRenderer.WinForms" Version="1.5.0.6" />
     <PackageReference Include="MarkdownSharp" Version="2.0.5" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="DefaultNetSparkleUIFactory.cs" />
-    <Compile Include="Enums.cs" />
-    <Compile Include="Interfaces\INetSparkleDownloadProgress.cs" />
-    <Compile Include="Interfaces\INetSparkleForm.cs" />
-    <Compile Include="Interfaces\INetSparkleUIFactory.cs" />
-    <Compile Include="NetSparkleAssemblyReflectionAccessor.cs" />
-    <Compile Include="Interfaces\INetSparkleAssemblyAccessor.cs" />
-    <Compile Include="NetSparkle.cs" />
-    <Compile Include="NetSparkleAppCaseItem.cs" />
-    <Compile Include="NetSparkleAppCast.cs" />
-    <Compile Include="NetSparkleAssemblyAccessor.cs" />
-    <Compile Include="NetSparkleAssemblyDiagnosticsAccessor.cs" />
-    <Compile Include="NetSparkleConfiguration.cs" />
-    <Compile Include="NetSparkleDeviceInventory.cs" />
-    <Compile Include="NetSparkleDownloadProgress.cs">
+    <Compile Include="..\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
+    <Compile Update="NetSparkleDownloadProgress.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NetSparkleDownloadProgress.Designer.cs">
+    <Compile Update="NetSparkleDownloadProgress.Designer.cs">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
     </Compile>
-    <Compile Include="NetSparkleDSAVerificator.cs" />
-    <Compile Include="NetSparkleException.cs" />
-    <Compile Include="NetSparkleForm.cs">
+    <Compile Update="NetSparkleForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NetSparkleForm.Designer.cs">
+    <Compile Update="NetSparkleForm.Designer.cs">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NetSparkleRegistryConfiguration.cs" />
-    <Compile Include="TempFile.cs" />
-    <Compile Include="ToastNotifier.cs">
+    <Compile Update="ToastNotifier.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ToastNotifier.designer.cs">
+    <Compile Update="ToastNotifier.designer.cs">
       <DependentUpon>ToastNotifier.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Update="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UpdateDetectedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="NetSparkleDownloadProgress.bg.resx">
+    <EmbeddedResource Update="NetSparkleDownloadProgress.bg.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleDownloadProgress.de.resx">
+    <EmbeddedResource Update="NetSparkleDownloadProgress.de.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleDownloadProgress.es-MX.resx">
-      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleDownloadProgress.fr.resx">
-      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleDownloadProgress.it.resx">
-      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleDownloadProgress.lt.resx">
-      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleDownloadProgress.nl.resx">
-      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleDownloadProgress.pt-BR.resx">
+    <EmbeddedResource Update="NetSparkleDownloadProgress.es-MX.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleDownloadProgress.resx">
+    <EmbeddedResource Update="NetSparkleDownloadProgress.fr.resx">
+      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="NetSparkleDownloadProgress.it.resx">
+      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="NetSparkleDownloadProgress.lt.resx">
+      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="NetSparkleDownloadProgress.nl.resx">
+      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="NetSparkleDownloadProgress.pt-BR.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleDownloadProgress.ru.resx">
+    <EmbeddedResource Update="NetSparkleDownloadProgress.resx">
+      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="NetSparkleDownloadProgress.ru.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleDownloadProgress.zh-CN.resx">
+    <EmbeddedResource Update="NetSparkleDownloadProgress.zh-CN.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleDownloadProgress.zh-TW.resx">
+    <EmbeddedResource Update="NetSparkleDownloadProgress.zh-TW.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleForm.bg.resx">
+    <EmbeddedResource Update="NetSparkleForm.bg.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleForm.de.resx">
+    <EmbeddedResource Update="NetSparkleForm.de.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleForm.es-MX.resx">
+    <EmbeddedResource Update="NetSparkleForm.es-MX.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleForm.fr.resx">
+    <EmbeddedResource Update="NetSparkleForm.fr.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleForm.it.resx">
+    <EmbeddedResource Update="NetSparkleForm.it.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleForm.lt.resx">
+    <EmbeddedResource Update="NetSparkleForm.lt.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleForm.nl.resx">
+    <EmbeddedResource Update="NetSparkleForm.nl.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleForm.pt-BR.resx">
+    <EmbeddedResource Update="NetSparkleForm.pt-BR.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleForm.resx">
+    <EmbeddedResource Update="NetSparkleForm.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleForm.ru.resx">
+    <EmbeddedResource Update="NetSparkleForm.ru.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleForm.zh-CN.resx">
+    <EmbeddedResource Update="NetSparkleForm.zh-CN.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetSparkleForm.zh-TW.resx">
+    <EmbeddedResource Update="NetSparkleForm.zh-TW.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ToastNotifier.resx">
+    <EmbeddedResource Update="ToastNotifier.resx">
       <DependentUpon>ToastNotifier.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="ArtWork\software-update-available.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
