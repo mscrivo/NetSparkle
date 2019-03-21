@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Management;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -24,15 +23,6 @@ namespace NetSparkle
         {
             // x64
             CollectProcessorBitnes();
-
-            // cpu speed
-            CollectCPUSpeed();
-
-            // cpu count
-            CollectCPUCount();
-
-            // ram size
-            CollectRamSize();
 
             // windows
             CollectWindowsVersion();
@@ -89,39 +79,6 @@ namespace NetSparkle
         private void CollectProcessorBitnes()
         {
             x64System = Marshal.SizeOf(typeof (IntPtr)) == 8;
-        }
-
-        private void CollectCPUCount()
-        {
-            CPUCount = Environment.ProcessorCount;
-        }
-
-        private void CollectCPUSpeed()
-        {
-            var Mo = new ManagementObject("Win32_Processor.DeviceID='CPU0'");
-            ProcessorSpeed = (uint) (Mo["CurrentClockSpeed"]);
-            Mo.Dispose();
-        }
-
-        private void CollectRamSize()
-        {
-            MemorySize = 0;
-
-            // RAM size
-            var oMs = new ManagementScope();
-            var oQuery = new ObjectQuery("SELECT Capacity FROM Win32_PhysicalMemory");
-            var oSearcher = new ManagementObjectSearcher(oMs, oQuery);
-            var oCollection = oSearcher.Get();
-
-            // In case more than one Memory sticks are installed
-            foreach (var o in oCollection)
-            {
-                var mobj = (ManagementObject) o;
-                var mCap = Convert.ToInt64(mobj["Capacity"]);
-                MemorySize += mCap;
-            }
-
-            MemorySize = (MemorySize/1024)/1024;
         }
     }
 }

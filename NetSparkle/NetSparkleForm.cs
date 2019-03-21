@@ -15,8 +15,7 @@ namespace NetSparkle
     {
         private NetSparkleAppCastItem _currentItem;
 
-        readonly TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel _htmlPanel =
-            new TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel { Dock = DockStyle.Fill };
+        private readonly WebBrowser _webBrowser = new WebBrowser { Dock = DockStyle.Fill };
 
         /// <summary>
         ///     Constructor
@@ -31,7 +30,7 @@ namespace NetSparkle
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             // init ui 
-            HtmlRendererContainer.Controls.Add(_htmlPanel);
+            HtmlRendererContainer.Controls.Add(_webBrowser);
 
             _currentItem = item;
 
@@ -107,7 +106,7 @@ namespace NetSparkle
             }
             var md = new Markdown();
 
-            _htmlPanel.Text = md.Transform(contents);
+            _webBrowser.DocumentText = md.Transform(contents);
         }
 
         /// <summary>
