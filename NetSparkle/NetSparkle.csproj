@@ -39,18 +39,21 @@
     </Compile>
     <Compile Update="NetSparkleDownloadProgress.Designer.cs">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Update="NetSparkleForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="NetSparkleForm.Designer.cs">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Update="ToastNotifier.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="ToastNotifier.designer.cs">
       <DependentUpon>ToastNotifier.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
