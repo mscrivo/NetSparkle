@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -106,8 +107,15 @@ namespace NetSparkle
         /// <summary>
         ///     Gets the version
         /// </summary>
-        public string AssemblyVersion => _assembly.GetName().Version.ToString();
-
+        public string AssemblyVersion {
+            get
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+                return fileVersionInfo.ProductVersion;
+            }
+        }
+    
         /// <summary>
         ///     Gets the description
         /// </summary>
