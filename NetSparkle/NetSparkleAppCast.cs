@@ -41,10 +41,8 @@ namespace NetSparkle
             if (_castUrl.StartsWith("file://")) //handy for testing
             {
                 var path = _castUrl.Replace("file://", "");
-                using (var reader = XmlReader.Create(path))
-                {
-                    latestVersion = ReadAppCast(reader, null, _config.InstalledVersion);
-                }
+                using var reader = XmlReader.Create(path);
+                latestVersion = ReadAppCast(reader, null, _config.InstalledVersion);
             }
             else
             {
@@ -55,10 +53,8 @@ namespace NetSparkle
                 // request the cast and build the stream
                 var response = request.GetResponse();
 
-                using (var reader = new XmlTextReader(response.GetResponseStream()))
-                {
-                    latestVersion = ReadAppCast(reader, null, _config.InstalledVersion);
-                }
+                using var reader = new XmlTextReader(response.GetResponseStream());
+                latestVersion = ReadAppCast(reader, null, _config.InstalledVersion);
             }
 
             latestVersion.AppName = _config.ApplicationName;

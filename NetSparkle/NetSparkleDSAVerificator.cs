@@ -27,12 +27,10 @@ namespace NetSparkle
                 throw new Exception("Couldn't find public key for verification");
 
             // 3. read out the key value
-            using (var reader = new StreamReader(data))
-            {
-                var key = reader.ReadToEnd();
-                _provider = new DSACryptoServiceProvider();
-                _provider.FromXmlString(key);
-            }
+            using var reader = new StreamReader(data);
+            var key = reader.ReadToEnd();
+            _provider = new DSACryptoServiceProvider();
+            _provider.FromXmlString(key);
         }
 
         public void Dispose()

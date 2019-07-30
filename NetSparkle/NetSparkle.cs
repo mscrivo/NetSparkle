@@ -476,7 +476,7 @@ namespace NetSparkle
         {
             // get the filename of the download lin
             var segments = item.DownloadLink.Split('/');
-            var fileName = segments[segments.Length - 1];
+            var fileName = segments[^1];
 
             // get temp path
             _downloadTempFilePath = Environment.ExpandEnvironmentVariables("%temp%\\" + fileName);
@@ -992,10 +992,8 @@ namespace NetSparkle
                             if (NetSparkleDSAVerificator.ExistsPublicKey("NetSparkle_DSA.pub"))
                             {
                                 // check the DSA Code and modify the back color            
-                                using (var dsaVerifier = new NetSparkleDSAVerificator("NetSparkle_DSA.pub"))
-                                {
-                                    isDSAOk = dsaVerifier.VerifyDSASignature(UserWindow.CurrentItem.DSASignature, _downloadTempFilePath);
-                                }
+                                using var dsaVerifier = new NetSparkleDSAVerificator("NetSparkle_DSA.pub");
+                                isDSAOk = dsaVerifier.VerifyDSASignature(UserWindow.CurrentItem.DSASignature, _downloadTempFilePath);
                             }
                         }
                     }

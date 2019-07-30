@@ -99,10 +99,8 @@ namespace NetSparkle
             }
             else
             {
-                using (var webClient = new WebClient())
-                {
-                    contents = webClient.DownloadString(item.ReleaseNotesLink);
-                }
+                using var webClient = new WebClient();
+                contents = webClient.DownloadString(item.ReleaseNotesLink);
             }
             var md = new Markdown();
 
