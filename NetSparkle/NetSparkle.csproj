@@ -9,11 +9,8 @@
     <Copyright>Portions Copyright © Dirk Eisenberg 2010</Copyright>
     <AssemblyVersion>1.0.22</AssemblyVersion>
     <FileVersion>1.0.22</FileVersion>
-    <LangVersion>8</LangVersion>
+    <LangVersion>preview</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <PostBuildEvent />
-    <PostBuildEvent />
-    <PostBuildEvent />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DocumentationFile />
