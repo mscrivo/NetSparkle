@@ -1013,19 +1013,19 @@ namespace NetSparkle
         /// <summary>
         ///     Enables system profiling against a profile server
         /// </summary>
-        public bool EnableSystemProfiling { get; private set; }
+        public bool EnableSystemProfiling => false;
 
         /// <summary>
         ///     Hides the release notes view when an update was found. This
         ///     mode is switched on automatically when no sparkle:releaseNotesLink
         ///     tag was found in the app cast
         /// </summary>
-        public bool HideReleaseNotes { get; private set; }
+        public bool HideReleaseNotes => false;
 
         /// <summary>
         ///     Contains the profile url for System profiling
         /// </summary>
-        public Uri SystemProfileUrl { get; private set; }
+        public Uri SystemProfileUrl => null;
 
         /// <summary>
         ///     This property enables the silent mode, this means
@@ -1046,7 +1046,7 @@ namespace NetSparkle
         public string CustomInstallerArguments = "";
 
         /// <summary>
-        ///     This property returns true when the upadete loop is running
+        ///     This property returns true when the update loop is running
         ///     and files when the loop is not running
         /// </summary>
         public bool IsUpdateLoopRunning => _loopingHandle.WaitOne(0);

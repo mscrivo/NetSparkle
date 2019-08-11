@@ -37,11 +37,15 @@ namespace NetSparkle
             }
 
             // read the attributes            
-            foreach (var data in _assembly.GetCustomAttributesData())
-                _assemblyAttributes.Add(CreateAttribute(data));
+            if (_assembly != null)
+            {
+                foreach (var data in _assembly.GetCustomAttributesData())
+                    _assemblyAttributes.Add(CreateAttribute(data));
+            }
 
             if (_assemblyAttributes == null || _assemblyAttributes.Count == 0)
-                throw new ArgumentOutOfRangeException("Unable to load assembly attributes from " + _assembly.FullName);
+                throw new ArgumentOutOfRangeException("Unable to load assembly attributes from " +
+                                                      _assembly?.FullName);
         }
 
         /// <summary>
