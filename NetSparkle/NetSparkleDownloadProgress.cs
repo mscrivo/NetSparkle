@@ -1,8 +1,8 @@
-﻿using System;
+﻿using NetSparkle.Interfaces;
+using System;
 using System.Drawing;
 using System.Net;
 using System.Windows.Forms;
-using NetSparkle.Interfaces;
 
 namespace NetSparkle
 {
@@ -33,7 +33,7 @@ namespace NetSparkle
             progressDownload.Step = 1;
 
             // show the right 
-            Size = new Size(Size.Width, (int) (107 * _currentScaleFactor.Height));
+            Size = new Size(Size.Width, (int)(107 * _currentScaleFactor.Height));
             lblSecurityHint.Visible = false;
         }
 
@@ -98,7 +98,7 @@ namespace NetSparkle
         {
             if (!signatureValid)
             {
-                Size = new Size(Size.Width, (int) (137 * _currentScaleFactor.Height));
+                Size = new Size(Size.Width, (int)(137 * _currentScaleFactor.Height));
                 lblSecurityHint.Visible = true;
                 BackColor = Color.Tomato;
             }

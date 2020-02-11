@@ -26,11 +26,11 @@ namespace NetSparkle
             // Pop doesn't need to be shown in task bar
             ShowInTaskbar = false;
             // Create and run timer for animation
-            _goUpTimer = new Timer {Interval = 25};
+            _goUpTimer = new Timer { Interval = 25 };
             _goUpTimer.Tick += GoUpTimerTick;
-            _goDownTimer = new Timer {Interval = 25};
+            _goDownTimer = new Timer { Interval = 25 };
             _goDownTimer.Tick += GoDownTimerTick;
-            _pauseTimer = new Timer {Interval = 15000};
+            _pauseTimer = new Timer { Interval = 15000 };
             _pauseTimer.Tick += PauseTimerTick;
         }
 
@@ -108,7 +108,7 @@ namespace NetSparkle
         {
             _message.Text = message;
             _callToAction.Text = callToAction;
-            _pauseTimer.Interval = 1000*seconds;
+            _pauseTimer.Interval = 1000 * seconds;
             Show();
         }
 

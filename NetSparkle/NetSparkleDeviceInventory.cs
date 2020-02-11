@@ -78,7 +78,7 @@ namespace NetSparkle
 
         private void CollectProcessorBitnes()
         {
-            x64System = Marshal.SizeOf(typeof (IntPtr)) == 8;
+            x64System = Marshal.SizeOf(typeof(IntPtr)) == 8;
         }
     }
 }

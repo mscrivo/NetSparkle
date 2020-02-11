@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetSparkle.Interfaces;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -9,7 +10,6 @@ using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Windows.Forms;
-using NetSparkle.Interfaces;
 
 namespace NetSparkle
 {
@@ -436,7 +436,7 @@ namespace NetSparkle
 
         private void OnToastClick(object sender, EventArgs e)
         {
-            ShowUpdateNeededUIInner((NetSparkleAppCastItem) ((Control) sender).Tag);
+            ShowUpdateNeededUIInner((NetSparkleAppCastItem)((Control)sender).Tag);
         }
 
         private void ShowUpdateNeededUIInner(NetSparkleAppCastItem currentItem)
@@ -500,7 +500,7 @@ namespace NetSparkle
                 _webDownloadClient = null;
             }
 
-            _webDownloadClient = new WebClient {UseDefaultCredentials = true};
+            _webDownloadClient = new WebClient { UseDefaultCredentials = true };
             _webDownloadClient.DownloadProgressChanged += ProgressWindow.OnClientDownloadProgressChanged;
             _webDownloadClient.DownloadFileCompleted += OnWebDownloadClientDownloadFileCompleted;
 
@@ -854,33 +854,33 @@ namespace NetSparkle
                 ReportDiagnosticMessage("Update needed from version " + config.InstalledVersion + " to version " + latestVersion.Version);
 
                 // send notification if needed
-                var ev = new UpdateDetectedEventArgs {NextAction = NextUpdateAction.ShowStandardUserInterface, ApplicationConfig = config, LatestVersion = latestVersion};
+                var ev = new UpdateDetectedEventArgs { NextAction = NextUpdateAction.ShowStandardUserInterface, ApplicationConfig = config, LatestVersion = latestVersion };
                 UpdateDetected?.Invoke(this, ev);
 
                 // check results
                 switch (ev.NextAction)
                 {
                     case NextUpdateAction.PerformUpdateUnattended:
-                    {
-                        ReportDiagnosticMessage("Unattended update whished from consumer");
-                        EnableSilentMode = true;
-                        _worker.ReportProgress(1, latestVersion);
-                        break;
-                    }
+                        {
+                            ReportDiagnosticMessage("Unattended update whished from consumer");
+                            EnableSilentMode = true;
+                            _worker.ReportProgress(1, latestVersion);
+                            break;
+                        }
                     case NextUpdateAction.ProhibitUpdate:
-                    {
-                        ReportDiagnosticMessage("Update prohibited from consumer");
-                        break;
-                    }
+                        {
+                            ReportDiagnosticMessage("Update prohibited from consumer");
+                            break;
+                        }
                     default:
-                    {
-                        ReportDiagnosticMessage("Showing Standard Update UI");
-                        _worker.ReportProgress(1, latestVersion);
-                        break;
-                    }
+                        {
+                            ReportDiagnosticMessage("Showing Standard Update UI");
+                            _worker.ReportProgress(1, latestVersion);
+                            break;
+                        }
                 }
 
-                WaitSection:
+            WaitSection:
                 // reset initialcheck
                 isInitialCheck = false;
 

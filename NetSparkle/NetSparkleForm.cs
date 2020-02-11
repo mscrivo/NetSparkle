@@ -1,10 +1,10 @@
-﻿using System;
+﻿using MarkdownSharp;
+using NetSparkle.Interfaces;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
-using MarkdownSharp;
-using NetSparkle.Interfaces;
 
 namespace NetSparkle
 {

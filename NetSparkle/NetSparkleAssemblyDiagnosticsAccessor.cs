@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using NetSparkle.Interfaces;
+﻿using NetSparkle.Interfaces;
+using System.Diagnostics;
 
 namespace NetSparkle
 {

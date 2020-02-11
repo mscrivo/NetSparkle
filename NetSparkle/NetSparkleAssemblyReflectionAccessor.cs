@@ -1,10 +1,10 @@
-﻿using System;
+﻿using NetSparkle.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using NetSparkle.Interfaces;
 
 namespace NetSparkle
 {
@@ -57,7 +57,7 @@ namespace NetSparkle
         private Attribute CreateAttribute(CustomAttributeData data)
         {
             var arguments = from arg in data.ConstructorArguments
-                select arg.Value;
+                            select arg.Value;
 
             var attribute = data.Constructor.Invoke(arguments.ToArray())
                 as Attribute;
@@ -103,7 +103,7 @@ namespace NetSparkle
         {
             get
             {
-                var a = FindAttribute(typeof (AssemblyTitleAttribute)) as AssemblyTitleAttribute;
+                var a = FindAttribute(typeof(AssemblyTitleAttribute)) as AssemblyTitleAttribute;
                 return a?.Title;
             }
         }
@@ -111,7 +111,8 @@ namespace NetSparkle
         /// <summary>
         ///     Gets the version
         /// </summary>
-        public string AssemblyVersion {
+        public string AssemblyVersion
+        {
             get
             {
                 var assembly = Assembly.GetExecutingAssembly();
@@ -119,7 +120,7 @@ namespace NetSparkle
                 return fileVersionInfo.ProductVersion;
             }
         }
-    
+
         /// <summary>
         ///     Gets the description
         /// </summary>
@@ -127,7 +128,7 @@ namespace NetSparkle
         {
             get
             {
-                var a = FindAttribute(typeof (AssemblyDescriptionAttribute)) as AssemblyDescriptionAttribute;
+                var a = FindAttribute(typeof(AssemblyDescriptionAttribute)) as AssemblyDescriptionAttribute;
                 return a?.Description;
             }
         }
@@ -139,7 +140,7 @@ namespace NetSparkle
         {
             get
             {
-                var a = FindAttribute(typeof (AssemblyProductAttribute)) as AssemblyProductAttribute;
+                var a = FindAttribute(typeof(AssemblyProductAttribute)) as AssemblyProductAttribute;
                 return a?.Product;
             }
         }
@@ -151,7 +152,7 @@ namespace NetSparkle
         {
             get
             {
-                var a = FindAttribute(typeof (AssemblyCopyrightAttribute)) as AssemblyCopyrightAttribute;
+                var a = FindAttribute(typeof(AssemblyCopyrightAttribute)) as AssemblyCopyrightAttribute;
                 return a?.Copyright;
             }
         }
@@ -163,7 +164,7 @@ namespace NetSparkle
         {
             get
             {
-                var a = FindAttribute(typeof (AssemblyCompanyAttribute)) as AssemblyCompanyAttribute;
+                var a = FindAttribute(typeof(AssemblyCompanyAttribute)) as AssemblyCompanyAttribute;
                 return a?.Company;
             }
         }

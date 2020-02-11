@@ -80,29 +80,29 @@ namespace NetSparkle
                     switch (reader.Name)
                     {
                         case ItemNode:
-                        {
-                            currentItem = new NetSparkleAppCastItem();
-                            break;
-                        }
-                        case ReleaseNotesLinkNode:
-                        {
-                            if (currentItem != null) currentItem.ReleaseNotesLink = reader.ReadString().Trim();
-                            break;
-                        }
-                        case EnclosureNode:
-                        {
-                            var deltaFrom = reader.GetAttribute(DeltaFromAttribute);
-                            if (deltaFrom == null || deltaFrom == installedVersionWithoutFourthSegment.ToString())
                             {
-                                if (currentItem != null)
-                                {
-                                    currentItem.Version = reader.GetAttribute(VersionAttribute);
-                                    currentItem.DownloadLink = reader.GetAttribute(UrlAttribute);
-                                    currentItem.DSASignature = reader.GetAttribute(DasSignature);
-                                }
+                                currentItem = new NetSparkleAppCastItem();
+                                break;
                             }
-                            break;
-                        }
+                        case ReleaseNotesLinkNode:
+                            {
+                                if (currentItem != null) currentItem.ReleaseNotesLink = reader.ReadString().Trim();
+                                break;
+                            }
+                        case EnclosureNode:
+                            {
+                                var deltaFrom = reader.GetAttribute(DeltaFromAttribute);
+                                if (deltaFrom == null || deltaFrom == installedVersionWithoutFourthSegment.ToString())
+                                {
+                                    if (currentItem != null)
+                                    {
+                                        currentItem.Version = reader.GetAttribute(VersionAttribute);
+                                        currentItem.DownloadLink = reader.GetAttribute(UrlAttribute);
+                                        currentItem.DSASignature = reader.GetAttribute(DasSignature);
+                                    }
+                                }
+                                break;
+                            }
                     }
                 }
                 else if (reader.NodeType == XmlNodeType.EndElement)
@@ -110,15 +110,15 @@ namespace NetSparkle
                     switch (reader.Name)
                     {
                         case ItemNode:
-                        {
-                            if (latestVersion == null)
-                                latestVersion = currentItem;
-                            else if (currentItem != null && currentItem.CompareTo(latestVersion) > 0)
                             {
-                                latestVersion = currentItem;
+                                if (latestVersion == null)
+                                    latestVersion = currentItem;
+                                else if (currentItem != null && currentItem.CompareTo(latestVersion) > 0)
+                                {
+                                    latestVersion = currentItem;
+                                }
+                                break;
                             }
-                            break;
-                        }
                     }
                 }
             }

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using NetSparkle.Interfaces;
+using NetSparkle.Properties;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using NetSparkle.Interfaces;
-using NetSparkle.Properties;
 
 namespace NetSparkle
 {
@@ -67,7 +67,7 @@ namespace NetSparkle
         public void ShowVersionIsSkippedByUserRequest()
         {
             MessageBox.Show(Resources.DefaultNetSparkleUIFactory_ShowVersionIsSkippedByUserRequestMessage, Resources.DefaultNetSparkleUIFactory_MessageTitle);
-                //review: I'm not crystal clear on this one
+            //review: I'm not crystal clear on this one
         }
 
         /// <summary>
