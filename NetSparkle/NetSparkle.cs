@@ -408,10 +408,7 @@ namespace NetSparkle
         /// <returns>the configuration</returns>
         public NetSparkleConfiguration GetApplicationConfig()
         {
-            if (Configuration == null)
-            {
-                Configuration = new NetSparkleRegistryConfiguration(_appReferenceAssembly);
-            }
+            Configuration ??= new NetSparkleRegistryConfiguration(_appReferenceAssembly);
             Configuration.Reload();
             return Configuration;
         }
@@ -441,11 +438,7 @@ namespace NetSparkle
 
         private void ShowUpdateNeededUIInner(NetSparkleAppCastItem currentItem)
         {
-            if (UserWindow == null)
-            {
-                // create the form
-                UserWindow = UIFactory.CreateSparkleForm(currentItem, _applicationIcon);
-            }
+            UserWindow ??= UIFactory.CreateSparkleForm(currentItem, _applicationIcon);
 
             UserWindow.CurrentItem = currentItem;
             if (HideReleaseNotes)
