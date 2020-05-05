@@ -42,20 +42,22 @@ namespace NetSparkle
             // _message
             // 
             this._message.AutoSize = true;
-            this._message.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._message.Location = new System.Drawing.Point(50, 9);
-            this._message.MaximumSize = new System.Drawing.Size(190, 0);
+            this._message.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this._message.Location = new System.Drawing.Point(83, 17);
+            this._message.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this._message.MaximumSize = new System.Drawing.Size(317, 0);
             this._message.Name = "_message";
-            this._message.Size = new System.Drawing.Size(122, 20);
+            this._message.Size = new System.Drawing.Size(186, 29);
             this._message.TabIndex = 2;
             this._message.Text = "Notification Text";
             this._message.Click += new System.EventHandler(this.ToastNotifier_Click);
             // 
             // Image
             // 
-            this.Image.Location = new System.Drawing.Point(6, 9);
+            this.Image.Location = new System.Drawing.Point(10, 17);
+            this.Image.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.Image.Name = "Image";
-            this.Image.Size = new System.Drawing.Size(39, 43);
+            this.Image.Size = new System.Drawing.Size(65, 83);
             this.Image.TabIndex = 3;
             this.Image.TabStop = false;
             this.Image.Click += new System.EventHandler(this.ToastNotifier_Click);
@@ -69,9 +71,10 @@ namespace NetSparkle
             // _callToAction
             // 
             this._callToAction.AutoSize = true;
-            this._callToAction.Location = new System.Drawing.Point(51, 39);
+            this._callToAction.Location = new System.Drawing.Point(85, 75);
+            this._callToAction.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this._callToAction.Name = "_callToAction";
-            this._callToAction.Size = new System.Drawing.Size(55, 13);
+            this._callToAction.Size = new System.Drawing.Size(90, 25);
             this._callToAction.TabIndex = 4;
             this._callToAction.TabStop = true;
             this._callToAction.Text = "linkLabel1";
@@ -80,15 +83,16 @@ namespace NetSparkle
             // 
             // ToastNotifier
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(222, 54);
+            this.ClientSize = new System.Drawing.Size(371, 104);
             this.ControlBox = false;
             this.Controls.Add(this._callToAction);
             this.Controls.Add(this.Image);
             this.Controls.Add(this._message);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ToastNotifier";
