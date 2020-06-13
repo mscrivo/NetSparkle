@@ -91,7 +91,9 @@ namespace NetSparkle
             var accessor = new NetSparkleAssemblyAccessor(ReferenceAssembly, UseReflectionBasedAssemblyAccessor);
 
             if (string.IsNullOrEmpty(accessor.AssemblyCompany) || string.IsNullOrEmpty(accessor.AssemblyProduct))
+            {
                 throw new NetSparkleException("STOP: Sparkle is missing the company or productname tag in " + ReferenceAssembly);
+            }
 
             return "Software\\" + accessor.AssemblyCompany + "\\" + accessor.AssemblyProduct + "\\AutoUpdate";
         }
@@ -115,7 +117,9 @@ namespace NetSparkle
         {
             var key = Registry.CurrentUser.OpenSubKey(regPath);
             if (key == null)
+            {
                 return;
+            }
 
             // read out                
             var strCheckForUpdate = key.GetValue("CheckForUpdate", "True") as string;
@@ -158,7 +162,9 @@ namespace NetSparkle
         {
             var key = Registry.CurrentUser.CreateSubKey(regPath);
             if (key == null)
+            {
                 return;
+            }
 
             // convert to regsz
             var strCheckForUpdate = CheckForUpdate.ToString();

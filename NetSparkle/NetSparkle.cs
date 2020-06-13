@@ -287,11 +287,15 @@ namespace NetSparkle
         {
             // check if profile data is enabled
             if (!EnableSystemProfiling)
+            {
                 return;
+            }
 
             // check if we need an update
             if (DateTime.Now - config.LastProfileUpdate < new TimeSpan(7, 0, 0, 0))
+            {
                 return;
+            }
 
             // touch the profile update time
             config.TouchProfileTime();
@@ -611,11 +615,16 @@ namespace NetSparkle
             {
                 // verify if we talk about our app cast dll 
                 if (!(sender is HttpWebRequest req))
+                {
                     return cert2 != null && cert2.Verify();
+                }
 
                 // if so just return our trust 
                 if (req.RequestUri.Equals(new Uri(AppcastUrl)))
+                {
                     return true;
+                }
+
                 return cert2 != null && cert2.Verify();
             }
             // check our cert                 
@@ -766,7 +775,9 @@ namespace NetSparkle
         private void OnProgressWindowInstallAndRelaunch(object sender, EventArgs e)
         {
             if (AskApplicationToSafelyCloseUp())
+            {
                 RunDownloadedInstaller();
+            }
         }
 
         /// <summary>
@@ -810,7 +821,9 @@ namespace NetSparkle
                 var checkTSPInternal = checkTSP;
 
                 if (isInitialCheck)
+                {
                     checkTSPInternal = !_forceInitialCheck;
+                }
 
                 // check if it's ok the recheck to software state
                 if (checkTSPInternal)
@@ -823,7 +836,9 @@ namespace NetSparkle
                     }
                 }
                 else
+                {
                     checkTSP = true;
+                }
 
                 // when sparkle will be deactivated wait an other cycle
                 if (config.CheckForUpdate == false)
@@ -841,7 +856,9 @@ namespace NetSparkle
                 // check if update is required
                 bUpdateRequired = UpdateStatus.UpdateAvailable == GetUpdateStatus(config, out NetSparkleAppCastItem latestVersion);
                 if (!bUpdateRequired)
+                {
                     goto WaitSection;
+                }
 
                 // show the update window
                 ReportDiagnosticMessage("Update needed from version " + config.InstalledVersion + " to version " + latestVersion.Version);
@@ -885,7 +902,9 @@ namespace NetSparkle
 
                 // wait for
                 if (!goIntoLoop)
+                {
                     break;
+                }
 
                 // build the event array
                 var handles = new WaitHandle[1];
@@ -965,7 +984,9 @@ namespace NetSparkle
                     // check if the file was downloaded successfully
                     var absolutePath = Path.GetFullPath(_downloadTempFilePath);
                     if (!File.Exists(absolutePath))
+                    {
                         throw new FileNotFoundException();
+                    }
 
                     if (UserWindow.CurrentItem.DSASignature == null)
                     {

@@ -17,9 +17,13 @@ namespace NetSparkle
         public NetSparkleAssemblyAccessor(string assemblyName, bool isReflectionAccesorUsed)
         {
             if (isReflectionAccesorUsed)
+            {
                 _internalAccessor = new NetSparkleAssemblyReflectionAccessor(assemblyName);
+            }
             else
+            {
                 _internalAccessor = new NetSparkleAssemblyDiagnosticsAccessor(assemblyName);
+            }
         }
 
         #region INetSparkleAssemblyAccessor Members

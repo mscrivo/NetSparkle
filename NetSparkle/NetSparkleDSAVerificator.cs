@@ -24,7 +24,9 @@ namespace NetSparkle
 
             // 2. check the resource
             if (data == null)
+            {
                 throw new Exception("Couldn't find public key for verification");
+            }
 
             // 3. read out the key value
             using var reader = new StreamReader(data);
@@ -61,7 +63,9 @@ namespace NetSparkle
         public bool VerifyDSASignature(string signature, string binaryPath)
         {
             if (_provider == null)
+            {
                 return false;
+            }
 
             // convert signature
             var bHash = Convert.FromBase64String(signature);
@@ -117,7 +121,9 @@ namespace NetSparkle
                 {
                     data = asm.GetManifestResourceStream(resourceName);
                     if (data != null)
+                    {
                         break;
+                    }
                 }
             }
             return data;

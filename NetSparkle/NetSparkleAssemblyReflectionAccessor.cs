@@ -23,29 +23,39 @@ namespace NetSparkle
         public NetSparkleAssemblyReflectionAccessor(string assemblyName)
         {
             if (assemblyName == null)
+            {
                 _assembly = Assembly.GetEntryAssembly();
+            }
             else
             {
                 var absolutePath = Path.GetFullPath(assemblyName);
                 if (!File.Exists(absolutePath))
+                {
                     throw new FileNotFoundException();
+                }
 
                 _assembly = Assembly.ReflectionOnlyLoadFrom(absolutePath);
 
                 if (_assembly == null)
+                {
                     throw new ArgumentNullException("Unable to load assembly " + absolutePath);
+                }
             }
 
             // read the attributes            
             if (_assembly != null)
             {
                 foreach (var data in _assembly.GetCustomAttributesData())
+                {
                     _assemblyAttributes.Add(CreateAttribute(data));
+                }
             }
 
             if (_assemblyAttributes == null || _assemblyAttributes.Count == 0)
+            {
                 throw new ArgumentOutOfRangeException("Unable to load assembly attributes from " +
                                                       _assembly?.FullName);
+            }
         }
 
         /// <summary>
@@ -63,6 +73,7 @@ namespace NetSparkle
                 as Attribute;
 
             if (data.NamedArguments != null)
+            {
                 foreach (var namedArgument in data.NamedArguments)
                 {
                     var propertyInfo = namedArgument.MemberInfo as PropertyInfo;
@@ -79,6 +90,7 @@ namespace NetSparkle
                         }
                     }
                 }
+            }
 
             return attribute;
         }
@@ -88,7 +100,9 @@ namespace NetSparkle
             foreach (var attr in _assemblyAttributes)
             {
                 if (attr.GetType() == attributeType)
+                {
                     return attr;
+                }
             }
 
             throw new Exception("Attribute of type " + attributeType + " does not exists in the assembly " + _assembly.FullName);

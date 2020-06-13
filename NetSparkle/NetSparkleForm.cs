@@ -113,7 +113,9 @@ namespace NetSparkle
         public void RemoveReleaseNotesControls()
         {
             if (label3.Parent == null)
+            {
                 return;
+            }
 
             // calc new size
             var newSize = new Size(Size.Width, Size.Height - label3.Height - HtmlRendererContainer.Height);

@@ -70,7 +70,9 @@ namespace NetSparkle
                 _pauseTimer.Start();
             }
             else
+            {
                 SetDesktopLocation(_startPosX, _startPosY);
+            }
         }
 
         private void GoDownTimerTick(object sender, EventArgs e)

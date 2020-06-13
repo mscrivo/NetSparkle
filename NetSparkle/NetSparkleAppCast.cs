@@ -86,7 +86,11 @@ namespace NetSparkle
                             }
                         case ReleaseNotesLinkNode:
                             {
-                                if (currentItem != null) currentItem.ReleaseNotesLink = reader.ReadString().Trim();
+                                if (currentItem != null)
+                                {
+                                    currentItem.ReleaseNotesLink = reader.ReadString().Trim();
+                                }
+
                                 break;
                             }
                         case EnclosureNode:
@@ -112,7 +116,9 @@ namespace NetSparkle
                         case ItemNode:
                             {
                                 if (latestVersion == null)
+                                {
                                     latestVersion = currentItem;
+                                }
                                 else if (currentItem != null && currentItem.CompareTo(latestVersion) > 0)
                                 {
                                     latestVersion = currentItem;
