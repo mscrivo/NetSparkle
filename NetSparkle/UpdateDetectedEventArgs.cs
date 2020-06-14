@@ -15,11 +15,11 @@ namespace NetSparkle
         /// <summary>
         ///     The application configuration
         /// </summary>
-        public NetSparkleConfiguration ApplicationConfig { get; set; }
+        public NetSparkleConfiguration? ApplicationConfig { get; set; }
 
         /// <summary>
         ///     The latest available version
         /// </summary>
-        public NetSparkleAppCastItem LatestVersion { get; set; }
+        public NetSparkleAppCastItem? LatestVersion { get; set; }
     }
 }

@@ -18,13 +18,13 @@ namespace NetSparkle.Interfaces
         /// <summary>
         ///     Gets or sets the current item being installed
         /// </summary>
-        NetSparkleAppCastItem CurrentItem { get; set; }
+        NetSparkleAppCastItem? CurrentItem { get; set; }
 
         /// <summary>
         ///     Event fired when the user has responded to the
         ///     skip, later, install question.
         /// </summary>
-        event EventHandler UserResponded;
+        event EventHandler? UserResponded;
 
         /// <summary>
         ///     Show the UI

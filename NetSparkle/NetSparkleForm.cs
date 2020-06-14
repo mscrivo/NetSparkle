@@ -57,7 +57,7 @@ namespace NetSparkle
         ///     Event fired when the user has responded to the
         ///     skip, later, install question.
         /// </summary>
-        public event EventHandler UserResponded;
+        public event EventHandler? UserResponded;
 
         /// <summary>
         ///     The current item being installed
@@ -92,19 +92,25 @@ namespace NetSparkle
 
         private void ShowMarkdownReleaseNotes(NetSparkleAppCastItem item)
         {
-            string contents;
-            if (item.ReleaseNotesLink.StartsWith("file://")) //handy for testing
+            string contents = null;
+            if (item.ReleaseNotesLink != null && item.ReleaseNotesLink.StartsWith("file://")) //handy for testing
             {
                 contents = File.ReadAllText(item.ReleaseNotesLink.Replace("file://", ""));
             }
             else
             {
                 using var webClient = new WebClient();
-                contents = webClient.DownloadString(item.ReleaseNotesLink);
+                if (item.ReleaseNotesLink != null)
+                {
+                    contents = webClient.DownloadString(item.ReleaseNotesLink);
+                }
             }
             var md = new Markdown();
 
-            _webBrowser.DocumentText = md.Transform(contents);
+            if (contents != null)
+            {
+                _webBrowser.DocumentText = md.Transform(contents);
+            }
         }
 
         /// <summary>

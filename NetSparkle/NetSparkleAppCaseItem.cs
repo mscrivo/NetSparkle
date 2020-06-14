@@ -10,32 +10,32 @@ namespace NetSparkle
         /// <summary>
         ///     The application name
         /// </summary>
-        public string AppName { get; set; }
+        public string? AppName { get; set; }
 
         /// <summary>
         ///     The installed version
         /// </summary>
-        public string AppVersionInstalled { get; set; }
+        public string? AppVersionInstalled { get; set; }
 
         /// <summary>
         ///     The available version
         /// </summary>
-        public string Version { get; set; }
+        public string? Version { get; set; }
 
         /// <summary>
-        ///     The release notes linke
+        ///     The release notes linked
         /// </summary>
-        public string ReleaseNotesLink { get; set; }
+        public string? ReleaseNotesLink { get; set; }
 
         /// <summary>
         ///     The download link
         /// </summary>
-        public string DownloadLink { get; set; }
+        public string? DownloadLink { get; set; }
 
         /// <summary>
         ///     The DSA signature
         /// </summary>
-        public string DSASignature { get; set; }
+        public string? DSASignature { get; set; }
 
         #region IComparable<NetSparkleAppCastItem> Members
 
@@ -46,8 +46,8 @@ namespace NetSparkle
         /// <returns>-1, 0, 1 if this instance is less than, equal to, or greater than the <paramref name="other" /></returns>
         public int CompareTo(NetSparkleAppCastItem other)
         {
-            var v1 = new Version(Version);
-            var v2 = new Version(other.Version);
+            var v1 = new Version(Version ?? throw new InvalidOperationException());
+            var v2 = new Version(other.Version ?? throw new InvalidOperationException());
 
             return v1.CompareTo(v2);
         }

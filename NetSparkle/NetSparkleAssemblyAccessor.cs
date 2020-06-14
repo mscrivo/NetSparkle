@@ -13,10 +13,10 @@ namespace NetSparkle
         ///     Constructor
         /// </summary>
         /// <param name="assemblyName">the assembly name</param>
-        /// <param name="isReflectionAccesorUsed"><c>true</c> if reflection is used to access the attributes.</param>
-        public NetSparkleAssemblyAccessor(string assemblyName, bool isReflectionAccesorUsed)
+        /// <param name="isReflectionAccessorUsed"><c>true</c> if reflection is used to access the attributes.</param>
+        public NetSparkleAssemblyAccessor(string? assemblyName, bool isReflectionAccessorUsed)
         {
-            if (isReflectionAccesorUsed)
+            if (isReflectionAccessorUsed)
             {
                 _internalAccessor = new NetSparkleAssemblyReflectionAccessor(assemblyName);
             }

@@ -11,7 +11,7 @@ namespace NetSparkle
     /// </summary>
     public sealed class NetSparkleDSAVerificator : IDisposable
     {
-        private readonly DSACryptoServiceProvider _provider;
+        private readonly DSACryptoServiceProvider? _provider;
 
         /// <summary>
         ///     Constructor
@@ -87,7 +87,7 @@ namespace NetSparkle
         /// </summary>
         /// <param name="publicKey">the public key</param>
         /// <returns>the data stream</returns>
-        private static Stream TryGetFileResource(string publicKey)
+        private static Stream? TryGetFileResource(string publicKey)
         {
             if (File.Exists(publicKey))
             {
@@ -101,7 +101,7 @@ namespace NetSparkle
         /// </summary>
         /// <param name="publicKey">the public key</param>
         /// <returns>a stream</returns>
-        private static Stream TryGetResourceStream(string publicKey)
+        private static Stream? TryGetResourceStream(string publicKey)
         {
             Stream data = null;
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
@@ -134,7 +134,7 @@ namespace NetSparkle
             if (disposing)
             {
                 // free managed resources
-                _provider.Dispose();
+                _provider?.Dispose();
             }
 
             // free native resources if there are any.

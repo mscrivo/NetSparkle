@@ -18,12 +18,12 @@ namespace NetSparkle
         /// </summary>
         /// <param name="referenceAssembly">the name of hte reference assembly</param>
         /// <param name="isReflectionBasedAssemblyAccessorUsed"><c>true</c> if reflection is used to access the assembly.</param>
-        protected NetSparkleConfiguration(string referenceAssembly, bool isReflectionBasedAssemblyAccessorUsed = true)
+        protected NetSparkleConfiguration(string? referenceAssembly, bool isReflectionBasedAssemblyAccessorUsed = true)
         {
             // set the value
             UseReflectionBasedAssemblyAccessor = isReflectionBasedAssemblyAccessorUsed;
 
-            // save the referecne assembly
+            // save the reference assembly
             ReferenceAssembly = referenceAssembly;
 
             // set default values
@@ -66,17 +66,12 @@ namespace NetSparkle
         /// <summary>
         ///     The last-skipped version number
         /// </summary>
-        public string SkipThisVersion { get; protected set; }
+        public string? SkipThisVersion { get; protected set; }
 
         /// <summary>
         ///     The application ran once
         /// </summary>
         public bool DidRunOnce { get; protected set; }
-
-        /// <summary>
-        ///     Flag to indicate showing the diagnostic window
-        /// </summary>
-        public bool ShowDiagnosticWindow { get; protected set; }
 
         /// <summary>
         ///     Last profile update
@@ -93,7 +88,7 @@ namespace NetSparkle
         /// <summary>
         ///     The reference assembly name
         /// </summary>
-        protected string ReferenceAssembly { get; set; }
+        protected string? ReferenceAssembly { get; set; }
 
         /// <summary>
         ///     Touches to profile time

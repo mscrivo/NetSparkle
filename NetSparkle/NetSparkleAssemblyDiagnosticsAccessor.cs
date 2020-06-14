@@ -12,7 +12,7 @@ namespace NetSparkle
         ///     Constructor
         /// </summary>
         /// <param name="assemblyName">the assembly name</param>
-        public NetSparkleAssemblyDiagnosticsAccessor(string assemblyName)
+        public NetSparkleAssemblyDiagnosticsAccessor(string? assemblyName)
         {
             if (assemblyName != null)
             {
@@ -30,32 +30,32 @@ namespace NetSparkle
         /// <summary>
         ///     Gets the Title
         /// </summary>
-        public string AssemblyTitle { get; }
+        public string? AssemblyTitle { get; }
 
         /// <summary>
         ///     Gets the version
         /// </summary>
-        public string AssemblyVersion { get; }
+        public string? AssemblyVersion { get; }
 
         /// <summary>
         ///     Gets the description
         /// </summary>
-        public string AssemblyDescription { get; }
+        public string? AssemblyDescription { get; }
 
         /// <summary>
         ///     gets the product
         /// </summary>
-        public string AssemblyProduct { get; }
+        public string? AssemblyProduct { get; }
 
         /// <summary>
         ///     Gets the copyright
         /// </summary>
-        public string AssemblyCopyright { get; }
+        public string? AssemblyCopyright { get; }
 
         /// <summary>
         ///     Gets the company
         /// </summary>
-        public string AssemblyCompany { get; }
+        public string? AssemblyCompany { get; }
 
         #endregion
     }

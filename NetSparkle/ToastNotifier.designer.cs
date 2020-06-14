@@ -78,7 +78,7 @@ namespace NetSparkle
             this._callToAction.TabIndex = 4;
             this._callToAction.TabStop = true;
             this._callToAction.Text = "linkLabel1";
-            this._callToAction.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.callToAction_LinkClicked);
+            this._callToAction.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.CallToAction_LinkClicked);
             this._callToAction.Click += new System.EventHandler(this.ToastNotifier_Click);
             // 
             // ToastNotifier

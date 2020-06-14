@@ -13,16 +13,16 @@ namespace NetSparkle
     /// </summary>
     public class NetSparkleAssemblyReflectionAccessor : INetSparkleAssemblyAccessor
     {
-        private readonly Assembly _assembly;
+        private readonly Assembly? _assembly;
         private readonly List<Attribute> _assemblyAttributes = new List<Attribute>();
 
         /// <summary>
         ///     Constructor
         /// </summary>
         /// <param name="assemblyName">the assembly name</param>
-        public NetSparkleAssemblyReflectionAccessor(string assemblyName)
+        public NetSparkleAssemblyReflectionAccessor(string? assemblyName)
         {
-            if (assemblyName == null)
+            if (string.IsNullOrEmpty(assemblyName))
             {
                 _assembly = Assembly.GetEntryAssembly();
             }
@@ -64,7 +64,7 @@ namespace NetSparkle
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private Attribute CreateAttribute(CustomAttributeData data)
+        private static Attribute? CreateAttribute(CustomAttributeData data)
         {
             var arguments = from arg in data.ConstructorArguments
                             select arg.Value;
@@ -105,7 +105,7 @@ namespace NetSparkle
                 }
             }
 
-            throw new Exception("Attribute of type " + attributeType + " does not exists in the assembly " + _assembly.FullName);
+            throw new Exception("Attribute of type " + attributeType + " does not exists in the assembly " + _assembly?.FullName);
         }
 
         #region Assembly Attribute Accessors
@@ -113,7 +113,7 @@ namespace NetSparkle
         /// <summary>
         ///     Gets the assembly title
         /// </summary>
-        public string AssemblyTitle
+        public string? AssemblyTitle
         {
             get
             {
@@ -138,7 +138,7 @@ namespace NetSparkle
         /// <summary>
         ///     Gets the description
         /// </summary>
-        public string AssemblyDescription
+        public string? AssemblyDescription
         {
             get
             {
@@ -150,7 +150,7 @@ namespace NetSparkle
         /// <summary>
         ///     Gets the product
         /// </summary>
-        public string AssemblyProduct
+        public string? AssemblyProduct
         {
             get
             {
@@ -162,7 +162,7 @@ namespace NetSparkle
         /// <summary>
         ///     Gets the copyright
         /// </summary>
-        public string AssemblyCopyright
+        public string? AssemblyCopyright
         {
             get
             {
@@ -174,7 +174,7 @@ namespace NetSparkle
         /// <summary>
         ///     Gets the company
         /// </summary>
-        public string AssemblyCompany
+        public string? AssemblyCompany
         {
             get
             {

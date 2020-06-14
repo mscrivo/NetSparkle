@@ -34,9 +34,9 @@ namespace NetSparkle
         ///     Gets the latest version
         /// </summary>
         /// <returns>the AppCast item corresponding to the latest version</returns>
-        public NetSparkleAppCastItem GetLatestVersion()
+        public NetSparkleAppCastItem? GetLatestVersion()
         {
-            NetSparkleAppCastItem latestVersion;
+            NetSparkleAppCastItem? latestVersion;
 
             if (_castUrl.StartsWith("file://")) //handy for testing
             {
@@ -57,13 +57,18 @@ namespace NetSparkle
                 latestVersion = ReadAppCast(reader, null, _config.InstalledVersion);
             }
 
-            latestVersion.AppName = _config.ApplicationName;
-            latestVersion.AppVersionInstalled = _config.InstalledVersion;
-            return latestVersion;
+            if (latestVersion != null)
+            {
+                latestVersion.AppName = _config.ApplicationName;
+                latestVersion.AppVersionInstalled = _config.InstalledVersion;
+                return latestVersion;
+            }
+
+            return null;
         }
 
-        private static NetSparkleAppCastItem ReadAppCast(XmlReader reader,
-            NetSparkleAppCastItem latestVersion,
+        private static NetSparkleAppCastItem? ReadAppCast(XmlReader reader,
+            NetSparkleAppCastItem? latestVersion,
             string installedVersion)
         {
             NetSparkleAppCastItem currentItem = null;

@@ -25,7 +25,7 @@ namespace NetSparkle
         /// </summary>
         /// <param name="referenceAssembly">the name of hte reference assembly</param>
         /// <param name="isReflectionBasedAssemblyAccessorUsed"><c>true</c> if reflection is used to access the assembly.</param>
-        public NetSparkleRegistryConfiguration(string referenceAssembly, bool isReflectionBasedAssemblyAccessorUsed = true) : base(referenceAssembly, isReflectionBasedAssemblyAccessorUsed)
+        public NetSparkleRegistryConfiguration(string? referenceAssembly, bool isReflectionBasedAssemblyAccessorUsed = true) : base(referenceAssembly, isReflectionBasedAssemblyAccessorUsed)
         {
             try
             {
@@ -126,14 +126,14 @@ namespace NetSparkle
             var strLastCheckTime = key.GetValue("LastCheckTime", ConvertDateToString(new DateTime(0))) as string;
             var strSkipThisVersion = key.GetValue("SkipThisVersion", "") as string;
             var strDidRunOnc = key.GetValue("DidRunOnce", "False") as string;
-            var strShowDiagnosticWindow = key.GetValue("ShowDiagnosticWindow", "False") as string;
             var strProfileTime = key.GetValue("LastProfileUpdate", ConvertDateToString(new DateTime(0))) as string;
 
             // convert the right datatypes
             CheckForUpdate = Convert.ToBoolean(strCheckForUpdate);
             try
             {
-                LastCheckTime = ConvertStringToDate(strLastCheckTime);
+                LastCheckTime =
+                    ConvertStringToDate(strLastCheckTime ?? new DateTime(0).ToString(CultureInfo.InvariantCulture));
             }
             catch (FormatException)
             {
@@ -142,10 +142,9 @@ namespace NetSparkle
 
             SkipThisVersion = strSkipThisVersion;
             DidRunOnce = Convert.ToBoolean(strDidRunOnc);
-            ShowDiagnosticWindow = Convert.ToBoolean(strShowDiagnosticWindow);
             try
             {
-                LastProfileUpdate = ConvertStringToDate(strProfileTime);
+                LastProfileUpdate = ConvertStringToDate(strProfileTime ?? new DateTime(0).ToString(CultureInfo.InvariantCulture));
             }
             catch (FormatException)
             {
@@ -176,7 +175,11 @@ namespace NetSparkle
             // set the values
             key.SetValue("CheckForUpdate", strCheckForUpdate, RegistryValueKind.String);
             key.SetValue("LastCheckTime", strLastCheckTime, RegistryValueKind.String);
-            key.SetValue("SkipThisVersion", strSkipThisVersion, RegistryValueKind.String);
+            if (strSkipThisVersion != null)
+            {
+                key.SetValue("SkipThisVersion", strSkipThisVersion, RegistryValueKind.String);
+            }
+
             key.SetValue("DidRunOnce", strDidRunOnc, RegistryValueKind.String);
             key.SetValue("LastProfileUpdate", strProfileTime, RegistryValueKind.String);
         }

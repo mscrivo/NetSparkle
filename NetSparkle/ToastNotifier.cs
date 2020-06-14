@@ -37,7 +37,7 @@ namespace NetSparkle
         /// <summary>
         ///     The user clicked on the toast popup
         /// </summary>
-        public event EventHandler ToastClicked;
+        public event EventHandler? ToastClicked;
 
         private void PauseTimerTick(object sender, EventArgs e)
         {
@@ -92,7 +92,7 @@ namespace NetSparkle
             }
         }
 
-        private void ToastNotifier_Click(object sender, EventArgs e)
+        private void ToastNotifier_Click(object? sender, EventArgs e)
         {
             DialogResult = DialogResult.Yes;
             Close();
@@ -114,9 +114,9 @@ namespace NetSparkle
             Show();
         }
 
-        private void callToAction_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void CallToAction_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ToastNotifier_Click(null, null);
+            ToastNotifier_Click(sender, e);
         }
     }
 }

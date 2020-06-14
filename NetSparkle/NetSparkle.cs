@@ -53,15 +53,15 @@ namespace NetSparkle
         }
 #pragma warning restore 1591
         private readonly Icon _applicationIcon;
-        private readonly string _appReferenceAssembly;
+        private readonly string? _appReferenceAssembly;
         private readonly EventWaitHandle _exitHandle;
         private readonly EventWaitHandle _loopingHandle;
         private TimeSpan _checkFrequency;
         private bool _doInitialCheck;
-        private string _downloadTempFilePath;
+        private string? _downloadTempFilePath;
         private bool _forceInitialCheck;
-        private WebClient _webDownloadClient;
-        private BackgroundWorker _worker = new BackgroundWorker();
+        private WebClient? _webDownloadClient;
+        private BackgroundWorker? _worker = new BackgroundWorker();
 
         /// <summary>
         ///     ctor which needs the appcast url
@@ -74,12 +74,12 @@ namespace NetSparkle
         }
 
         /// <summary>
-        ///     ctor which needs the appcast url and a referenceassembly
+        ///     ctor which needs the appcast url and a reference assembly
         /// </summary>
         /// <param name="appcastUrl">the URL for the appcast file</param>
         /// <param name="applicationIcon">If you're invoking this from a form, this would be this.Icon</param>
         /// <param name="referenceAssembly">the name of the assembly to use for comparison</param>
-        public Sparkle(string appcastUrl, Icon applicationIcon, string referenceAssembly) : this(appcastUrl, applicationIcon, referenceAssembly, new DefaultNetSparkleUIFactory())
+        public Sparkle(string appcastUrl, Icon applicationIcon, string? referenceAssembly) : this(appcastUrl, applicationIcon, referenceAssembly, new DefaultNetSparkleUIFactory())
         {
         }
 
@@ -90,7 +90,7 @@ namespace NetSparkle
         /// <param name="applicationIcon">If you're invoking this from a form, this would be this.Icon</param>
         /// <param name="referenceAssembly">the name of the assembly to use for comparison</param>
         /// <param name="factory">UI factory to use</param>
-        public Sparkle(string appcastUrl, Icon applicationIcon, string referenceAssembly, INetSparkleUIFactory factory)
+        public Sparkle(string appcastUrl, Icon applicationIcon, string? referenceAssembly, INetSparkleUIFactory factory)
         {
             _applicationIcon = applicationIcon;
 
@@ -115,7 +115,7 @@ namespace NetSparkle
             }
 
             // adjust the delegates
-            _worker.WorkerReportsProgress = true;
+            _worker!.WorkerReportsProgress = true;
             _worker.DoWork += OnWorkerDoWork;
             _worker.ProgressChanged += OnWorkerProgressChanged;
 
@@ -140,29 +140,29 @@ namespace NetSparkle
         /// <summary>
         ///     Subscribe to this to get a chance to shut down gracefully before quiting
         /// </summary>
-        public event CancelEventHandler AboutToExitForInstallerRun;
+        public event CancelEventHandler? AboutToExitForInstallerRun;
 
         /// <summary>
         ///     This event will be raised when a check loop will be started
         /// </summary>
-        public event LoopStartedOperation CheckLoopStarted;
+        public event LoopStartedOperation? CheckLoopStarted;
 
         /// <summary>
         ///     This event will be raised when a check loop is finished
         /// </summary>
-        public event LoopFinishedOperation CheckLoopFinished;
+        public event LoopFinishedOperation? CheckLoopFinished;
 
         /// <summary>
         ///     This event can be used to override the standard user interface
         ///     process when an update is detected
         /// </summary>
-        public event UpdateDetected UpdateDetected;
+        public event UpdateDetected? UpdateDetected;
 
         /// <summary>
         ///     This event will be raised when the update window is shown to the user but they've
         ///     opted to skip the update or dismiss it.
         /// </summary>
-        public event EventHandler UpdateWindowDismissed;
+        public event EventHandler? UpdateWindowDismissed;
 
         /// <summary>
         ///     The app will check once, after the app settles down.
@@ -229,7 +229,7 @@ namespace NetSparkle
             ReportDiagnosticMessage("Starting background worker");
 
             // start the work
-            _worker.RunWorkerAsync();
+            _worker?.RunWorkerAsync();
         }
 
         /// <summary>
@@ -247,10 +247,13 @@ namespace NetSparkle
         /// </summary>
         private void UnregisterEvents()
         {
-            ServicePointManager.ServerCertificateValidationCallback -= RemoteCertificateValidation;
-            _worker.DoWork -= OnWorkerDoWork;
-            _worker.ProgressChanged -= OnWorkerProgressChanged;
-            _worker.Dispose();
+            if (_worker != null)
+            {
+                _worker.DoWork -= OnWorkerDoWork;
+                _worker.ProgressChanged -= OnWorkerProgressChanged;
+                _worker.Dispose();
+            }
+
             _worker = null;
 
             if (_webDownloadClient != null)
@@ -351,7 +354,7 @@ namespace NetSparkle
         /// <param name="config">the configuration</param>
         /// <param name="latestVersion">returns the latest version</param>
         /// <returns><c>true</c> if an update is required</returns>
-        public UpdateStatus GetUpdateStatus(NetSparkleConfiguration config, out NetSparkleAppCastItem latestVersion)
+        public UpdateStatus GetUpdateStatus(NetSparkleConfiguration config, out NetSparkleAppCastItem? latestVersion)
         {
             // report
             ReportDiagnosticMessage("Downloading and checking appcast");
@@ -385,7 +388,7 @@ namespace NetSparkle
             config.TouchCheckTime();
 
             // check if the available update has to be skipped
-            if (latestVersion.Version.Equals(config.SkipThisVersion))
+            if (latestVersion.Version != null && latestVersion.Version.Equals(config.SkipThisVersion))
             {
                 ReportDiagnosticMessage("Latest update has to be skipped (user decided to skip version " + config.SkipThisVersion + ")");
                 return UpdateStatus.UserSkipped;
@@ -393,7 +396,7 @@ namespace NetSparkle
 
             // check if the version will be the same then the installed version
             var v1 = new Version(config.InstalledVersion);
-            var v2 = new Version(latestVersion.Version);
+            var v2 = new Version(latestVersion.Version ?? throw new InvalidOperationException());
 
             if (v2 <= v1)
             {
@@ -423,7 +426,7 @@ namespace NetSparkle
         /// </summary>
         /// <param name="currentItem">the item to show the UI for</param>
         /// <param name="useNotificationToast"> </param>
-        public void ShowUpdateNeededUI(NetSparkleAppCastItem currentItem, bool useNotificationToast)
+        public void ShowUpdateNeededUI(NetSparkleAppCastItem? currentItem, bool useNotificationToast)
         {
             if (useNotificationToast)
             {
@@ -440,7 +443,7 @@ namespace NetSparkle
             ShowUpdateNeededUIInner((NetSparkleAppCastItem)((Control)sender).Tag);
         }
 
-        private void ShowUpdateNeededUIInner(NetSparkleAppCastItem currentItem)
+        private void ShowUpdateNeededUIInner(NetSparkleAppCastItem? currentItem)
         {
             UserWindow ??= UIFactory.CreateSparkleForm(currentItem, _applicationIcon);
 
@@ -472,7 +475,7 @@ namespace NetSparkle
         private void InitDownloadAndInstallProcess(NetSparkleAppCastItem item)
         {
             // get the filename of the download lin
-            var segments = item.DownloadLink.Split('/');
+            var segments = item.DownloadLink!.Split('/');
             var fileName = segments[^1];
 
             // get temp path
@@ -546,11 +549,11 @@ namespace NetSparkle
             string installerCmd;
             try
             {
-                installerCmd = GetInstallerCommand(_downloadTempFilePath);
+                installerCmd = GetInstallerCommand(_downloadTempFilePath!);
             }
             catch (InvalidDataException)
             {
-                UIFactory.ShowUnknownInstallerFormatMessage(_downloadTempFilePath);
+                UIFactory.ShowUnknownInstallerFormatMessage(_downloadTempFilePath!);
                 return;
             }
 
@@ -681,12 +684,12 @@ namespace NetSparkle
             UpdateSystemProfileInformation(config);
 
             // check if update is required
-            var updateStatus = GetUpdateStatus(config, out NetSparkleAppCastItem latestVersion);
+            var updateStatus = GetUpdateStatus(config, out var latestVersion);
             if (updateStatus == UpdateStatus.UpdateAvailable)
             {
                 // show the update window
                 ReportDiagnosticMessage("Update needed from version " + config.InstalledVersion + " to version " +
-                                        latestVersion.Version);
+                                        latestVersion?.Version);
 
                 var ev = new UpdateDetectedEventArgs
                 {
@@ -700,7 +703,7 @@ namespace NetSparkle
                 {
                     UpdateDetected(this, ev);
                 }
-                //otherwise just go forward with the UI notficiation
+                //otherwise just go forward with the UI notification
                 else
                 {
                     ShowUpdateNeededUI(latestVersion, useNotificationToast);
@@ -713,7 +716,7 @@ namespace NetSparkle
         ///     Updates from appcast
         /// </summary>
         /// <param name="currentItem">the current (top-most) item in the app-cast</param>
-        private void Update(NetSparkleAppCastItem currentItem)
+        private void Update(NetSparkleAppCastItem? currentItem)
         {
             if (currentItem != null)
             {
@@ -747,19 +750,22 @@ namespace NetSparkle
         /// <param name="e">not used.</param>
         private void OnUserWindowUserResponded(object sender, EventArgs e)
         {
-            if (UserWindow.Result == DialogResult.No)
+            if (UserWindow != null && UserWindow.Result == DialogResult.No)
             {
                 // skip this version
 
                 var config = GetApplicationConfig();
-                config.SetVersionToSkip(UserWindow.CurrentItem.Version);
+                config.SetVersionToSkip(UserWindow!.CurrentItem?.Version!);
 
                 UpdateWindowDismissed?.Invoke(this, e);
             }
-            else if (UserWindow.Result == DialogResult.Yes)
+            else if (UserWindow != null && UserWindow.Result == DialogResult.Yes)
             {
                 // download the binaries
-                InitDownloadAndInstallProcess(UserWindow.CurrentItem);
+                if (UserWindow.CurrentItem != null)
+                {
+                    InitDownloadAndInstallProcess(UserWindow!.CurrentItem);
+                }
             }
             else
             {
@@ -854,14 +860,14 @@ namespace NetSparkle
                 UpdateSystemProfileInformation(config);
 
                 // check if update is required
-                bUpdateRequired = UpdateStatus.UpdateAvailable == GetUpdateStatus(config, out NetSparkleAppCastItem latestVersion);
+                bUpdateRequired = UpdateStatus.UpdateAvailable == GetUpdateStatus(config, out var latestVersion);
                 if (!bUpdateRequired)
                 {
                     goto WaitSection;
                 }
 
                 // show the update window
-                ReportDiagnosticMessage("Update needed from version " + config.InstalledVersion + " to version " + latestVersion.Version);
+                ReportDiagnosticMessage("Update needed from version " + config.InstalledVersion + " to version " + latestVersion?.Version);
 
                 // send notification if needed
                 var ev = new UpdateDetectedEventArgs { NextAction = NextUpdateAction.ShowStandardUserInterface, ApplicationConfig = config, LatestVersion = latestVersion };
@@ -872,9 +878,9 @@ namespace NetSparkle
                 {
                     case NextUpdateAction.PerformUpdateUnattended:
                         {
-                            ReportDiagnosticMessage("Unattended update whished from consumer");
+                            ReportDiagnosticMessage("Unattended update wished from consumer");
                             EnableSilentMode = true;
-                            _worker.ReportProgress(1, latestVersion);
+                            _worker?.ReportProgress(1, latestVersion);
                             break;
                         }
                     case NextUpdateAction.ProhibitUpdate:
@@ -885,7 +891,7 @@ namespace NetSparkle
                     default:
                         {
                             ReportDiagnosticMessage("Showing Standard Update UI");
-                            _worker.ReportProgress(1, latestVersion);
+                            _worker?.ReportProgress(1, latestVersion);
                             break;
                         }
                 }
@@ -950,7 +956,7 @@ namespace NetSparkle
                     Update(e.UserState as NetSparkleAppCastItem);
                     break;
                 case 0:
-                    ReportDiagnosticMessage(e.UserState.ToString());
+                    ReportDiagnosticMessage(e.UserState.ToString() ?? string.Empty);
                     break;
             }
         }
@@ -965,7 +971,7 @@ namespace NetSparkle
             if (e.Error != null)
             {
                 UIFactory.ShowDownloadErrorMessage(e.Error.Message);
-                ProgressWindow.ForceClose();
+                ProgressWindow?.ForceClose();
                 return;
             }
 
@@ -982,13 +988,13 @@ namespace NetSparkle
                 if (File.Exists(_downloadTempFilePath))
                 {
                     // check if the file was downloaded successfully
-                    var absolutePath = Path.GetFullPath(_downloadTempFilePath);
+                    var absolutePath = Path.GetFullPath(_downloadTempFilePath!);
                     if (!File.Exists(absolutePath))
                     {
                         throw new FileNotFoundException();
                     }
 
-                    if (UserWindow.CurrentItem.DSASignature == null)
+                    if (UserWindow?.CurrentItem?.DSASignature == null)
                     {
                         isDSAOk = true; // REVIEW. The correct logic, seems to me, is that if the existing, running version of the app
                         //had no DSA, and the appcast didn't specify one, then it's ok that the one we've just 
@@ -1039,7 +1045,7 @@ namespace NetSparkle
         /// <summary>
         ///     Contains the profile url for System profiling
         /// </summary>
-        public Uri SystemProfileUrl => null;
+        public Uri? SystemProfileUrl => null;
 
         /// <summary>
         ///     This property enables the silent mode, this means
@@ -1080,18 +1086,18 @@ namespace NetSparkle
         ///     The user interface window that shows the release notes and
         ///     asks the user to skip, later or update
         /// </summary>
-        public INetSparkleForm UserWindow { get; set; }
+        public INetSparkleForm? UserWindow { get; set; }
 
         /// <summary>
         ///     The user interface window that shows a download progress bar,
         ///     and then asks to install and relaunch the application
         /// </summary>
-        public INetSparkleDownloadProgress ProgressWindow { get; set; }
+        public INetSparkleDownloadProgress? ProgressWindow { get; set; }
 
         /// <summary>
         ///     The configuration.
         /// </summary>
-        public NetSparkleConfiguration Configuration { get; set; }
+        public NetSparkleConfiguration? Configuration { get; set; }
 
         /// <summary>
         ///     Gets or sets the app cast URL

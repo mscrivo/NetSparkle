@@ -50,7 +50,7 @@ namespace NetSparkle
         /// <summary>
         ///     event to fire when the form asks the application to be relaunched
         /// </summary>
-        public event EventHandler InstallAndRelaunch;
+        public event EventHandler? InstallAndRelaunch;
 
         /// <summary>
         ///     Show the UI and waits
