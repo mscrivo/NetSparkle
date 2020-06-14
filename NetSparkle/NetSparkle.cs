@@ -5,9 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
-using System.Net.Security;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -64,22 +62,12 @@ namespace NetSparkle
         private BackgroundWorker? _worker = new BackgroundWorker();
 
         /// <summary>
-        ///     ctor which needs the appcast url
-        /// </summary>
-        /// <param name="appcastUrl">the URL for the appcast file</param>
-        /// <param name="applicationIcon">If you're invoking this from a form, this would be this.Icon</param>
-        public Sparkle(string appcastUrl, Icon applicationIcon)
-            : this(appcastUrl, applicationIcon, null)
-        {
-        }
-
-        /// <summary>
         ///     ctor which needs the appcast url and a reference assembly
         /// </summary>
         /// <param name="appcastUrl">the URL for the appcast file</param>
         /// <param name="applicationIcon">If you're invoking this from a form, this would be this.Icon</param>
         /// <param name="referenceAssembly">the name of the assembly to use for comparison</param>
-        public Sparkle(string appcastUrl, Icon applicationIcon, string? referenceAssembly) : this(appcastUrl, applicationIcon, referenceAssembly, new DefaultNetSparkleUIFactory())
+        public Sparkle(string appcastUrl, Icon applicationIcon, string? referenceAssembly = null) : this(appcastUrl, applicationIcon, referenceAssembly, new DefaultNetSparkleUIFactory())
         {
         }
 
