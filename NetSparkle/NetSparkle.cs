@@ -96,12 +96,6 @@ namespace NetSparkle
 
             UIFactory = factory;
 
-            // preconfige ssl trust
-            TrustEverySSLConnection = false;
-
-            // configure ssl cert link
-            ServicePointManager.ServerCertificateValidationCallback += RemoteCertificateValidation;
-
             // init UI
             UIFactory.Init();
 
@@ -604,37 +598,6 @@ namespace NetSparkle
         }
 
         /// <summary>
-        ///     Determine if the remote X509 certificate is validate
-        /// </summary>
-        /// <param name="sender">the web request</param>
-        /// <param name="certificate">the certificate</param>
-        /// <param name="chain">the chain</param>
-        /// <param name="sslPolicyErrors">how to handle policy errors</param>
-        /// <returns><c>true</c> if the cert is valid</returns>
-        private bool RemoteCertificateValidation(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-        {
-            var cert2 = certificate as X509Certificate2;
-            if (TrustEverySSLConnection)
-            {
-                // verify if we talk about our app cast dll 
-                if (!(sender is HttpWebRequest req))
-                {
-                    return cert2 != null && cert2.Verify();
-                }
-
-                // if so just return our trust 
-                if (req.RequestUri.Equals(new Uri(AppcastUrl)))
-                {
-                    return true;
-                }
-
-                return cert2 != null && cert2.Verify();
-            }
-            // check our cert                 
-            return cert2 != null && cert2.Verify();
-        }
-
-        /// <summary>
         ///     Check for updates, using interaction appropriate for if the user just said "check for updates"
         /// </summary>
         public UpdateStatus CheckForUpdatesAtUserRequest()
@@ -1070,12 +1033,6 @@ namespace NetSparkle
         ///     and files when the loop is not running
         /// </summary>
         public bool IsUpdateLoopRunning => _loopingHandle.WaitOne(0);
-
-        /// <summary>
-        ///     This property defines if we trust every ssl connection also when
-        ///     this connection has not a valid cert
-        /// </summary>
-        public bool TrustEverySSLConnection { get; set; }
 
         /// <summary>
         ///     Factory for creating UI form like progress window etc.
