@@ -4,7 +4,7 @@ using System.Windows.Forms;
 namespace NetSparkle
 {
     /// <summary>
-    ///     Like a notification ballon, but more reliable "toast" because it slowly goes up, then down.
+    ///     Like a notification baloon, but more reliable "toast" because it slowly goes up, then down.
     ///     Subscribe to the Click even to know if the user clicked on it.
     /// </summary>
     public partial class ToastNotifier : Form
@@ -117,6 +117,23 @@ namespace NetSparkle
         private void CallToAction_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             ToastNotifier_Click(sender, e);
+        }
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                components?.Dispose();
+
+                _pauseTimer.Dispose();
+                _goDownTimer.Dispose();
+                _goUpTimer.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

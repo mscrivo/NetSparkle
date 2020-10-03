@@ -1,4 +1,8 @@
-﻿using MarkdownSharp;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using MarkdownSharp;
 using NetSparkle.Interfaces;
 using System;
 using System.Drawing;
@@ -174,6 +178,21 @@ namespace NetSparkle
 
             // close the dialog
             Close();
+        }
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+
+                _webBrowser.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

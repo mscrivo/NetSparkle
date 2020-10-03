@@ -98,12 +98,12 @@ namespace NetSparkle
             return "Software\\" + accessor.AssemblyCompany + "\\" + accessor.AssemblyProduct + "\\AutoUpdate";
         }
 
-        private string ConvertDateToString(DateTime dt)
+        private static string ConvertDateToString(DateTime dt)
         {
             return dt.ToString(DateTimeFormat, CultureInfo.InvariantCulture);
         }
 
-        private DateTime ConvertStringToDate(string str)
+        private static DateTime ConvertStringToDate(string str)
         {
             return DateTime.ParseExact(str, DateTimeFormat, CultureInfo.InvariantCulture);
         }
