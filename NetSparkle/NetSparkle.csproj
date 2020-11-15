@@ -23,6 +23,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent />
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <WarningsAsErrors />

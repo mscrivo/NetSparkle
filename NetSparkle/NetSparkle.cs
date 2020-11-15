@@ -847,7 +847,9 @@ namespace NetSparkle
                         }
                 }
 
+            #pragma warning disable format
             WaitSection:
+            #pragma warning restore format
                 // reset initialcheck
                 isInitialCheck = false;
 
