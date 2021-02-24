@@ -27,7 +27,7 @@ namespace NetSparkle
         /// </summary>
         internal static TempFile TrackExisting(string path)
         {
-            return new TempFile(path);
+            return new(path);
         }
 
         /// <summary>

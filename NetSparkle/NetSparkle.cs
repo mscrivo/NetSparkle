@@ -59,7 +59,7 @@ namespace NetSparkle
         private string? _downloadTempFilePath;
         private bool _forceInitialCheck;
         private WebClient? _webDownloadClient;
-        private BackgroundWorker? _worker = new BackgroundWorker();
+        private BackgroundWorker? _worker = new();
 
         /// <summary>
         ///     ctor which needs the appcast url and a reference assembly
@@ -909,7 +909,7 @@ namespace NetSparkle
                     Update(e.UserState as NetSparkleAppCastItem);
                     break;
                 case 0:
-                    ReportDiagnosticMessage(e.UserState.ToString() ?? string.Empty);
+                    ReportDiagnosticMessage(e.UserState?.ToString() ?? string.Empty);
                     break;
             }
         }

@@ -11,7 +11,7 @@ namespace NetSparkle
     /// </summary>
     public partial class NetSparkleDownloadProgress : Form, INetSparkleDownloadProgress
     {
-        private SizeF _currentScaleFactor = new SizeF(1f, 1f);
+        private SizeF _currentScaleFactor = new(1f, 1f);
 
         /// <summary>
         ///     Constructor
