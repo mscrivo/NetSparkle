@@ -41,7 +41,6 @@ namespace NetSparkle
         ///     The states of availability
         /// </summary>
         /// <paramater>UpdateAvailable</paramater>
-#pragma warning disable 1591
         public enum UpdateStatus
         {
             UpdateAvailable,
@@ -49,7 +48,6 @@ namespace NetSparkle
             UserSkipped,
             CouldNotDetermine
         }
-#pragma warning restore 1591
         private readonly Icon _applicationIcon;
         private readonly string? _appReferenceAssembly;
         private readonly EventWaitHandle _exitHandle;
@@ -445,7 +443,7 @@ namespace NetSparkle
         ///     This method reports a message in the diagnostic window
         /// </summary>
         /// <param name="message"></param>
-        public void ReportDiagnosticMessage(string message)
+        public static void ReportDiagnosticMessage(string message)
         {
             Debug.WriteLine("netsparkle: " + message);
         }
@@ -986,19 +984,19 @@ namespace NetSparkle
         /// <summary>
         ///     Enables system profiling against a profile server
         /// </summary>
-        public bool EnableSystemProfiling => false;
+        public static bool EnableSystemProfiling => false;
 
         /// <summary>
         ///     Hides the release notes view when an update was found. This
         ///     mode is switched on automatically when no sparkle:releaseNotesLink
         ///     tag was found in the app cast
         /// </summary>
-        public bool HideReleaseNotes => false;
+        public static bool HideReleaseNotes => false;
 
         /// <summary>
         ///     Contains the profile url for System profiling
         /// </summary>
-        public Uri? SystemProfileUrl => null;
+        public static Uri? SystemProfileUrl => null;
 
         /// <summary>
         ///     This property enables the silent mode, this means
