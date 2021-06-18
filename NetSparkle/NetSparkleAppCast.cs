@@ -53,7 +53,7 @@ namespace NetSparkle
                 // request the cast and build the stream
                 var response = request.GetResponse();
 
-                using var reader = new XmlTextReader(response.GetResponseStream());
+                using var reader = new XmlTextReader(response.GetResponseStream() ?? throw new InvalidOperationException());
                 latestVersion = ReadAppCast(reader, null, _config.InstalledVersion);
             }
 
@@ -80,57 +80,60 @@ namespace NetSparkle
 
             while (reader.Read())
             {
-                if (reader.NodeType == XmlNodeType.Element)
+                switch (reader.NodeType)
                 {
-                    switch (reader.Name)
-                    {
-                        case ItemNode:
-                            {
-                                currentItem = new NetSparkleAppCastItem();
-                                break;
-                            }
-                        case ReleaseNotesLinkNode:
-                            {
-                                if (currentItem != null)
+                    case XmlNodeType.Element:
+                        switch (reader.Name)
+                        {
+                            case ItemNode:
                                 {
-                                    currentItem.ReleaseNotesLink = reader.ReadString().Trim();
+                                    currentItem = new NetSparkleAppCastItem();
+                                    break;
                                 }
-
-                                break;
-                            }
-                        case EnclosureNode:
-                            {
-                                var deltaFrom = reader.GetAttribute(DeltaFromAttribute);
-                                if (deltaFrom == null || deltaFrom == installedVersionWithoutFourthSegment.ToString())
+                            case ReleaseNotesLinkNode:
                                 {
                                     if (currentItem != null)
                                     {
-                                        currentItem.Version = reader.GetAttribute(VersionAttribute);
-                                        currentItem.DownloadLink = reader.GetAttribute(UrlAttribute);
-                                        currentItem.DSASignature = reader.GetAttribute(DasSignature);
+                                        currentItem.ReleaseNotesLink = reader.ReadString().Trim();
                                     }
+
+                                    break;
                                 }
-                                break;
-                            }
-                    }
-                }
-                else if (reader.NodeType == XmlNodeType.EndElement)
-                {
-                    switch (reader.Name)
-                    {
-                        case ItemNode:
-                            {
-                                if (latestVersion == null)
+                            case EnclosureNode:
                                 {
-                                    latestVersion = currentItem;
+                                    var deltaFrom = reader.GetAttribute(DeltaFromAttribute);
+                                    if (deltaFrom == null || deltaFrom == installedVersionWithoutFourthSegment.ToString())
+                                    {
+                                        if (currentItem != null)
+                                        {
+                                            currentItem.Version = reader.GetAttribute(VersionAttribute);
+                                            currentItem.DownloadLink = reader.GetAttribute(UrlAttribute);
+                                            currentItem.DSASignature = reader.GetAttribute(DasSignature);
+                                        }
+                                    }
+                                    break;
                                 }
-                                else if (currentItem != null && currentItem.CompareTo(latestVersion) > 0)
+                        }
+
+                        break;
+                    case XmlNodeType.EndElement:
+                        switch (reader.Name)
+                        {
+                            case ItemNode:
                                 {
-                                    latestVersion = currentItem;
+                                    if (latestVersion == null)
+                                    {
+                                        latestVersion = currentItem;
+                                    }
+                                    else if (currentItem != null && currentItem.CompareTo(latestVersion) > 0)
+                                    {
+                                        latestVersion = currentItem;
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
-                    }
+                        }
+
+                        break;
                 }
             }
             return latestVersion;

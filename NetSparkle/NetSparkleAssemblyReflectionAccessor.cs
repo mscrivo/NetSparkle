@@ -97,12 +97,9 @@ namespace NetSparkle
 
         private Attribute FindAttribute(Type attributeType)
         {
-            foreach (var attr in _assemblyAttributes)
+            foreach (var attr in _assemblyAttributes.Where(attr => attr.GetType() == attributeType))
             {
-                if (attr.GetType() == attributeType)
-                {
-                    return attr;
-                }
+                return attr;
             }
 
             throw new Exception("Attribute of type " + attributeType + " does not exists in the assembly " + _assembly?.FullName);
@@ -131,7 +128,7 @@ namespace NetSparkle
             {
                 var assembly = Assembly.GetExecutingAssembly();
                 var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-                return fileVersionInfo.ProductVersion;
+                return fileVersionInfo.ProductVersion!;
             }
         }
 

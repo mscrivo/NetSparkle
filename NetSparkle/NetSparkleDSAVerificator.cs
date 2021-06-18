@@ -89,11 +89,7 @@ namespace NetSparkle
         /// <returns>the data stream</returns>
         private static Stream? TryGetFileResource(string publicKey)
         {
-            if (File.Exists(publicKey))
-            {
-                return File.OpenRead(publicKey);
-            }
-            return null;
+            return File.Exists(publicKey) ? File.OpenRead(publicKey) : null;
         }
 
         /// <summary>

@@ -4,9 +4,9 @@ using System.Windows.Forms;
 namespace NetSparkle
 {
     /// <summary>
-    ///     Like a notification baloon, but more reliable "toast" because it slowly goes up, then down.
+    ///     Like a notification balloon, but more reliable "toast" because it slowly goes up, then down.
     ///     Subscribe to the Click even to know if the user clicked on it.
-    /// </summary>
+    /// </summary>s
     public partial class ToastNotifier : Form
     {
         private readonly Timer _goDownTimer;

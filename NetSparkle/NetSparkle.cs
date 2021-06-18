@@ -292,7 +292,7 @@ namespace NetSparkle
         ///     Profile data thread
         /// </summary>
         /// <param name="obj">the configuration object</param>
-        private void ProfileDataThreadStart(object obj)
+        private static void ProfileDataThreadStart(object obj)
         {
             try
             {
@@ -686,7 +686,7 @@ namespace NetSparkle
         /// </summary>
         public void CancelInstall()
         {
-            if (_webDownloadClient != null && _webDownloadClient.IsBusy)
+            if (_webDownloadClient is { IsBusy: true })
             {
                 _webDownloadClient.CancelAsync();
             }
@@ -699,7 +699,7 @@ namespace NetSparkle
         /// <param name="e">not used.</param>
         private void OnUserWindowUserResponded(object sender, EventArgs e)
         {
-            if (UserWindow != null && UserWindow.Result == DialogResult.No)
+            if (UserWindow is { Result: DialogResult.No })
             {
                 // skip this version
 
@@ -708,7 +708,7 @@ namespace NetSparkle
 
                 UpdateWindowDismissed?.Invoke(this, e);
             }
-            else if (UserWindow != null && UserWindow.Result == DialogResult.Yes)
+            else if (UserWindow is { Result: DialogResult.Yes })
             {
                 // download the binaries
                 if (UserWindow.CurrentItem != null)
@@ -973,7 +973,7 @@ namespace NetSparkle
 
             if (EnableSilentMode)
             {
-                OnProgressWindowInstallAndRelaunch(this, new EventArgs());
+                OnProgressWindowInstallAndRelaunch(this, EventArgs.Empty);
             }
 
             ProgressWindow?.ChangeDownloadState(isDSAOk);

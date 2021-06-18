@@ -83,7 +83,7 @@ namespace NetSparkle
         ///     to determine the assmebly name and verison, otherwise a System.Diagnostics
         ///     based access will be used
         /// </summary>
-        public bool UseReflectionBasedAssemblyAccessor { get; protected set; }
+        protected bool UseReflectionBasedAssemblyAccessor { get; set; }
 
         /// <summary>
         ///     The reference assembly name

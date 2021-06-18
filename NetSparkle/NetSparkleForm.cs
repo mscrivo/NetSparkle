@@ -88,7 +88,7 @@ namespace NetSparkle
         void INetSparkleForm.Show()
         {
             ShowDialog();
-            UserResponded?.Invoke(this, new EventArgs());
+            UserResponded?.Invoke(this, EventArgs.Empty);
         }
 
         private void ShowMarkdownReleaseNotes(NetSparkleAppCastItem item)

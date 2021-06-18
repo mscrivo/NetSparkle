@@ -111,7 +111,7 @@ namespace NetSparkle
         /// <param name="e">not used.</param>
         private void OnInstallAndReLaunchClick(object sender, EventArgs e)
         {
-            InstallAndRelaunch?.Invoke(this, new EventArgs());
+            InstallAndRelaunch?.Invoke(this, EventArgs.Empty);
         }
     }
 }
