@@ -5,7 +5,7 @@
 using System;
 using System.Drawing;
 using System.IO;
-using System.Net;
+using System.Net.Http;
 using System.Windows.Forms;
 using MarkdownSharp;
 using NetSparkle.Interfaces;
@@ -41,7 +41,7 @@ namespace NetSparkle
 
             if (!string.IsNullOrEmpty(item.ReleaseNotesLink))
             {
-                ShowMarkdownReleaseNotes(item);
+                ShowMarkdownReleaseNotesAsync(item);
             }
             else
             {
@@ -91,7 +91,7 @@ namespace NetSparkle
             UserResponded?.Invoke(this, EventArgs.Empty);
         }
 
-        private void ShowMarkdownReleaseNotes(NetSparkleAppCastItem item)
+        private void ShowMarkdownReleaseNotesAsync(NetSparkleAppCastItem item)
         {
             string contents = null;
             if (item.ReleaseNotesLink != null && item.ReleaseNotesLink.StartsWith("file://")) //handy for testing
@@ -100,10 +100,13 @@ namespace NetSparkle
             }
             else
             {
-                using var webClient = new WebClient();
                 if (item.ReleaseNotesLink != null)
                 {
-                    contents = webClient.DownloadString(item.ReleaseNotesLink);
+                    using var webClient = new HttpClient();
+                    var webRequest = new HttpRequestMessage(HttpMethod.Get, item.ReleaseNotesLink);
+                    var response = webClient.Send(webRequest);
+                    using var reader = new StreamReader(response.Content.ReadAsStream());
+                    contents = reader.ReadToEnd();
                 }
             }
             var md = new Markdown();

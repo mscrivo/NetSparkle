@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Net;
 using System.Windows.Forms;
@@ -84,11 +85,10 @@ namespace NetSparkle
         /// <summary>
         ///     Event called when the client download progress changes
         /// </summary>
-        /// <param name="sender">not used.</param>
-        /// <param name="e">not used.</param>
-        public void OnClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        public void OnClientDownloadProgressChanged(long? totalFileSize, long totalBytesDownloaded, double? progressPercentage)
         {
-            progressDownload.Value = e.ProgressPercentage;
+            Debug.WriteLine(progressPercentage);
+            progressDownload.Value = Convert.ToInt32(progressPercentage);
         }
 
         /// <summary>

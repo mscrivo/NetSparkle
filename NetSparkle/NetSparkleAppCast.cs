@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Xml;
 
 namespace NetSparkle
@@ -47,13 +49,12 @@ namespace NetSparkle
             else
             {
                 // build a http web request stream
-                var request = WebRequest.Create(_castUrl);
-                request.UseDefaultCredentials = true;
+                var client = new HttpClient();
 
-                // request the cast and build the stream
-                var response = request.GetResponse();
+                var webRequest = new HttpRequestMessage(HttpMethod.Get, _castUrl);
+                var response = client.Send(webRequest);
 
-                using var reader = new XmlTextReader(response.GetResponseStream() ?? throw new InvalidOperationException());
+                using var reader = new XmlTextReader(response.Content.ReadAsStream());
                 latestVersion = ReadAppCast(reader, null, _config.InstalledVersion);
             }
 

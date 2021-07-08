@@ -25,6 +25,7 @@ namespace NetSparkle
             if (string.IsNullOrEmpty(assemblyName))
             {
                 _assembly = Assembly.GetEntryAssembly();
+                GetAssemblyAttributes();
             }
             else
             {
@@ -34,20 +35,15 @@ namespace NetSparkle
                     throw new FileNotFoundException();
                 }
 
-                _assembly = Assembly.ReflectionOnlyLoadFrom(absolutePath);
+                var resolver = new PathAssemblyResolver(new List<string> { absolutePath });
+                var mlc = new MetadataLoadContext(resolver);
 
-                if (_assembly == null)
+                using (mlc)
                 {
-                    throw new ArgumentNullException("Unable to load assembly " + absolutePath);
-                }
-            }
+                    var assembly = mlc.LoadFromAssemblyPath(absolutePath);
+                    var name = assembly.GetName();
 
-            // read the attributes            
-            if (_assembly != null)
-            {
-                foreach (var data in _assembly.GetCustomAttributesData())
-                {
-                    _assemblyAttributes.Add(CreateAttribute(data));
+                    GetAssemblyAttributes();
                 }
             }
 
@@ -55,6 +51,14 @@ namespace NetSparkle
             {
                 throw new ArgumentOutOfRangeException("Unable to load assembly attributes from " +
                                                       _assembly?.FullName);
+            }
+
+            void GetAssemblyAttributes()
+            {
+                foreach (var data in _assembly.GetCustomAttributesData())
+                {
+                    _assemblyAttributes.Add(CreateAttribute(data));
+                }
             }
         }
 

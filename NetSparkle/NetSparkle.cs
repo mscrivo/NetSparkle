@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using NetSparkle.Interfaces;
 
@@ -56,7 +58,7 @@ namespace NetSparkle
         private bool _doInitialCheck;
         private string? _downloadTempFilePath;
         private bool _forceInitialCheck;
-        private WebClient? _webDownloadClient;
+        private HttpClientDownloadWithProgress? _webDownloadClient;
         private BackgroundWorker? _worker = new();
 
         /// <summary>
@@ -240,9 +242,10 @@ namespace NetSparkle
             {
                 if (ProgressWindow != null)
                 {
-                    _webDownloadClient.DownloadProgressChanged -= ProgressWindow.OnClientDownloadProgressChanged;
+                    _webDownloadClient.ProgressChanged -= ProgressWindow.OnClientDownloadProgressChanged;
                 }
-                _webDownloadClient.DownloadFileCompleted -= OnWebDownloadClientDownloadFileCompleted;
+                _webDownloadClient.DownloadComplete -= OnDownloadComplete;
+
                 _webDownloadClient.Dispose();
                 _webDownloadClient = null;
             }
@@ -266,7 +269,7 @@ namespace NetSparkle
         ///     This method updates the profile information which can be sended to the server if enabled
         /// </summary>
         /// <param name="config">the configuration</param>
-        public void UpdateSystemProfileInformation(NetSparkleConfiguration config)
+        public static void UpdateSystemProfileInformation(NetSparkleConfiguration config)
         {
             // check if profile data is enabled
             if (!EnableSystemProfiling)
@@ -292,7 +295,7 @@ namespace NetSparkle
         ///     Profile data thread
         /// </summary>
         /// <param name="obj">the configuration object</param>
-        private static void ProfileDataThreadStart(object obj)
+        private static async void ProfileDataThreadStart(object obj)
         {
             try
             {
@@ -309,13 +312,8 @@ namespace NetSparkle
                     var requestUrl = inv.BuildRequestUrl(SystemProfileUrl + "?");
 
                     // perform the webrequest
-                    if (WebRequest.Create(requestUrl) is HttpWebRequest request)
-                    {
-                        request.UseDefaultCredentials = true;
-                        using (request.GetResponse())
-                        {
-                        }
-                    }
+                    var client = new HttpClient();
+                    using var response = await client.GetAsync(requestUrl);
                 }
             }
             catch (Exception ex)
@@ -471,23 +469,21 @@ namespace NetSparkle
 
             ProgressWindow.InstallAndRelaunch += OnProgressWindowInstallAndRelaunch;
 
-            // set up the download client
-            // start async download
-            if (_webDownloadClient != null)
+            try
             {
-                _webDownloadClient.DownloadProgressChanged -= ProgressWindow.OnClientDownloadProgressChanged;
-                _webDownloadClient.DownloadFileCompleted -= OnWebDownloadClientDownloadFileCompleted;
-                _webDownloadClient = null;
+                using var client = new HttpClientDownloadWithProgress(item.DownloadLink, _downloadTempFilePath);
+                client.ProgressChanged += ProgressWindow.OnClientDownloadProgressChanged;
+                client.DownloadComplete += OnDownloadComplete;
+
+                client.StartDownload();
+                ProgressWindow.ShowDialog();
             }
-
-            _webDownloadClient = new WebClient { UseDefaultCredentials = true };
-            _webDownloadClient.DownloadProgressChanged += ProgressWindow.OnClientDownloadProgressChanged;
-            _webDownloadClient.DownloadFileCompleted += OnWebDownloadClientDownloadFileCompleted;
-
-            var url = new Uri(item.DownloadLink);
-            _webDownloadClient.DownloadFileAsync(url, _downloadTempFilePath);
-
-            ProgressWindow.ShowDialog();
+            catch (Exception e)
+            {
+                UIFactory.ShowDownloadErrorMessage(e.Message);
+                ProgressWindow?.ForceClose();
+                return;
+            }
         }
 
         /// <summary>
@@ -686,10 +682,7 @@ namespace NetSparkle
         /// </summary>
         public void CancelInstall()
         {
-            if (_webDownloadClient is { IsBusy: true })
-            {
-                _webDownloadClient.CancelAsync();
-            }
+            _webDownloadClient.Cancel();
         }
 
         /// <summary>
@@ -915,57 +908,45 @@ namespace NetSparkle
         /// <summary>
         ///     Called when the installer is downloaded
         /// </summary>
-        /// <param name="sender">not used.</param>
-        /// <param name="e">used to determine if the download was successful.</param>
-        private void OnWebDownloadClientDownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        private void OnDownloadComplete()
         {
-            if (e.Error != null)
-            {
-                UIFactory.ShowDownloadErrorMessage(e.Error.Message);
-                ProgressWindow?.ForceClose();
-                return;
-            }
-
             // test the item for DSA signature
             var isDSAOk = false;
-            if (!e.Cancelled && e.Error == null)
+            ReportDiagnosticMessage("Finished downloading file to: " + _downloadTempFilePath);
+
+            // report
+            ReportDiagnosticMessage("Performing DSA check");
+
+            // get the assembly
+            if (File.Exists(_downloadTempFilePath))
             {
-                ReportDiagnosticMessage("Finished downloading file to: " + _downloadTempFilePath);
-
-                // report
-                ReportDiagnosticMessage("Performing DSA check");
-
-                // get the assembly
-                if (File.Exists(_downloadTempFilePath))
+                // check if the file was downloaded successfully
+                var absolutePath = Path.GetFullPath(_downloadTempFilePath!);
+                if (!File.Exists(absolutePath))
                 {
-                    // check if the file was downloaded successfully
-                    var absolutePath = Path.GetFullPath(_downloadTempFilePath!);
-                    if (!File.Exists(absolutePath))
-                    {
-                        throw new FileNotFoundException();
-                    }
+                    throw new FileNotFoundException();
+                }
 
-                    if (UserWindow?.CurrentItem?.DSASignature == null)
+                if (UserWindow?.CurrentItem?.DSASignature == null)
+                {
+                    isDSAOk = true; // REVIEW. The correct logic, seems to me, is that if the existing, running version of the app
+                                    //had no DSA, and the appcast didn't specify one, then it's ok that the one we've just 
+                                    //downloaded doesn't either. This may be just checking that the appcast didn't specify one. Is 
+                                    //that really enough? If someone can change what gets downloaded, can't they also change the appcast?
+                }
+                else
+                {
+                    // get the assembly reference from which we start the update progress
+                    // only from this trusted assembly the public key can be used
+                    var refassembly = Assembly.GetEntryAssembly();
+                    if (refassembly != null)
                     {
-                        isDSAOk = true; // REVIEW. The correct logic, seems to me, is that if the existing, running version of the app
-                        //had no DSA, and the appcast didn't specify one, then it's ok that the one we've just 
-                        //downloaded doesn't either. This may be just checking that the appcast didn't specify one. Is 
-                        //that really enough? If someone can change what gets downloaded, can't they also change the appcast?
-                    }
-                    else
-                    {
-                        // get the assembly reference from which we start the update progress
-                        // only from this trusted assembly the public key can be used
-                        var refassembly = Assembly.GetEntryAssembly();
-                        if (refassembly != null)
+                        // Check if we found the public key in our entry assembly
+                        if (NetSparkleDSAVerificator.ExistsPublicKey("NetSparkle_DSA.pub"))
                         {
-                            // Check if we found the public key in our entry assembly
-                            if (NetSparkleDSAVerificator.ExistsPublicKey("NetSparkle_DSA.pub"))
-                            {
-                                // check the DSA Code and modify the back color            
-                                using var dsaVerifier = new NetSparkleDSAVerificator("NetSparkle_DSA.pub");
-                                isDSAOk = dsaVerifier.VerifyDSASignature(UserWindow.CurrentItem.DSASignature, _downloadTempFilePath);
-                            }
+                            // check the DSA Code and modify the back color            
+                            using var dsaVerifier = new NetSparkleDSAVerificator("NetSparkle_DSA.pub");
+                            isDSAOk = dsaVerifier.VerifyDSASignature(UserWindow.CurrentItem.DSASignature, _downloadTempFilePath);
                         }
                     }
                 }

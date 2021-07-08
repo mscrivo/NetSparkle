@@ -22,9 +22,7 @@ namespace NetSparkle.Interfaces
         /// <summary>
         ///     Called when the download progress changes
         /// </summary>
-        /// <param name="sender">not used.</param>
-        /// <param name="e">used to resolve the progress of the download. Also contains the total size of the download</param>
-        void OnClientDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e);
+        void OnClientDownloadProgressChanged(long? totalFileSize, long totalBytesDownloaded, double? progressPercentage);
 
         /// <summary>
         ///     Force window close
