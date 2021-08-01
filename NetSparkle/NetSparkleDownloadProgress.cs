@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Net;
 using System.Windows.Forms;
 using NetSparkle.Interfaces;
 
