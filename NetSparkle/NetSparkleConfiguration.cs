@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NetSparkle
+﻿namespace NetSparkle
 {
     /// <summary>
     ///     Abstract class to handle
