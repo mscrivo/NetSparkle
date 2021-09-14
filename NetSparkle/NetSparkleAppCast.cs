@@ -1,4 +1,6 @@
-﻿using System.Xml;
+﻿using System;
+using System.Net.Http;
+using System.Xml;
 
 namespace NetSparkle
 {

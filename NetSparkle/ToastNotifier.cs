@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace NetSparkle
 {
@@ -8,9 +9,9 @@ namespace NetSparkle
     /// </summary>s
     public partial class ToastNotifier : Form
     {
-        private readonly System.Windows.Forms.Timer _goDownTimer;
-        private readonly System.Windows.Forms.Timer _goUpTimer;
-        private readonly System.Windows.Forms.Timer _pauseTimer;
+        private readonly Timer _goDownTimer;
+        private readonly Timer _goUpTimer;
+        private readonly Timer _pauseTimer;
         private int _startPosX;
         private int _startPosY;
 
@@ -25,11 +26,11 @@ namespace NetSparkle
             // Pop doesn't need to be shown in task bar
             ShowInTaskbar = false;
             // Create and run timer for animation
-            _goUpTimer = new System.Windows.Forms.Timer { Interval = 25 };
+            _goUpTimer = new Timer { Interval = 25 };
             _goUpTimer.Tick += GoUpTimerTick;
-            _goDownTimer = new System.Windows.Forms.Timer { Interval = 25 };
+            _goDownTimer = new Timer { Interval = 25 };
             _goDownTimer.Tick += GoDownTimerTick;
-            _pauseTimer = new System.Windows.Forms.Timer { Interval = 15000 };
+            _pauseTimer = new Timer { Interval = 15000 };
             _pauseTimer.Tick += PauseTimerTick;
         }
 

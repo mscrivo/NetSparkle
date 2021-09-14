@@ -1,4 +1,6 @@
-﻿namespace NetSparkle
+﻿using System;
+
+namespace NetSparkle
 {
     /// <summary>
     ///     Contains all information for the update detected event

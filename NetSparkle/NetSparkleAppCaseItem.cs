@@ -1,4 +1,6 @@
-﻿namespace NetSparkle
+﻿using System;
+
+namespace NetSparkle
 {
     /// <summary>
     ///     Item from a Sparkle AppCast file

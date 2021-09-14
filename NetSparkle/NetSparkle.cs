@@ -1,7 +1,11 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Net.Http;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using NetSparkle.Interfaces;
 

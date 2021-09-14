@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using NetSparkle.Interfaces;
 using NetSparkle.Properties;
