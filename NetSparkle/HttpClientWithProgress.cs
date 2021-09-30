@@ -45,7 +45,7 @@ namespace NetSparkle
 
             var totalBytes = response.Content.Headers.ContentLength;
 
-            using var contentStream = await response.Content.ReadAsStreamAsync();
+            await using var contentStream = await response.Content.ReadAsStreamAsync();
             await ProcessContentStream(totalBytes, contentStream);
         }
 
@@ -56,7 +56,7 @@ namespace NetSparkle
             var buffer = new byte[8192];
             var isMoreToRead = true;
 
-            using var fileStream = new FileStream(_destinationFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
+            await using var fileStream = new FileStream(_destinationFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
             do
             {
                 var bytesRead = await contentStream.ReadAsync(buffer);
@@ -82,9 +82,6 @@ namespace NetSparkle
 
         private void TriggerProgressChanged(long? totalDownloadSize, long totalBytesRead)
         {
-            if (ProgressChanged == null)
-                return;
-
             double? progressPercentage = null;
             if (totalDownloadSize.HasValue)
                 progressPercentage = Math.Round((double)totalBytesRead / totalDownloadSize.Value * 100, 2);
@@ -92,6 +89,6 @@ namespace NetSparkle
             ProgressChanged(totalDownloadSize, totalBytesRead, progressPercentage);
         }
 
-        public void Dispose() => _httpClient?.Dispose();
+        public void Dispose() => _httpClient.Dispose();
     }
 }

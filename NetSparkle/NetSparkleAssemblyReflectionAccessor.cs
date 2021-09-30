@@ -40,8 +40,7 @@ namespace NetSparkle
 
                 using (mlc)
                 {
-                    var assembly = mlc.LoadFromAssemblyPath(absolutePath);
-                    var name = assembly.GetName();
+                    _assembly = mlc.LoadFromAssemblyPath(absolutePath);
 
                     GetAssemblyAttributes();
                 }
