@@ -480,7 +480,6 @@ namespace NetSparkle
             {
                 UIFactory.ShowDownloadErrorMessage(e.Message);
                 ProgressWindow?.ForceClose();
-                return;
             }
         }
 
