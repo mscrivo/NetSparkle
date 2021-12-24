@@ -10,26 +10,25 @@ namespace NetSparkle
         private readonly string _downloadUrl;
         private readonly string _destinationFilePath;
 
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
         public delegate void ProgressChangedHandler(long? totalFileSize, long totalBytesDownloaded, double? progressPercentage);
 
-        public event ProgressChangedHandler ProgressChanged;
+        public event ProgressChangedHandler? ProgressChanged;
 
         public delegate void DownloadCompleteHandler();
 
-        public event DownloadCompleteHandler DownloadComplete;
+        public event DownloadCompleteHandler? DownloadComplete;
 
         public HttpClientDownloadWithProgress(string downloadUrl, string destinationFilePath)
         {
+            _httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
             _downloadUrl = downloadUrl;
             _destinationFilePath = destinationFilePath;
         }
 
         public async void StartDownload()
         {
-            _httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
-
             using var response = await _httpClient.GetAsync(_downloadUrl, HttpCompletionOption.ResponseHeadersRead);
             await DownloadFileFromHttpResponseMessage(response);
         }
