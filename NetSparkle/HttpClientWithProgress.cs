@@ -76,7 +76,7 @@ namespace NetSparkle
             }
             while (isMoreToRead);
 
-            DownloadComplete();
+            DownloadComplete?.Invoke();
         }
 
         private void TriggerProgressChanged(long? totalDownloadSize, long totalBytesRead)
@@ -85,7 +85,7 @@ namespace NetSparkle
             if (totalDownloadSize.HasValue)
                 progressPercentage = Math.Round((double)totalBytesRead / totalDownloadSize.Value * 100, 2);
 
-            ProgressChanged(totalDownloadSize, totalBytesRead, progressPercentage);
+            ProgressChanged?.Invoke(totalDownloadSize, totalBytesRead, progressPercentage);
         }
 
         public void Dispose() => _httpClient.Dispose();

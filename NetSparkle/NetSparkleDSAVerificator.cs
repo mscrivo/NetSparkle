@@ -113,13 +113,15 @@ namespace NetSparkle
                     continue;
                 }
                 var resourceName = resources.FirstOrDefault(s => s.IndexOf(publicKey, StringComparison.OrdinalIgnoreCase) > -1);
-                if (!string.IsNullOrEmpty(resourceName))
+                if (string.IsNullOrEmpty(resourceName))
                 {
-                    data = asm.GetManifestResourceStream(resourceName);
-                    if (data != null)
-                    {
-                        break;
-                    }
+                    continue;
+                }
+
+                data = asm.GetManifestResourceStream(resourceName);
+                if (data != null)
+                {
+                    break;
                 }
             }
             return data;

@@ -95,12 +95,14 @@ namespace NetSparkle
         /// </summary>
         private void UpdateDownloadValid(bool signatureValid)
         {
-            if (!signatureValid)
+            if (signatureValid)
             {
-                Size = new Size(Size.Width, (int)(137 * _currentScaleFactor.Height));
-                lblSecurityHint.Visible = true;
-                BackColor = Color.Tomato;
+                return;
             }
+
+            Size = new Size(Size.Width, (int)(137 * _currentScaleFactor.Height));
+            lblSecurityHint.Visible = true;
+            BackColor = Color.Tomato;
         }
 
         /// <summary>

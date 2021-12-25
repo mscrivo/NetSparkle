@@ -56,14 +56,15 @@ namespace NetSparkle
                 latestVersion = ReadAppCast(reader, null, _config.InstalledVersion);
             }
 
-            if (latestVersion != null)
+            if (latestVersion == null)
             {
-                latestVersion.AppName = _config.ApplicationName;
-                latestVersion.AppVersionInstalled = _config.InstalledVersion;
-                return latestVersion;
+                return null;
             }
 
-            return null;
+            latestVersion.AppName = _config.ApplicationName;
+            latestVersion.AppVersionInstalled = _config.InstalledVersion;
+            return latestVersion;
+
         }
 
         private static NetSparkleAppCastItem? ReadAppCast(XmlReader reader,

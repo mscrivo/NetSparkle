@@ -297,22 +297,24 @@ namespace NetSparkle
         {
             try
             {
-                if (SystemProfileUrl != null)
+                if (SystemProfileUrl == null)
                 {
-                    // get the config
-                    var config = obj as NetSparkleConfiguration;
-
-                    // collect data
-                    var inv = new NetSparkleDeviceInventory(config);
-                    inv.CollectInventory();
-
-                    // build url
-                    var requestUrl = inv.BuildRequestUrl(SystemProfileUrl + "?");
-
-                    // perform the webrequest
-                    var client = new HttpClient();
-                    using var response = await client.GetAsync(requestUrl);
+                    return;
                 }
+
+                // get the config
+                var config = obj as NetSparkleConfiguration;
+
+                // collect data
+                var inv = new NetSparkleDeviceInventory(config);
+                inv.CollectInventory();
+
+                // build url
+                var requestUrl = inv.BuildRequestUrl(SystemProfileUrl + "?");
+
+                // perform the webrequest
+                var client = new HttpClient();
+                using var response = await client.GetAsync(requestUrl);
             }
             catch (Exception ex)
             {
@@ -567,13 +569,14 @@ namespace NetSparkle
         /// <returns>true if it's ok</returns>
         private bool AskApplicationToSafelyCloseUp()
         {
-            if (AboutToExitForInstallerRun != null)
+            if (AboutToExitForInstallerRun == null)
             {
-                var args = new CancelEventArgs();
-                AboutToExitForInstallerRun(this, args);
-                return !args.Cancel;
+                return true;
             }
-            return true;
+
+            var args = new CancelEventArgs();
+            AboutToExitForInstallerRun(this, args);
+            return !args.Cancel;
         }
 
         /// <summary>
@@ -627,29 +630,31 @@ namespace NetSparkle
 
             // check if update is required
             var updateStatus = GetUpdateStatus(config, out var latestVersion);
-            if (updateStatus == UpdateStatus.UpdateAvailable)
+            if (updateStatus != UpdateStatus.UpdateAvailable)
             {
-                // show the update window
-                ReportDiagnosticMessage("Update needed from version " + config.InstalledVersion + " to version " +
-                                        latestVersion?.Version);
+                return updateStatus;
+            }
 
-                var ev = new UpdateDetectedEventArgs
-                {
-                    NextAction = NextUpdateAction.ShowStandardUserInterface,
-                    ApplicationConfig = config,
-                    LatestVersion = latestVersion
-                };
+            // show the update window
+            ReportDiagnosticMessage("Update needed from version " + config.InstalledVersion + " to version " +
+                                    latestVersion?.Version);
 
-                // if the client wants to intercept, send an event
-                if (UpdateDetected != null)
-                {
-                    UpdateDetected(this, ev);
-                }
-                //otherwise just go forward with the UI notification
-                else
-                {
-                    ShowUpdateNeededUI(latestVersion, useNotificationToast);
-                }
+            var ev = new UpdateDetectedEventArgs
+            {
+                NextAction = NextUpdateAction.ShowStandardUserInterface,
+                ApplicationConfig = config,
+                LatestVersion = latestVersion
+            };
+
+            // if the client wants to intercept, send an event
+            if (UpdateDetected != null)
+            {
+                UpdateDetected(this, ev);
+            }
+            //otherwise just go forward with the UI notification
+            else
+            {
+                ShowUpdateNeededUI(latestVersion, useNotificationToast);
             }
             return updateStatus;
         }
@@ -660,17 +665,19 @@ namespace NetSparkle
         /// <param name="currentItem">the current (top-most) item in the app-cast</param>
         private void Update(NetSparkleAppCastItem? currentItem)
         {
-            if (currentItem != null)
+            if (currentItem == null)
             {
-                // show the update ui
-                if (EnableSilentMode)
-                {
-                    InitDownloadAndInstallProcess(currentItem);
-                }
-                else
-                {
-                    ShowUpdateNeededUI(currentItem, true);
-                }
+                return;
+            }
+
+            // show the update ui
+            if (EnableSilentMode)
+            {
+                InitDownloadAndInstallProcess(currentItem);
+            }
+            else
+            {
+                ShowUpdateNeededUI(currentItem, true);
             }
         }
 
@@ -679,7 +686,7 @@ namespace NetSparkle
         /// </summary>
         public void CancelInstall()
         {
-            _webDownloadClient.Cancel();
+            _webDownloadClient?.Cancel();
         }
 
         /// <summary>
@@ -689,26 +696,31 @@ namespace NetSparkle
         /// <param name="e">not used.</param>
         private void OnUserWindowUserResponded(object sender, EventArgs e)
         {
-            if (UserWindow is { Result: DialogResult.No })
+            switch (UserWindow)
             {
-                // skip this version
+                case { Result: DialogResult.No }:
+                    {
+                        // skip this version
 
-                var config = GetApplicationConfig();
-                config.SetVersionToSkip(UserWindow!.CurrentItem?.Version!);
+                        var config = GetApplicationConfig();
+                        config.SetVersionToSkip(UserWindow!.CurrentItem?.Version!);
 
-                UpdateWindowDismissed?.Invoke(this, e);
-            }
-            else if (UserWindow is { Result: DialogResult.Yes })
-            {
-                // download the binaries
-                if (UserWindow.CurrentItem != null)
-                {
-                    InitDownloadAndInstallProcess(UserWindow!.CurrentItem);
-                }
-            }
-            else
-            {
-                UpdateWindowDismissed?.Invoke(this, e);
+                        UpdateWindowDismissed?.Invoke(this, e);
+                        break;
+                    }
+                case { Result: DialogResult.Yes }:
+                    {
+                        // download the binaries
+                        if (UserWindow.CurrentItem != null)
+                        {
+                            InitDownloadAndInstallProcess(UserWindow!.CurrentItem);
+                        }
+
+                        break;
+                    }
+                default:
+                    UpdateWindowDismissed?.Invoke(this, e);
+                    break;
             }
         }
 
@@ -873,11 +885,13 @@ namespace NetSparkle
                 }
 
                 // check an other check needed
-                if (i == 1)
+                if (i != 1)
                 {
-                    ReportDiagnosticMessage("Got force update check signal");
-                    checkTSP = false;
+                    continue;
                 }
+
+                ReportDiagnosticMessage("Got force update check signal");
+                checkTSP = false;
             } while (true);
 
             // reset the islooping handle

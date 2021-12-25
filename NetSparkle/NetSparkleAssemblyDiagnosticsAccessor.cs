@@ -14,15 +14,17 @@ namespace NetSparkle
         /// <param name="assemblyName">the assembly name</param>
         public NetSparkleAssemblyDiagnosticsAccessor(string? assemblyName)
         {
-            if (assemblyName != null)
+            if (assemblyName == null)
             {
-                AssemblyVersion = FileVersionInfo.GetVersionInfo(assemblyName).FileVersion;
-                AssemblyProduct = FileVersionInfo.GetVersionInfo(assemblyName).ProductVersion;
-                AssemblyTitle = FileVersionInfo.GetVersionInfo(assemblyName).ProductName;
-                AssemblyCompany = FileVersionInfo.GetVersionInfo(assemblyName).CompanyName;
-                AssemblyCopyright = FileVersionInfo.GetVersionInfo(assemblyName).LegalCopyright;
-                AssemblyDescription = FileVersionInfo.GetVersionInfo(assemblyName).FileDescription;
+                return;
             }
+
+            AssemblyVersion = FileVersionInfo.GetVersionInfo(assemblyName).FileVersion;
+            AssemblyProduct = FileVersionInfo.GetVersionInfo(assemblyName).ProductVersion;
+            AssemblyTitle = FileVersionInfo.GetVersionInfo(assemblyName).ProductName;
+            AssemblyCompany = FileVersionInfo.GetVersionInfo(assemblyName).CompanyName;
+            AssemblyCopyright = FileVersionInfo.GetVersionInfo(assemblyName).LegalCopyright;
+            AssemblyDescription = FileVersionInfo.GetVersionInfo(assemblyName).FileDescription;
         }
 
         #region Assembly Attribute Accessors

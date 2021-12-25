@@ -25,7 +25,7 @@ namespace NetSparkle
             if (string.IsNullOrEmpty(assemblyName))
             {
                 _assembly = Assembly.GetEntryAssembly();
-                GetAssemblyAttributes();
+                GetAssemblyAttributes(_assembly);
             }
             else
             {
@@ -42,19 +42,23 @@ namespace NetSparkle
                 {
                     _assembly = mlc.LoadFromAssemblyPath(absolutePath);
 
-                    GetAssemblyAttributes();
+                    GetAssemblyAttributes(_assembly);
                 }
             }
 
             if (_assemblyAttributes == null || _assemblyAttributes.Count == 0)
             {
-                throw new ArgumentOutOfRangeException("Unable to load assembly attributes from " +
-                                                      _assembly?.FullName);
+                throw new ArgumentOutOfRangeException($"Unable to load assembly attributes from {_assembly?.FullName}");
             }
 
-            void GetAssemblyAttributes()
+            void GetAssemblyAttributes(Assembly? assembly)
             {
-                foreach (var data in _assembly.GetCustomAttributesData())
+                if (assembly == null)
+                {
+                    return;
+                }
+
+                foreach (var data in assembly.GetCustomAttributesData())
                 {
                     _assemblyAttributes.Add(CreateAttribute(data));
                 }
@@ -75,22 +79,24 @@ namespace NetSparkle
             var attribute = data.Constructor.Invoke(arguments.ToArray())
                 as Attribute;
 
-            if (data.NamedArguments != null)
+            if (data.NamedArguments == null)
             {
-                foreach (var namedArgument in data.NamedArguments)
+                return attribute;
+            }
+
+            foreach (var namedArgument in data.NamedArguments)
+            {
+                var propertyInfo = namedArgument.MemberInfo as PropertyInfo;
+                if (propertyInfo != null)
                 {
-                    var propertyInfo = namedArgument.MemberInfo as PropertyInfo;
-                    if (propertyInfo != null)
+                    propertyInfo.SetValue(attribute, namedArgument.TypedValue.Value, null);
+                }
+                else
+                {
+                    var fieldInfo = namedArgument.MemberInfo as FieldInfo;
+                    if (fieldInfo != null)
                     {
-                        propertyInfo.SetValue(attribute, namedArgument.TypedValue.Value, null);
-                    }
-                    else
-                    {
-                        var fieldInfo = namedArgument.MemberInfo as FieldInfo;
-                        if (fieldInfo != null)
-                        {
-                            fieldInfo.SetValue(attribute, namedArgument.TypedValue.Value);
-                        }
+                        fieldInfo.SetValue(attribute, namedArgument.TypedValue.Value);
                     }
                 }
             }
@@ -105,7 +111,7 @@ namespace NetSparkle
                 return attr;
             }
 
-            throw new Exception("Attribute of type " + attributeType + " does not exists in the assembly " + _assembly?.FullName);
+            throw new Exception($"Attribute of type {attributeType} does not exists in the assembly {_assembly?.FullName}");
         }
 
         #region Assembly Attribute Accessors
