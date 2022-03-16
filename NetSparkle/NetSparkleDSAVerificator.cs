@@ -75,6 +75,7 @@ namespace NetSparkle
             using (Stream inputStream = File.OpenRead(binaryPath))
             {
                 bData = new byte[inputStream.Length];
+                // ReSharper disable once MustUseReturnValue
                 inputStream.Read(bData, 0, bData.Length);
             }
 

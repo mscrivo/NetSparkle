@@ -642,7 +642,6 @@ namespace NetSparkle
             var ev = new UpdateDetectedEventArgs
             {
                 NextAction = NextUpdateAction.ShowStandardUserInterface,
-                ApplicationConfig = config,
                 LatestVersion = latestVersion
             };
 
@@ -821,7 +820,7 @@ namespace NetSparkle
                 ReportDiagnosticMessage("Update needed from version " + config.InstalledVersion + " to version " + latestVersion?.Version);
 
                 // send notification if needed
-                var ev = new UpdateDetectedEventArgs { NextAction = NextUpdateAction.ShowStandardUserInterface, ApplicationConfig = config, LatestVersion = latestVersion };
+                var ev = new UpdateDetectedEventArgs { NextAction = NextUpdateAction.ShowStandardUserInterface, LatestVersion = latestVersion };
                 UpdateDetected?.Invoke(this, ev);
 
                 // check results

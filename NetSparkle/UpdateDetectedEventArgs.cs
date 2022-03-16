@@ -13,11 +13,6 @@ namespace NetSparkle
         public NextUpdateAction NextAction { get; set; }
 
         /// <summary>
-        ///     The application configuration
-        /// </summary>
-        public NetSparkleConfiguration? ApplicationConfig { get; set; }
-
-        /// <summary>
         ///     The latest available version
         /// </summary>
         public NetSparkleAppCastItem? LatestVersion { get; set; }
