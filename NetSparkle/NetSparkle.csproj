@@ -61,61 +61,30 @@
     <EmbeddedResource Update="NetSparkleDownloadProgress.bg.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Update="NetSparkleDownloadProgress.de.resx">
-      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Update="NetSparkleDownloadProgress.es-MX.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="NetSparkleDownloadProgress.fr.resx">
-      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Update="NetSparkleDownloadProgress.it.resx">
-      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="NetSparkleDownloadProgress.lt.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Update="NetSparkleDownloadProgress.nl.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Update="NetSparkleDownloadProgress.pt-BR.resx">
-      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Update="NetSparkleDownloadProgress.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="NetSparkleDownloadProgress.ru.resx">
-      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Update="NetSparkleDownloadProgress.zh-CN.resx">
       <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Update="NetSparkleDownloadProgress.zh-TW.resx">
-      <DependentUpon>NetSparkleDownloadProgress.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="NetSparkleForm.bg.resx">
-      <DependentUpon>NetSparkleForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Update="NetSparkleForm.de.resx">
-      <DependentUpon>NetSparkleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="NetSparkleForm.es-MX.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Update="NetSparkleForm.fr.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Update="NetSparkleForm.it.resx">
-      <DependentUpon>NetSparkleForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Update="NetSparkleForm.lt.resx">
-      <DependentUpon>NetSparkleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="NetSparkleForm.nl.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Update="NetSparkleForm.pt-BR.resx">
@@ -125,13 +94,7 @@
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Update="NetSparkleForm.ru.resx">
-      <DependentUpon>NetSparkleForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Update="NetSparkleForm.zh-CN.resx">
-      <DependentUpon>NetSparkleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Update="NetSparkleForm.zh-TW.resx">
       <DependentUpon>NetSparkleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Update="ToastNotifier.resx">
