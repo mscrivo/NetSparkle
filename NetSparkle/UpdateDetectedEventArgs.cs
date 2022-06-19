@@ -10,11 +10,11 @@ namespace NetSparkle
         /// <summary>
         ///     The next action
         /// </summary>
-        public NextUpdateAction NextAction { get; set; }
+        public NextUpdateAction NextAction { get; init; }
 
         /// <summary>
         ///     The latest available version
         /// </summary>
-        public NetSparkleAppCastItem? LatestVersion { get; set; }
+        public NetSparkleAppCastItem? LatestVersion { get; init; }
     }
 }

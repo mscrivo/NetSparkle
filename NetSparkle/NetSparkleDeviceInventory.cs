@@ -13,8 +13,8 @@ namespace NetSparkle
             _config = config;
         }
 
-        public bool x64System { get; set; }
-        public string? OsVersion { get; set; }
+        private bool X64System { get; set; }
+        private string? OsVersion { get; set; }
 
         public void CollectInventory()
         {
@@ -30,7 +30,7 @@ namespace NetSparkle
             var retValue = baseRequestUrl;
 
             // x64 
-            retValue += "cpu64bit=" + (x64System ? "1" : "0") + "&";
+            retValue += "cpu64bit=" + (X64System ? "1" : "0") + "&";
 
             // Application name (as indicated by CFBundleName)
             retValue += "appName=" + _config?.ApplicationName + "&";
@@ -59,7 +59,7 @@ namespace NetSparkle
 
         private void CollectProcessorBitness()
         {
-            x64System = Marshal.SizeOf(typeof(IntPtr)) == 8;
+            X64System = Marshal.SizeOf(typeof(IntPtr)) == 8;
         }
     }
 }

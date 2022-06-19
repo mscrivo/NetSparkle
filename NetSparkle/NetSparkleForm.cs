@@ -120,6 +120,7 @@ namespace NetSparkle
         /// <summary>
         ///     Removes the release notes control
         /// </summary>
+        // ReSharper disable once MemberCanBePrivate.Global
         public void RemoveReleaseNotesControls()
         {
             if (label3.Parent == null)

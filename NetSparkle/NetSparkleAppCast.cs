@@ -80,6 +80,7 @@ namespace NetSparkle
 
             while (reader.Read())
             {
+                // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:

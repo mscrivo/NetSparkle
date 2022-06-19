@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using NetSparkle.Interfaces;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace NetSparkle
 {
@@ -76,6 +77,7 @@ namespace NetSparkle
         /// <param name="applicationIcon">If you're invoking this from a form, this would be this.Icon</param>
         /// <param name="referenceAssembly">the name of the assembly to use for comparison</param>
         /// <param name="factory">UI factory to use</param>
+        // ReSharper disable once MemberCanBePrivate.Global
         public Sparkle(string appcastUrl, Icon applicationIcon, string? referenceAssembly, INetSparkleUIFactory factory)
         {
             _applicationIcon = applicationIcon;
@@ -120,16 +122,19 @@ namespace NetSparkle
         /// <summary>
         ///     Subscribe to this to get a chance to shut down gracefully before quiting
         /// </summary>
+        // ReSharper disable once EventNeverSubscribedTo.Global
         public event CancelEventHandler? AboutToExitForInstallerRun;
 
         /// <summary>
         ///     This event will be raised when a check loop will be started
         /// </summary>
+        // ReSharper disable once EventNeverSubscribedTo.Global
         public event LoopStartedOperation? CheckLoopStarted;
 
         /// <summary>
         ///     This event will be raised when a check loop is finished
         /// </summary>
+        // ReSharper disable once EventNeverSubscribedTo.Global
         public event LoopFinishedOperation? CheckLoopFinished;
 
         /// <summary>
@@ -147,6 +152,7 @@ namespace NetSparkle
         /// <summary>
         ///     The app will check once, after the app settles down.
         /// </summary>
+        // ReSharper disable once UnusedMember.Global
         public void CheckOnFirstApplicationIdle()
         {
             Application.Idle += OnFirstApplicationIdle;
@@ -179,6 +185,7 @@ namespace NetSparkle
         /// </summary>
         /// <param name="doInitialCheck"><c>true</c> if this instance should do an initial check.</param>
         /// <param name="forceInitialCheck"><c>true</c> if this instance should force an initial check.</param>
+        // ReSharper disable once UnusedMember.Global
         public void StartLoop(bool doInitialCheck, bool forceInitialCheck = false)
         {
             StartLoop(doInitialCheck, forceInitialCheck, TimeSpan.FromHours(24));
@@ -193,6 +200,7 @@ namespace NetSparkle
         /// <param name="doInitialCheck"><c>true</c> if this instance should do an initial check.</param>
         /// <param name="forceInitialCheck"><c>true</c> if this instance should force an initial check.</param>
         /// <param name="checkFrequency">the frequency between checks.</param>
+        // ReSharper disable once MemberCanBePrivate.Global
         public void StartLoop(bool doInitialCheck, bool forceInitialCheck, TimeSpan checkFrequency)
         {
             // first set the event handle
@@ -267,7 +275,7 @@ namespace NetSparkle
         ///     This method updates the profile information which can be sended to the server if enabled
         /// </summary>
         /// <param name="config">the configuration</param>
-        public static void UpdateSystemProfileInformation(NetSparkleConfiguration config)
+        private static void UpdateSystemProfileInformation(NetSparkleConfiguration config)
         {
             // check if profile data is enabled
             if (!EnableSystemProfiling)
@@ -332,7 +340,7 @@ namespace NetSparkle
         /// <param name="config">the configuration</param>
         /// <param name="latestVersion">returns the latest version</param>
         /// <returns><c>true</c> if an update is required</returns>
-        public UpdateStatus GetUpdateStatus(NetSparkleConfiguration config, out NetSparkleAppCastItem? latestVersion)
+        private UpdateStatus GetUpdateStatus(NetSparkleConfiguration config, out NetSparkleAppCastItem? latestVersion)
         {
             // report
             ReportDiagnosticMessage("Downloading and checking appcast");
@@ -376,6 +384,7 @@ namespace NetSparkle
             var v1 = new Version(config.InstalledVersion);
             var v2 = new Version(latestVersion.Version ?? throw new InvalidOperationException());
 
+            // ReSharper disable once InvertIf
             if (v2 <= v1)
             {
                 ReportDiagnosticMessage("Installed version is valid, no update needed (" + config.InstalledVersion + ")");
@@ -391,7 +400,7 @@ namespace NetSparkle
         ///     reference assembly
         /// </summary>
         /// <returns>the configuration</returns>
-        public NetSparkleConfiguration GetApplicationConfig()
+        private NetSparkleConfiguration GetApplicationConfig()
         {
             Configuration ??= new NetSparkleRegistryConfiguration(_appReferenceAssembly);
             Configuration.Reload();
@@ -582,6 +591,7 @@ namespace NetSparkle
         /// <summary>
         ///     Check for updates, using interaction appropriate for if the user just said "check for updates"
         /// </summary>
+        // ReSharper disable once UnusedMethodReturnValue.Global
         public UpdateStatus CheckForUpdatesAtUserRequest()
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -610,6 +620,7 @@ namespace NetSparkle
         /// <summary>
         ///     Check for updates, using interaction appropriate for where the user doesn't know you're doing it, so be polite
         /// </summary>
+        // ReSharper disable once UnusedMember.Global
         public UpdateStatus CheckForUpdatesQuietly()
         {
             return CheckForUpdates(true);
@@ -683,6 +694,7 @@ namespace NetSparkle
         /// <summary>
         ///     Cancels the install
         /// </summary>
+        // ReSharper disable once UnusedMember.Global
         public void CancelInstall()
         {
             _webDownloadClient?.Cancel();
@@ -824,6 +836,7 @@ namespace NetSparkle
                 UpdateDetected?.Invoke(this, ev);
 
                 // check results
+                // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
                 switch (ev.NextAction)
                 {
                     case NextUpdateAction.PerformUpdateUnattended:
@@ -999,23 +1012,26 @@ namespace NetSparkle
         ///     If your installer launches the app when it finishes, you don't want this thing to launch it as well. Defaults to
         ///     TRUE.
         /// </summary>
-        public bool DoLaunchAfterUpdate = true;
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
+        public bool DoLaunchAfterUpdate { get; set; } = true;
 
         /// <summary>
         ///     For example, use "/qb" to skip most of the UI, such as asking them to agree to the license again. The full list is
         ///     at http://support.microsoft.com/kb/227091.
         /// </summary>
-        public string CustomInstallerArguments = "";
+        public string CustomInstallerArguments { get; set; } = string.Empty;
 
         /// <summary>
         ///     This property returns true when the update loop is running
         ///     and files when the loop is not running
         /// </summary>
+        // ReSharper disable once UnusedMember.Global
         public bool IsUpdateLoopRunning => _loopingHandle.WaitOne(0);
 
         /// <summary>
         ///     Factory for creating UI form like progress window etc.
         /// </summary>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public INetSparkleUIFactory UIFactory { get; set; }
 
         /// <summary>
@@ -1038,7 +1054,7 @@ namespace NetSparkle
         /// <summary>
         ///     Gets or sets the app cast URL
         /// </summary>
-        public string AppcastUrl { get; set; }
+        public string AppcastUrl { get; }
 
         #endregion
     }

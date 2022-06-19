@@ -46,11 +46,13 @@ namespace NetSparkle
         /// <summary>
         ///     The application name
         /// </summary>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public string ApplicationName { get; protected set; }
 
         /// <summary>
         ///     The currently-installed version
         /// </summary>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public string InstalledVersion { get; protected set; }
 
         /// <summary>
@@ -80,14 +82,16 @@ namespace NetSparkle
 
         /// <summary>
         ///     If this property is true a reflection based accessor will be used
-        ///     to determine the assmebly name and verison, otherwise a System.Diagnostics
+        ///     to determine the assembly name and version, otherwise a System.Diagnostics
         ///     based access will be used
         /// </summary>
+        // ReSharper disable once MemberCanBePrivate.Global
         protected bool UseReflectionBasedAssemblyAccessor { get; set; }
 
         /// <summary>
         ///     The reference assembly name
         /// </summary>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         protected string? ReferenceAssembly { get; set; }
 
         /// <summary>
@@ -123,6 +127,7 @@ namespace NetSparkle
         /// <summary>
         ///     This method set's default values for the config
         /// </summary>
+        // ReSharper disable once MemberCanBePrivate.Global
         protected void InitWithDefaultValues()
         {
             CheckForUpdate = true;
