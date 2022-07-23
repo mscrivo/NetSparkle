@@ -5,29 +5,28 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace NetSparkle
+namespace NetSparkle;
+
+/// <summary>
+///     A NetSparkle exception
+/// </summary>
+[Serializable]
+public class NetSparkleException : Exception
 {
     /// <summary>
-    ///     A NetSparkle exception
+    ///     Constructor
     /// </summary>
-    [Serializable]
-    public class NetSparkleException : Exception
+    /// <param name="message">exception message</param>
+    public NetSparkleException(string message) : base(message)
     {
-        /// <summary>
-        ///     Constructor
-        /// </summary>
-        /// <param name="message">exception message</param>
-        public NetSparkleException(string message) : base(message)
-        {
-        }
+    }
 
-        /// <summary>
-        ///     Constructor
-        /// </summary>
-        /// <param name="info">serialization info</param>
-        /// <param name="context">the context</param>
-        protected NetSparkleException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+    /// <summary>
+    ///     Constructor
+    /// </summary>
+    /// <param name="info">serialization info</param>
+    /// <param name="context">the context</param>
+    protected NetSparkleException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
     }
 }
