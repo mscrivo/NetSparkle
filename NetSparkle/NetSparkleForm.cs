@@ -133,7 +133,7 @@ public sealed partial class NetSparkleForm : Form, INetSparkleForm
 
         // remove the no more needed controls            
         label3.Parent.Controls.Remove(label3);
-        HtmlRendererContainer.Parent.Controls.Remove(HtmlRendererContainer);
+        HtmlRendererContainer.Parent?.Controls.Remove(HtmlRendererContainer);
 
         // resize the window
         /*this.MinimumSize = newSize;

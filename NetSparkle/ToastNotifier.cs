@@ -51,7 +51,7 @@ public partial class ToastNotifier : Form
     protected override void OnLoad(EventArgs e)
     {
         // Move window out of screen
-        _startPosX = Screen.PrimaryScreen.WorkingArea.Width - Width;
+        _startPosX = Screen.PrimaryScreen!.WorkingArea.Width - Width;
         _startPosY = Screen.PrimaryScreen.WorkingArea.Height;
         SetDesktopLocation(_startPosX, _startPosY);
         base.OnLoad(e);
@@ -64,7 +64,7 @@ public partial class ToastNotifier : Form
         //Lift window by 5 pixels
         _startPosY -= 5;
         //If window is fully visible stop the timer
-        if (_startPosY < Screen.PrimaryScreen.WorkingArea.Height - Height)
+        if (_startPosY < Screen.PrimaryScreen!.WorkingArea.Height - Height)
         {
             _goUpTimer.Stop();
             _pauseTimer.Start();
@@ -80,7 +80,7 @@ public partial class ToastNotifier : Form
         //Lower window by 5 pixels
         _startPosY += 5;
         //If window is fully visible stop the timer
-        if (_startPosY > Screen.PrimaryScreen.WorkingArea.Height)
+        if (_startPosY > Screen.PrimaryScreen!.WorkingArea.Height)
         {
             _goDownTimer.Stop();
             Hide();
