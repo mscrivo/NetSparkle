@@ -24,7 +24,7 @@
   <PropertyGroup>
     <PostBuildEvent />
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
     <MinimumPlatformVersion>7.0</MinimumPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

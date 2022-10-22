@@ -73,8 +73,7 @@ public class NetSparkleAssemblyReflectionAccessor : INetSparkleAssemblyAccessor
     /// <returns></returns>
     private static Attribute? CreateAttribute(CustomAttributeData data)
     {
-        var arguments = from arg in data.ConstructorArguments
-            select arg.Value;
+        var arguments = from arg in data.ConstructorArguments select arg.Value;
 
         var attribute = data.Constructor.Invoke(arguments.ToArray())
             as Attribute;
@@ -94,10 +93,7 @@ public class NetSparkleAssemblyReflectionAccessor : INetSparkleAssemblyAccessor
             else
             {
                 var fieldInfo = namedArgument.MemberInfo as FieldInfo;
-                if (fieldInfo != null)
-                {
-                    fieldInfo.SetValue(attribute, namedArgument.TypedValue.Value);
-                }
+                fieldInfo?.SetValue(attribute, namedArgument.TypedValue.Value);
             }
         }
 
