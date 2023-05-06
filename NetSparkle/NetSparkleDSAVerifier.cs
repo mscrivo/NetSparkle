@@ -20,15 +20,9 @@ public sealed class NetSparkleDSAVerifier : IDisposable
     public NetSparkleDSAVerifier(string publicKey)
     {
         // 1. try to load this from resource
-        var data = TryGetResourceStream(publicKey) ?? TryGetFileResource(publicKey);
+        var data = (TryGetResourceStream(publicKey) ?? TryGetFileResource(publicKey)) ?? throw new Exception("Couldn't find public key for verification");
 
-        // 2. check the resource
-        if (data == null)
-        {
-            throw new Exception("Couldn't find public key for verification");
-        }
-
-        // 3. read out the key value
+        // 2. read out the key value
         using var reader = new StreamReader(data);
         var key = reader.ReadToEnd();
         _provider = new DSACryptoServiceProvider();
