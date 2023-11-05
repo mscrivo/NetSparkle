@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 
 namespace NetSparkle;
 
-internal class HttpClientDownloadWithProgress : IDisposable
+internal class HttpClientDownloadWithProgress(string downloadUrl, string destinationFilePath) : IDisposable
 {
-    private readonly string _downloadUrl;
-    private readonly string _destinationFilePath;
-
-    private readonly HttpClient _httpClient;
+    private readonly HttpClient _httpClient = new() { Timeout = TimeSpan.FromSeconds(30) };
 
     public delegate void ProgressChangedHandler(long? totalFileSize, long totalBytesDownloaded, double? progressPercentage);
 
@@ -20,16 +17,9 @@ internal class HttpClientDownloadWithProgress : IDisposable
 
     public event DownloadCompleteHandler? DownloadComplete;
 
-    public HttpClientDownloadWithProgress(string downloadUrl, string destinationFilePath)
-    {
-        _httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
-        _downloadUrl = downloadUrl;
-        _destinationFilePath = destinationFilePath;
-    }
-
     public async void StartDownload()
     {
-        using var response = await _httpClient.GetAsync(_downloadUrl, HttpCompletionOption.ResponseHeadersRead);
+        using var response = await _httpClient.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead);
         await DownloadFileFromHttpResponseMessage(response);
     }
 
@@ -55,7 +45,7 @@ internal class HttpClientDownloadWithProgress : IDisposable
         var buffer = new byte[8192];
         var isMoreToRead = true;
 
-        await using var fileStream = new FileStream(_destinationFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
+        await using var fileStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
         do
         {
             var bytesRead = await contentStream.ReadAsync(buffer);

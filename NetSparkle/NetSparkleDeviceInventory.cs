@@ -4,15 +4,8 @@ using System.Threading;
 
 namespace NetSparkle;
 
-internal class NetSparkleDeviceInventory
+internal class NetSparkleDeviceInventory(NetSparkleConfiguration? config)
 {
-    private readonly NetSparkleConfiguration? _config;
-
-    public NetSparkleDeviceInventory(NetSparkleConfiguration? config)
-    {
-        _config = config;
-    }
-
     private bool X64System { get; set; }
     private string? OsVersion { get; set; }
 
@@ -33,10 +26,10 @@ internal class NetSparkleDeviceInventory
         retValue += "cpu64bit=" + (X64System ? "1" : "0") + "&";
 
         // Application name (as indicated by CFBundleName)
-        retValue += "appName=" + _config?.ApplicationName + "&";
+        retValue += "appName=" + config?.ApplicationName + "&";
 
         // Application version (as indicated by CFBundleVersion)
-        retValue += "appVersion=" + _config?.InstalledVersion + "&";
+        retValue += "appVersion=" + config?.InstalledVersion + "&";
 
         // User’s preferred language
         retValue += "lang=" + Thread.CurrentThread.CurrentUICulture + "&";
