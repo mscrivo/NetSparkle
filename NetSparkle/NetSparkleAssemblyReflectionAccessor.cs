@@ -14,7 +14,7 @@ namespace NetSparkle;
 public class NetSparkleAssemblyReflectionAccessor : INetSparkleAssemblyAccessor
 {
     private readonly Assembly? _assembly;
-    private readonly List<Attribute> _assemblyAttributes = new();
+    private readonly List<Attribute> _assemblyAttributes = [];
 
     /// <summary>
     ///     Constructor
