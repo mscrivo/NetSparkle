@@ -82,7 +82,7 @@ public sealed class NetSparkleDSAVerifier : IDisposable
     /// </summary>
     /// <param name="publicKey">the public key</param>
     /// <returns>the data stream</returns>
-    private static Stream? TryGetFileResource(string publicKey)
+    private static FileStream? TryGetFileResource(string publicKey)
     {
         return File.Exists(publicKey) ? File.OpenRead(publicKey) : null;
     }
