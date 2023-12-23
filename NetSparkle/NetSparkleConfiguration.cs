@@ -34,7 +34,7 @@ public abstract class NetSparkleConfiguration
             // set some value from the binary
             var accessor = new NetSparkleAssemblyAccessor(referenceAssembly, UseReflectionBasedAssemblyAccessor);
             ApplicationName = accessor.AssemblyProduct;
-            InstalledVersion = accessor.AssemblyVersion;
+            InstalledVersion = accessor.AssemblyVersion.Split('+')[0];
         }
         catch
         {
