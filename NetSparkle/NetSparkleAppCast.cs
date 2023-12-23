@@ -7,7 +7,12 @@ namespace NetSparkle;
 /// <summary>
 ///     An app-cast
 /// </summary>
-public class NetSparkleAppCast
+/// <remarks>
+///     Constructor
+/// </remarks>
+/// <param name="castUrl">the URL of the appcast file</param>
+/// <param name="config">the current configuration</param>
+public class NetSparkleAppCast(string castUrl, NetSparkleConfiguration config)
 {
     private const string ItemNode = "item";
     private const string EnclosureNode = "enclosure";
@@ -16,19 +21,6 @@ public class NetSparkleAppCast
     private const string DeltaFromAttribute = "sparkle:deltaFrom";
     private const string DasSignature = "sparkle:dsaSignature";
     private const string UrlAttribute = "url";
-    private readonly string _castUrl;
-    private readonly NetSparkleConfiguration _config;
-
-    /// <summary>
-    ///     Constructor
-    /// </summary>
-    /// <param name="castUrl">the URL of the appcast file</param>
-    /// <param name="config">the current configuration</param>
-    public NetSparkleAppCast(string castUrl, NetSparkleConfiguration config)
-    {
-        _config = config;
-        _castUrl = castUrl;
-    }
 
     /// <summary>
     ///     Gets the latest version
@@ -38,22 +30,22 @@ public class NetSparkleAppCast
     {
         NetSparkleAppCastItem? latestVersion;
 
-        if (_castUrl.StartsWith("file://")) //handy for testing
+        if (castUrl.StartsWith("file://")) //handy for testing
         {
-            var path = _castUrl.Replace("file://", "");
+            var path = castUrl.Replace("file://", "");
             using var reader = XmlReader.Create(path);
-            latestVersion = ReadAppCast(reader, null, _config.InstalledVersion);
+            latestVersion = ReadAppCast(reader, null, config.InstalledVersion);
         }
         else
         {
             // build a http web request stream
             var client = new HttpClient();
 
-            var webRequest = new HttpRequestMessage(HttpMethod.Get, _castUrl);
+            var webRequest = new HttpRequestMessage(HttpMethod.Get, castUrl);
             var response = client.Send(webRequest);
 
             using var reader = new XmlTextReader(response.Content.ReadAsStream());
-            latestVersion = ReadAppCast(reader, null, _config.InstalledVersion);
+            latestVersion = ReadAppCast(reader, null, config.InstalledVersion);
         }
 
         if (latestVersion == null)
@@ -61,8 +53,8 @@ public class NetSparkleAppCast
             return null;
         }
 
-        latestVersion.AppName = _config.ApplicationName;
-        latestVersion.AppVersionInstalled = _config.InstalledVersion;
+        latestVersion.AppName = config.ApplicationName;
+        latestVersion.AppVersionInstalled = config.InstalledVersion;
         return latestVersion;
 
     }
