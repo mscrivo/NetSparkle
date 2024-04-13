@@ -9,14 +9,9 @@ namespace NetSparkle;
 /// <summary>
 ///     A NetSparkle exception
 /// </summary>
+/// <remarks>
+///     Constructor
+/// </remarks>
+/// <param name="message">exception message</param>
 [Serializable]
-public class NetSparkleException : Exception
-{
-    /// <summary>
-    ///     Constructor
-    /// </summary>
-    /// <param name="message">exception message</param>
-    public NetSparkleException(string message) : base(message)
-    {
-    }
-}
+public class NetSparkleException(string message) : Exception(message);
