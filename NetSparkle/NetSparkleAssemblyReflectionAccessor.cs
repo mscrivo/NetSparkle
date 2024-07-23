@@ -51,6 +51,8 @@ public class NetSparkleAssemblyReflectionAccessor : INetSparkleAssemblyAccessor
             throw new ArgumentOutOfRangeException($"Unable to load assembly attributes from {_assembly?.FullName}");
         }
 
+        return;
+
         void GetAssemblyAttributes(Assembly? assembly)
         {
             if (assembly == null)
