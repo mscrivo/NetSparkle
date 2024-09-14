@@ -70,7 +70,7 @@ public sealed class NetSparkleDSAVerifier : IDisposable
         {
             bData = new byte[inputStream.Length];
             // ReSharper disable once MustUseReturnValue
-            inputStream.Read(bData, 0, bData.Length);
+            inputStream.ReadExactly(bData);
         }
 
         // verify
