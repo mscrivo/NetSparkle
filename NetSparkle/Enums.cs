@@ -1,7 +1,7 @@
 ﻿namespace NetSparkle;
 
 /// <summary>
-///     Every time when netsparkle detects an update the
+///     Every time when NetSparkle detects an update the
 ///     consumer can decide what should happen as next with the help
 ///     of the UpdateDetected event
 /// </summary>

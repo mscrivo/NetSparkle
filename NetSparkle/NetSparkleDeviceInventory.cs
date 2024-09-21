@@ -52,6 +52,6 @@ internal class NetSparkleDeviceInventory(NetSparkleConfiguration? config)
 
     private void CollectProcessorBitness()
     {
-        X64System = Marshal.SizeOf(typeof(nint)) == 8;
+        X64System = Marshal.SizeOf<nint>() == 8;
     }
 }
