@@ -17,10 +17,10 @@ internal class HttpClientDownloadWithProgress(string downloadUrl, string destina
 
     public event DownloadCompleteHandler? DownloadComplete;
 
-    public async void StartDownload()
+    public void StartDownload()
     {
-        using var response = await _httpClient.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead);
-        await DownloadFileFromHttpResponseMessage(response);
+        var response = Task.Run(() => _httpClient.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead)).GetAwaiter().GetResult();
+        Task.Run(() => DownloadFileFromHttpResponseMessage(response)).GetAwaiter().GetResult();
     }
 
     public void Cancel()
