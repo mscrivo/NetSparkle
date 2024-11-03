@@ -7,19 +7,26 @@ namespace NetSparkle;
 
 internal class HttpClientDownloadWithProgress(string downloadUrl, string destinationFilePath) : IDisposable
 {
+    public delegate void DownloadCompleteHandler();
+
+    public delegate void ProgressChangedHandler(long? totalFileSize, long totalBytesDownloaded,
+        double? progressPercentage);
+
     private readonly HttpClient _httpClient = new() { Timeout = TimeSpan.FromSeconds(30) };
 
-    public delegate void ProgressChangedHandler(long? totalFileSize, long totalBytesDownloaded, double? progressPercentage);
+    public void Dispose()
+    {
+        _httpClient.Dispose();
+    }
 
     public event ProgressChangedHandler? ProgressChanged;
-
-    public delegate void DownloadCompleteHandler();
 
     public event DownloadCompleteHandler? DownloadComplete;
 
     public void StartDownload()
     {
-        var response = Task.Run(() => _httpClient.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead)).GetAwaiter().GetResult();
+        var response = Task.Run(() => _httpClient.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead))
+            .GetAwaiter().GetResult();
         Task.Run(() => DownloadFileFromHttpResponseMessage(response)).GetAwaiter().GetResult();
     }
 
@@ -45,7 +52,8 @@ internal class HttpClientDownloadWithProgress(string downloadUrl, string destina
         var buffer = new byte[8192];
         var isMoreToRead = true;
 
-        await using var fileStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
+        await using var fileStream = new FileStream(destinationFilePath, FileMode.Create, FileAccess.Write,
+            FileShare.None, 8192, true);
         do
         {
             var bytesRead = await contentStream.ReadAsync(buffer);
@@ -62,9 +70,10 @@ internal class HttpClientDownloadWithProgress(string downloadUrl, string destina
             readCount += 1;
 
             if (readCount % 100 == 0)
+            {
                 TriggerProgressChanged(totalDownloadSize, totalBytesRead);
-        }
-        while (isMoreToRead);
+            }
+        } while (isMoreToRead);
 
         DownloadComplete?.Invoke();
     }
@@ -73,10 +82,10 @@ internal class HttpClientDownloadWithProgress(string downloadUrl, string destina
     {
         double? progressPercentage = null;
         if (totalDownloadSize.HasValue)
+        {
             progressPercentage = Math.Round((double)totalBytesRead / totalDownloadSize.Value * 100, 2);
+        }
 
         ProgressChanged?.Invoke(totalDownloadSize, totalBytesRead, progressPercentage);
     }
-
-    public void Dispose() => _httpClient.Dispose();
 }

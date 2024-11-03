@@ -5,5 +5,9 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "Windows only", Scope = "module")]
-[assembly: SuppressMessage("Style", "IDE0073:The file header does not match the required text", Justification = "Header not required")]
+[assembly:
+    SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "Windows only",
+        Scope = "module")]
+[assembly:
+    SuppressMessage("Style", "IDE0073:The file header does not match the required text",
+        Justification = "Header not required")]

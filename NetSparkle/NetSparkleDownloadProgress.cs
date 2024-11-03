@@ -37,16 +37,6 @@ public partial class NetSparkleDownloadProgress : Form, INetSparkleDownloadProgr
         lblSecurityHint.Visible = false;
     }
 
-    protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
-    {
-        base.ScaleControl(factor, specified);
-
-        // Record the running scale factor used
-        _currentScaleFactor = new SizeF(
-            _currentScaleFactor.Width * factor.Width,
-            _currentScaleFactor.Height * factor.Height);
-    }
-
     /// <summary>
     ///     event to fire when the form asks the application to be relaunched
     /// </summary>
@@ -84,10 +74,21 @@ public partial class NetSparkleDownloadProgress : Form, INetSparkleDownloadProgr
     /// <summary>
     ///     Event called when the client download progress changes
     /// </summary>
-    public void OnClientDownloadProgressChanged(long? totalFileSize, long totalBytesDownloaded, double? progressPercentage)
+    public void OnClientDownloadProgressChanged(long? totalFileSize, long totalBytesDownloaded,
+        double? progressPercentage)
     {
         Debug.WriteLine(progressPercentage);
         progressDownload.Value = Convert.ToInt32(progressPercentage);
+    }
+
+    protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
+    {
+        base.ScaleControl(factor, specified);
+
+        // Record the running scale factor used
+        _currentScaleFactor = new SizeF(
+            _currentScaleFactor.Width * factor.Width,
+            _currentScaleFactor.Height * factor.Height);
     }
 
     /// <summary>

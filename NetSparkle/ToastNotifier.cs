@@ -6,7 +6,8 @@ namespace NetSparkle;
 /// <summary>
 ///     Like a notification balloon, but more reliable "toast" because it slowly goes up, then down.
 ///     Subscribe to the Click even to know if the user clicked on it.
-/// </summary>s
+/// </summary>
+/// s
 public partial class ToastNotifier : Form
 {
     private readonly Timer _goDownTimer;
@@ -120,7 +121,7 @@ public partial class ToastNotifier : Form
     }
 
     /// <summary>
-    /// Clean up any resources being used.
+    ///     Clean up any resources being used.
     /// </summary>
     /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
     protected override void Dispose(bool disposing)
@@ -133,6 +134,7 @@ public partial class ToastNotifier : Form
             _goDownTimer.Dispose();
             _goUpTimer.Dispose();
         }
+
         base.Dispose(disposing);
     }
 }

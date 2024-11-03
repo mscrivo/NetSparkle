@@ -31,32 +31,50 @@ public class NetSparkleAssemblyAccessor : INetSparkleAssemblyAccessor
     /// <summary>
     ///     Gets the company
     /// </summary>
-    public string AssemblyCompany => _internalAccessor.AssemblyCompany;
+    public string AssemblyCompany
+    {
+        get => _internalAccessor.AssemblyCompany;
+    }
 
     /// <summary>
     ///     Gets the copyright
     /// </summary>
-    public string AssemblyCopyright => _internalAccessor.AssemblyCopyright;
+    public string AssemblyCopyright
+    {
+        get => _internalAccessor.AssemblyCopyright;
+    }
 
     /// <summary>
     ///     Gets the description
     /// </summary>
-    public string AssemblyDescription => _internalAccessor.AssemblyDescription;
+    public string AssemblyDescription
+    {
+        get => _internalAccessor.AssemblyDescription;
+    }
 
     /// <summary>
     ///     Gets the product
     /// </summary>
-    public string AssemblyProduct => _internalAccessor.AssemblyProduct;
+    public string AssemblyProduct
+    {
+        get => _internalAccessor.AssemblyProduct;
+    }
 
     /// <summary>
     ///     Gets the title
     /// </summary>
-    public string AssemblyTitle => _internalAccessor.AssemblyTitle;
+    public string AssemblyTitle
+    {
+        get => _internalAccessor.AssemblyTitle;
+    }
 
     /// <summary>
     ///     Gets the version
     /// </summary>
-    public string AssemblyVersion => _internalAccessor.AssemblyVersion;
+    public string AssemblyVersion
+    {
+        get => _internalAccessor.AssemblyVersion;
+    }
 
     #endregion
 }

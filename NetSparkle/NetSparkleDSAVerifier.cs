@@ -20,7 +20,8 @@ public sealed class NetSparkleDSAVerifier : IDisposable
     public NetSparkleDSAVerifier(string publicKey)
     {
         // 1. try to load this from resource
-        var data = (TryGetResourceStream(publicKey) ?? TryGetFileResource(publicKey)) ?? throw new Exception("Couldn't find public key for verification");
+        var data = (TryGetResourceStream(publicKey) ?? TryGetFileResource(publicKey)) ??
+                   throw new Exception("Couldn't find public key for verification");
 
         // 2. read out the key value
         using var reader = new StreamReader(data);
@@ -107,7 +108,9 @@ public sealed class NetSparkleDSAVerifier : IDisposable
                 Debug.WriteLine("Skipped assembly {0}", asm.FullName);
                 continue;
             }
-            var resourceName = resources.FirstOrDefault(s => s.IndexOf(publicKey, StringComparison.OrdinalIgnoreCase) > -1);
+
+            var resourceName =
+                resources.FirstOrDefault(s => s.IndexOf(publicKey, StringComparison.OrdinalIgnoreCase) > -1);
             if (string.IsNullOrEmpty(resourceName))
             {
                 continue;
@@ -119,6 +122,7 @@ public sealed class NetSparkleDSAVerifier : IDisposable
                 break;
             }
         }
+
         return data;
     }
 

@@ -25,7 +25,8 @@ public class NetSparkleRegistryConfiguration : NetSparkleConfiguration
     /// </summary>
     /// <param name="referenceAssembly">the name of hte reference assembly</param>
     /// <param name="isReflectionBasedAssemblyAccessorUsed"><c>true</c> if reflection is used to access the assembly.</param>
-    public NetSparkleRegistryConfiguration(string? referenceAssembly, bool isReflectionBasedAssemblyAccessorUsed = true) : base(referenceAssembly, isReflectionBasedAssemblyAccessorUsed)
+    public NetSparkleRegistryConfiguration(string? referenceAssembly, bool isReflectionBasedAssemblyAccessorUsed = true)
+        : base(referenceAssembly, isReflectionBasedAssemblyAccessorUsed)
     {
         try
         {
@@ -92,7 +93,8 @@ public class NetSparkleRegistryConfiguration : NetSparkleConfiguration
 
         if (string.IsNullOrEmpty(accessor.AssemblyCompany) || string.IsNullOrEmpty(accessor.AssemblyProduct))
         {
-            throw new NetSparkleException("STOP: Sparkle is missing the company or productName tag in " + ReferenceAssembly);
+            throw new NetSparkleException("STOP: Sparkle is missing the company or productName tag in " +
+                                          ReferenceAssembly);
         }
 
         return "Software\\" + accessor.AssemblyCompany + "\\" + accessor.AssemblyProduct + "\\AutoUpdate";
@@ -144,7 +146,8 @@ public class NetSparkleRegistryConfiguration : NetSparkleConfiguration
         DidRunOnce = Convert.ToBoolean(strDidRunOnc);
         try
         {
-            LastProfileUpdate = ConvertStringToDate(strProfileTime ?? new DateTime(0).ToString(CultureInfo.InvariantCulture));
+            LastProfileUpdate =
+                ConvertStringToDate(strProfileTime ?? new DateTime(0).ToString(CultureInfo.InvariantCulture));
         }
         catch (FormatException)
         {

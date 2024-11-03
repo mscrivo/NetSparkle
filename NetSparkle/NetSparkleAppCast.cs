@@ -56,7 +56,6 @@ public class NetSparkleAppCast(string castUrl, NetSparkleConfiguration config)
         latestVersion.AppName = config.ApplicationName;
         latestVersion.AppVersionInstalled = config.InstalledVersion;
         return latestVersion;
-
     }
 
     private static NetSparkleAppCastItem? ReadAppCast(XmlReader reader,
@@ -104,6 +103,7 @@ public class NetSparkleAppCast(string castUrl, NetSparkleConfiguration config)
                                         currentItem.DSASignature = reader.GetAttribute(DasSignature);
                                     }
                                 }
+
                                 break;
                             }
                     }
@@ -122,6 +122,7 @@ public class NetSparkleAppCast(string castUrl, NetSparkleConfiguration config)
                                 {
                                     latestVersion = currentItem;
                                 }
+
                                 break;
                             }
                     }
@@ -129,6 +130,7 @@ public class NetSparkleAppCast(string castUrl, NetSparkleConfiguration config)
                     break;
             }
         }
+
         return latestVersion;
     }
 }

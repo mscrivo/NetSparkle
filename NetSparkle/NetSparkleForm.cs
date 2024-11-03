@@ -17,9 +17,8 @@ namespace NetSparkle;
 /// </summary>
 public sealed partial class NetSparkleForm : Form, INetSparkleForm
 {
-    private NetSparkleAppCastItem _currentItem;
-
     private readonly WebBrowser _webBrowser = new() { Dock = DockStyle.Fill };
+    private NetSparkleAppCastItem _currentItem;
 
     /// <summary>
     ///     Constructor
@@ -72,7 +71,10 @@ public sealed partial class NetSparkleForm : Form, INetSparkleForm
     /// <summary>
     ///     The result of ShowDialog()
     /// </summary>
-    DialogResult INetSparkleForm.Result => DialogResult;
+    DialogResult INetSparkleForm.Result
+    {
+        get => DialogResult;
+    }
 
     /// <summary>
     ///     Hides the release notes
@@ -109,6 +111,7 @@ public sealed partial class NetSparkleForm : Form, INetSparkleForm
                 contents = reader.ReadToEnd();
             }
         }
+
         var md = new Markdown();
 
         if (contents != null)
@@ -185,7 +188,7 @@ public sealed partial class NetSparkleForm : Form, INetSparkleForm
     }
 
     /// <summary>
-    /// Clean up any resources being used.
+    ///     Clean up any resources being used.
     /// </summary>
     /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
     protected override void Dispose(bool disposing)
@@ -196,6 +199,7 @@ public sealed partial class NetSparkleForm : Form, INetSparkleForm
 
             _webBrowser.Dispose();
         }
+
         base.Dispose(disposing);
     }
 }

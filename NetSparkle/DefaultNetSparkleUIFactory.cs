@@ -49,7 +49,9 @@ public sealed class DefaultNetSparkleUIFactory : INetSparkleUIFactory
     /// <param name="downloadFileName"></param>
     public void ShowUnknownInstallerFormatMessage(string downloadFileName)
     {
-        MessageBox.Show(string.Format(Resources.DefaultNetSparkleUIFactory_ShowUnknownInstallerFormatMessageText, downloadFileName), Resources.DefaultNetSparkleUIFactory_ErrorTitle,
+        MessageBox.Show(
+            string.Format(Resources.DefaultNetSparkleUIFactory_ShowUnknownInstallerFormatMessageText, downloadFileName),
+            Resources.DefaultNetSparkleUIFactory_ErrorTitle,
             MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 
@@ -58,7 +60,8 @@ public sealed class DefaultNetSparkleUIFactory : INetSparkleUIFactory
     /// </summary>
     public void ShowVersionIsUpToDate()
     {
-        MessageBox.Show(Resources.DefaultNetSparkleUIFactory_ShowVersionIsUpToDateMessage, Resources.DefaultNetSparkleUIFactory_MessageTitle);
+        MessageBox.Show(Resources.DefaultNetSparkleUIFactory_ShowVersionIsUpToDateMessage,
+            Resources.DefaultNetSparkleUIFactory_MessageTitle);
     }
 
     /// <summary>
@@ -66,7 +69,8 @@ public sealed class DefaultNetSparkleUIFactory : INetSparkleUIFactory
     /// </summary>
     public void ShowVersionIsSkippedByUserRequest()
     {
-        MessageBox.Show(Resources.DefaultNetSparkleUIFactory_ShowVersionIsSkippedByUserRequestMessage, Resources.DefaultNetSparkleUIFactory_MessageTitle);
+        MessageBox.Show(Resources.DefaultNetSparkleUIFactory_ShowVersionIsSkippedByUserRequestMessage,
+            Resources.DefaultNetSparkleUIFactory_MessageTitle);
         //review: I'm not crystal clear on this one
     }
 
@@ -75,7 +79,8 @@ public sealed class DefaultNetSparkleUIFactory : INetSparkleUIFactory
     /// </summary>
     public void ShowCannotDownloadAppcast()
     {
-        MessageBox.Show(Resources.DefaultNetSparkleUIFactory_ShowCannotDownloadAppcastMessage, Resources.DefaultNetSparkleUIFactory_ErrorTitle);
+        MessageBox.Show(Resources.DefaultNetSparkleUIFactory_ShowCannotDownloadAppcastMessage,
+            Resources.DefaultNetSparkleUIFactory_ErrorTitle);
     }
 
     /// <summary>
@@ -86,16 +91,10 @@ public sealed class DefaultNetSparkleUIFactory : INetSparkleUIFactory
     /// <param name="clickHandler">handler for click</param>
     public void ShowToast(NetSparkleAppCastItem item, Icon applicationIcon, EventHandler clickHandler)
     {
-        var toast = new ToastNotifier
-        {
-            Tag = item,
-            Image =
-            {
-                Image = applicationIcon.ToBitmap()
-            }
-        };
+        var toast = new ToastNotifier { Tag = item, Image = { Image = applicationIcon.ToBitmap() } };
         toast.ToastClicked += clickHandler;
-        toast.Show(Resources.DefaultNetSparkleUIFactory_ToastMessage, Resources.DefaultNetSparkleUIFactory_ToastCallToAction, 5);
+        toast.Show(Resources.DefaultNetSparkleUIFactory_ToastMessage,
+            Resources.DefaultNetSparkleUIFactory_ToastCallToAction, 5);
     }
 
     /// <summary>
@@ -104,6 +103,7 @@ public sealed class DefaultNetSparkleUIFactory : INetSparkleUIFactory
     /// <param name="message">Error message from exception</param>
     public void ShowDownloadErrorMessage(string message)
     {
-        MessageBox.Show(string.Format(Resources.DefaultNetSparkleUIFactory_ShowDownloadErrorMessage, message), Resources.DefaultNetSparkleUIFactory_ErrorTitle);
+        MessageBox.Show(string.Format(Resources.DefaultNetSparkleUIFactory_ShowDownloadErrorMessage, message),
+            Resources.DefaultNetSparkleUIFactory_ErrorTitle);
     }
 }

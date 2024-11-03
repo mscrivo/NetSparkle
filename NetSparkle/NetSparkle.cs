@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using NetSparkle.Interfaces;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace NetSparkle;
@@ -49,6 +50,7 @@ public sealed class Sparkle : IDisposable
         UserSkipped,
         CouldNotDetermine
     }
+
     private readonly Icon _applicationIcon;
     private readonly string? _appReferenceAssembly;
     private readonly EventWaitHandle _exitHandle;
@@ -66,7 +68,8 @@ public sealed class Sparkle : IDisposable
     /// <param name="appcastUrl">the URL for the appcast file</param>
     /// <param name="applicationIcon">If you're invoking this from a form, this would be this.Icon</param>
     /// <param name="referenceAssembly">the name of the assembly to use for comparison</param>
-    public Sparkle(string appcastUrl, Icon applicationIcon, string? referenceAssembly = null) : this(appcastUrl, applicationIcon, referenceAssembly, new DefaultNetSparkleUIFactory())
+    public Sparkle(string appcastUrl, Icon applicationIcon, string? referenceAssembly = null) : this(appcastUrl,
+        applicationIcon, referenceAssembly, new DefaultNetSparkleUIFactory())
     {
     }
 
@@ -250,11 +253,13 @@ public sealed class Sparkle : IDisposable
             {
                 _webDownloadClient.ProgressChanged -= ProgressWindow.OnClientDownloadProgressChanged;
             }
+
             _webDownloadClient.DownloadComplete -= OnDownloadComplete;
 
             _webDownloadClient.Dispose();
             _webDownloadClient = null;
         }
+
         if (UserWindow != null)
         {
             UserWindow.UserResponded -= OnUserWindowUserResponded;
@@ -367,6 +372,7 @@ public sealed class Sparkle : IDisposable
             ReportDiagnosticMessage("No version information in app cast found");
             return UpdateStatus.CouldNotDetermine;
         }
+
         ReportDiagnosticMessage("Latest version on the server is " + latestVersion.Version);
 
         // set the last check time
@@ -376,7 +382,8 @@ public sealed class Sparkle : IDisposable
         // check if the available update has to be skipped
         if (latestVersion.Version != null && latestVersion.Version.Equals(config.SkipThisVersion))
         {
-            ReportDiagnosticMessage("Latest update has to be skipped (user decided to skip version " + config.SkipThisVersion + ")");
+            ReportDiagnosticMessage("Latest update has to be skipped (user decided to skip version " +
+                                    config.SkipThisVersion + ")");
             return UpdateStatus.UserSkipped;
         }
 
@@ -506,16 +513,19 @@ public sealed class Sparkle : IDisposable
         {
             return downloadFilePath + " " + CustomInstallerArguments;
         }
+
         if (".msi".Equals(extension, StringComparison.CurrentCultureIgnoreCase))
         {
             // build the command line
             return "msiexec /i \"" + downloadFilePath + "\"";
         }
+
         if (".msp".Equals(extension, StringComparison.CurrentCultureIgnoreCase))
         {
             // build the command line
             return "msiexec /p \"" + downloadFilePath + "\"";
         }
+
         throw new InvalidDataException("Unknown installer format");
     }
 
@@ -560,11 +570,7 @@ public sealed class Sparkle : IDisposable
         // start the installer helper
         var process = new Process
         {
-            StartInfo =
-            {
-                FileName = pathToOurInstallBatchFile,
-                WindowStyle = ProcessWindowStyle.Hidden
-            }
+            StartInfo = { FileName = pathToOurInstallBatchFile, WindowStyle = ProcessWindowStyle.Hidden }
         };
         process.Start();
 
@@ -614,6 +620,7 @@ public sealed class Sparkle : IDisposable
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
         return updateAvailable; // in this case, we've already shown UI talking about the new version
     }
 
@@ -666,6 +673,7 @@ public sealed class Sparkle : IDisposable
         {
             ShowUpdateNeededUI(latestVersion, useNotificationToast);
         }
+
         return updateStatus;
     }
 
@@ -799,7 +807,8 @@ public sealed class Sparkle : IDisposable
                 var csp = DateTime.Now - config.LastCheckTime;
                 if (csp < _checkFrequency)
                 {
-                    ReportDiagnosticMessage($"Update check performed within the last {_checkFrequency.TotalMinutes} minutes!");
+                    ReportDiagnosticMessage(
+                        $"Update check performed within the last {_checkFrequency.TotalMinutes} minutes!");
                     goto WaitSection;
                 }
             }
@@ -829,10 +838,15 @@ public sealed class Sparkle : IDisposable
             }
 
             // show the update window
-            ReportDiagnosticMessage("Update needed from version " + config.InstalledVersion + " to version " + latestVersion?.Version);
+            ReportDiagnosticMessage("Update needed from version " + config.InstalledVersion + " to version " +
+                                    latestVersion?.Version);
 
             // send notification if needed
-            var ev = new UpdateDetectedEventArgs { NextAction = NextUpdateAction.ShowStandardUserInterface, LatestVersion = latestVersion };
+            var ev = new UpdateDetectedEventArgs
+            {
+                NextAction = NextUpdateAction.ShowStandardUserInterface,
+                LatestVersion = latestVersion
+            };
             UpdateDetected?.Invoke(this, ev);
 
             // check results
@@ -869,7 +883,8 @@ public sealed class Sparkle : IDisposable
             CheckLoopFinished?.Invoke(this, e, bUpdateRequired);
 
             // report wait statement
-            ReportDiagnosticMessage($"Sleeping for an other {_checkFrequency.TotalMinutes} minutes, exit event or force update check event");
+            ReportDiagnosticMessage(
+                $"Sleeping for an other {_checkFrequency.TotalMinutes} minutes, exit event or force update check event");
 
             // wait for
             if (!goIntoLoop)
@@ -969,7 +984,8 @@ public sealed class Sparkle : IDisposable
                     {
                         // check the DSA Code and modify the back color            
                         using var dsaVerifier = new NetSparkleDSAVerifier("NetSparkle_DSA.pub");
-                        isDSAOk = dsaVerifier.VerifyDSASignature(UserWindow.CurrentItem.DSASignature, _downloadTempFilePath);
+                        isDSAOk = dsaVerifier.VerifyDSASignature(UserWindow.CurrentItem.DSASignature,
+                            _downloadTempFilePath);
                     }
                 }
             }
@@ -988,19 +1004,28 @@ public sealed class Sparkle : IDisposable
     /// <summary>
     ///     Enables system profiling against a profile server
     /// </summary>
-    public static bool EnableSystemProfiling => false;
+    public static bool EnableSystemProfiling
+    {
+        get => false;
+    }
 
     /// <summary>
     ///     Hides the release notes view when an update was found. This
     ///     mode is switched on automatically when no sparkle:releaseNotesLink
     ///     tag was found in the app cast
     /// </summary>
-    public static bool HideReleaseNotes => false;
+    public static bool HideReleaseNotes
+    {
+        get => false;
+    }
 
     /// <summary>
     ///     Contains the profile url for System profiling
     /// </summary>
-    public static Uri? SystemProfileUrl => null;
+    public static Uri? SystemProfileUrl
+    {
+        get => null;
+    }
 
     /// <summary>
     ///     This property enables the silent mode, this means
@@ -1026,7 +1051,10 @@ public sealed class Sparkle : IDisposable
     ///     and files when the loop is not running
     /// </summary>
     // ReSharper disable once UnusedMember.Global
-    public bool IsUpdateLoopRunning => _loopingHandle.WaitOne(0);
+    public bool IsUpdateLoopRunning
+    {
+        get => _loopingHandle.WaitOne(0);
+    }
 
     /// <summary>
     ///     Factory for creating UI form like progress window etc.
