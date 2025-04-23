@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MarkdownSharp" Version="2.0.5" />
-    <PackageReference Include="System.Reflection.MetadataLoadContext" Version="9.0.3" />
+    <PackageReference Include="System.Reflection.MetadataLoadContext" Version="9.0.4" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyInfo.cs" Link="Properties\AssemblyInfo.cs" />
