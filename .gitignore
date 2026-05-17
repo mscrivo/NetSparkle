@@ -20,3 +20,4 @@ _ReSharper*/
 packages/*
 .vs/*
 /NetSparkle/NetSparkle.csproj.user
+*.csproj.lscache
