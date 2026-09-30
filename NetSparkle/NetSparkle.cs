@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using NetSparkle.Interfaces;
@@ -513,7 +516,7 @@ public sealed class Sparkle : IDisposable
         var extension = Path.GetExtension(downloadFilePath);
         if (".exe".Equals(extension, StringComparison.CurrentCultureIgnoreCase))
         {
-            return downloadFilePath + " " + CustomInstallerArguments;
+            return "\"" + downloadFilePath + "\" " + CustomInstallerArguments;
         }
 
         if (".msi".Equals(extension, StringComparison.CurrentCultureIgnoreCase))
@@ -532,14 +535,48 @@ public sealed class Sparkle : IDisposable
     }
 
     /// <summary>
+    ///     Builds the batch file that runs the installer and then, when <paramref name="relaunchPath" /> is given,
+    ///     restarts the app with its original arguments and working directory. The app is started with <c>start</c>
+    ///     so the batch file doesn't wait for it to exit.
+    /// </summary>
+    /// <param name="installerCommand">the command that runs the installer and waits for it to finish</param>
+    /// <param name="relaunchPath">the app's executable, or null to not relaunch it</param>
+    /// <param name="relaunchArguments">the arguments the app was started with</param>
+    /// <param name="workingDirectory">the directory the app was started in</param>
+    public static string BuildInstallerBatch(string installerCommand, string? relaunchPath,
+        IEnumerable<string> relaunchArguments, string workingDirectory)
+    {
+        var batch = new StringBuilder();
+        batch.AppendLine(installerCommand);
+
+        if (!string.IsNullOrEmpty(relaunchPath))
+        {
+            batch.AppendLine("cd /d " + QuoteArgument(workingDirectory));
+
+            var relaunch = new StringBuilder("start \"\" ").Append(QuoteArgument(relaunchPath));
+            foreach (var argument in relaunchArguments)
+            {
+                relaunch.Append(' ').Append(QuoteArgument(argument));
+            }
+
+            batch.AppendLine(relaunch.ToString());
+        }
+
+        return batch.ToString();
+    }
+
+    private static string QuoteArgument(string argument)
+    {
+        return argument.Length > 0 && !argument.Any(c => char.IsWhiteSpace(c) || c == '"')
+            ? argument
+            : "\"" + argument.Replace("\"", "\\\"") + "\"";
+    }
+
+    /// <summary>
     ///     Runs the downloaded installer
     /// </summary>
     private void RunDownloadedInstaller()
     {
-        // get the commandline 
-        var commandLineThatLaunchTheClientApp = Environment.CommandLine;
-        var workingDir = Environment.CurrentDirectory;
-
         // generate the batch file path
         var pathToOurInstallBatchFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".cmd");
         string installerCmd;
@@ -556,15 +593,11 @@ public sealed class Sparkle : IDisposable
         // generate the batch file                
         ReportDiagnosticMessage("Generating MSI batch in " + Path.GetFullPath(pathToOurInstallBatchFile));
 
-        using (var write = new StreamWriter(pathToOurInstallBatchFile))
-        {
-            write.WriteLine(installerCmd);
-            if (DoLaunchAfterUpdate)
-            {
-                write.WriteLine("cd " + workingDir);
-                write.WriteLine(commandLineThatLaunchTheClientApp);
-            }
-        }
+        // Environment.CommandLine can't be used to relaunch: on .NET it starts with the app's .dll, not its .exe.
+        var relaunchPath = DoLaunchAfterUpdate ? Environment.ProcessPath : null;
+        File.WriteAllText(pathToOurInstallBatchFile,
+            BuildInstallerBatch(installerCmd, relaunchPath, Environment.GetCommandLineArgs().Skip(1),
+                Environment.CurrentDirectory));
 
         // report
         ReportDiagnosticMessage("Going to execute batch: " + pathToOurInstallBatchFile);
