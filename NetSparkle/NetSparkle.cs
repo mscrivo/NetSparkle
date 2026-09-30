@@ -58,6 +58,7 @@ public sealed class Sparkle : IDisposable
     private TimeSpan _checkFrequency;
     private bool _doInitialCheck;
     private string? _downloadTempFilePath;
+    private bool _downloadVerified;
     private bool _forceInitialCheck;
     private HttpClientDownloadWithProgress? _webDownloadClient;
     private BackgroundWorker? _worker = new();
@@ -474,6 +475,7 @@ public sealed class Sparkle : IDisposable
 
         // get temp path
         _downloadTempFilePath = Environment.ExpandEnvironmentVariables("%temp%\\" + fileName);
+        _downloadVerified = false;
         if (ProgressWindow == null)
         {
             ProgressWindow = UIFactory.CreateProgressWindow(item, _applicationIcon);
@@ -750,6 +752,12 @@ public sealed class Sparkle : IDisposable
     /// <param name="e">not used.</param>
     private void OnProgressWindowInstallAndRelaunch(object sender, EventArgs e)
     {
+        if (!_downloadVerified)
+        {
+            ReportDiagnosticMessage("Refusing to run an update that failed signature verification");
+            return;
+        }
+
         if (AskApplicationToSafelyCloseUp())
         {
             RunDownloadedInstaller();
@@ -948,55 +956,58 @@ public sealed class Sparkle : IDisposable
     /// </summary>
     private void OnDownloadComplete()
     {
-        // test the item for DSA signature
-        var isDSAOk = false;
         ReportDiagnosticMessage("Finished downloading file to: " + _downloadTempFilePath);
 
-        // report
-        ReportDiagnosticMessage("Performing DSA check");
+        _downloadVerified = IsDownloadTrusted();
+        ReportDiagnosticMessage("Download " + (_downloadVerified ? "passed" : "failed") + " signature verification");
 
-        // get the assembly
-        if (File.Exists(_downloadTempFilePath))
-        {
-            // check if the file was downloaded successfully
-            var absolutePath = Path.GetFullPath(_downloadTempFilePath!);
-            if (!File.Exists(absolutePath))
-            {
-                throw new FileNotFoundException();
-            }
-
-            if (UserWindow?.CurrentItem?.DSASignature == null)
-            {
-                isDSAOk = true; // REVIEW. The correct logic, seems to me, is that if the existing, running version of the app
-                //had no DSA, and the appcast didn't specify one, then it's ok that the one we've just 
-                //downloaded doesn't either. This may be just checking that the appcast didn't specify one. Is 
-                //that really enough? If someone can change what gets downloaded, can't they also change the appcast?
-            }
-            else
-            {
-                // get the assembly reference from which we start the update progress
-                // only from this trusted assembly the public key can be used
-                var refAssembly = Assembly.GetEntryAssembly();
-                if (refAssembly != null)
-                {
-                    // Check if we found the public key in our entry assembly
-                    if (NetSparkleDSAVerifier.ExistsPublicKey("NetSparkle_DSA.pub"))
-                    {
-                        // check the DSA Code and modify the back color            
-                        using var dsaVerifier = new NetSparkleDSAVerifier("NetSparkle_DSA.pub");
-                        isDSAOk = dsaVerifier.VerifyDSASignature(UserWindow.CurrentItem.DSASignature,
-                            _downloadTempFilePath);
-                    }
-                }
-            }
-        }
-
-        if (EnableSilentMode)
+        if (EnableSilentMode && _downloadVerified)
         {
             OnProgressWindowInstallAndRelaunch(this, EventArgs.Empty);
         }
 
-        ProgressWindow?.ChangeDownloadState(isDSAOk);
+        ProgressWindow?.ChangeDownloadState(_downloadVerified);
+    }
+
+    /// <summary>
+    ///     A download is only trusted when it carries a valid Authenticode signature (from
+    ///     <see cref="TrustedInstallerPublisher" /> when set) and, if the appcast item has a DSA signature, that
+    ///     signature verifies too. Anything else, including an unsigned download, is rejected.
+    /// </summary>
+    private bool IsDownloadTrusted()
+    {
+        if (string.IsNullOrEmpty(_downloadTempFilePath) || !File.Exists(_downloadTempFilePath))
+        {
+            return false;
+        }
+
+        try
+        {
+            if (!AuthenticodeVerifier.IsTrusted(_downloadTempFilePath, TrustedInstallerPublisher))
+            {
+                ReportDiagnosticMessage("Authenticode verification failed");
+                return false;
+            }
+
+            var dsaSignature = UserWindow?.CurrentItem?.DSASignature;
+            if (dsaSignature == null)
+            {
+                return true;
+            }
+
+            if (Assembly.GetEntryAssembly() == null || !NetSparkleDSAVerifier.ExistsPublicKey("NetSparkle_DSA.pub"))
+            {
+                return false;
+            }
+
+            using var dsaVerifier = new NetSparkleDSAVerifier("NetSparkle_DSA.pub");
+            return dsaVerifier.VerifyDSASignature(dsaSignature, _downloadTempFilePath);
+        }
+        catch (Exception e)
+        {
+            ReportDiagnosticMessage("Signature verification threw: " + e.Message);
+            return false;
+        }
     }
 
     #region Properties
@@ -1045,6 +1056,13 @@ public sealed class Sparkle : IDisposable
     ///     at http://support.microsoft.com/kb/227091.
     /// </summary>
     public string CustomInstallerArguments { get; set; } = string.Empty;
+
+    /// <summary>
+    ///     The publisher (common name and organization) that the downloaded installer's Authenticode signing
+    ///     certificate must be issued to. When null, any valid, trusted Authenticode signature is accepted; an
+    ///     unsigned installer is never accepted.
+    /// </summary>
+    public string? TrustedInstallerPublisher { get; set; }
 
     /// <summary>
     ///     This property returns true when the update loop is running

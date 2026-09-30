@@ -57,7 +57,7 @@ public partial class NetSparkleDownloadProgress : Form, INetSparkleDownloadProgr
     public void ChangeDownloadState(bool signatureValid)
     {
         progressDownload.Visible = false;
-        btnInstallAndReLaunch.Visible = true;
+        btnInstallAndReLaunch.Visible = signatureValid;
 
         UpdateDownloadValid(signatureValid);
     }
