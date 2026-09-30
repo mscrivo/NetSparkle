@@ -41,8 +41,14 @@ internal class HttpClientDownloadWithProgress(string downloadUrl, string destina
 
         var totalBytes = response.Content.Headers.ContentLength;
 
-        await using var contentStream = await response.Content.ReadAsStreamAsync();
-        await ProcessContentStream(totalBytes, contentStream);
+        await using (var contentStream = await response.Content.ReadAsStreamAsync())
+        {
+            await ProcessContentStream(totalBytes, contentStream);
+        }
+
+        // Raised only once the file has been flushed and closed, so handlers (e.g. signature verification) can
+        // read the complete download.
+        DownloadComplete?.Invoke();
     }
 
     private async Task ProcessContentStream(long? totalDownloadSize, Stream contentStream)
@@ -74,8 +80,6 @@ internal class HttpClientDownloadWithProgress(string downloadUrl, string destina
                 TriggerProgressChanged(totalDownloadSize, totalBytesRead);
             }
         } while (isMoreToRead);
-
-        DownloadComplete?.Invoke();
     }
 
     private void TriggerProgressChanged(long? totalDownloadSize, long totalBytesRead)
